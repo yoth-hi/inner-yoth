@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover">
+  </head>
+  <body>
+    <yo-app></yo-app>
+    <script>
+      var g = location.pathname;
+      const header = {
+        logo:{
+          theme:{
+            type:"LOGO_YOTH",
+          }
+        }
+      };
+      const rp = {header};
+      var data_ = {
+        "/":{...rp},
+        "/watch":{...rp}
+      };
+      let data = data_[g];
+      
+      document.querySelector("yo-app").response = {
+        data,
+        pathname:location.pathname
+      }
+    </script>
+  </body>
+</html>

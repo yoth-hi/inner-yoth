@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{ title }}</title>
+        <script src="{{static_app}}app.js" {% if isdev %}type="module" {% endif %}charset="utf-8"></script>
+        {% if isdev or istv or isMobile %}<link href="{{static_app}}styles.css" rel="stylesheet">{% endif %}
+        <script src="/s/player/jsbin/en/main.js"></script>
+        <link href="/s/player/jsbin/player.css" rel="stylesheet">
+    </head>
+    <body>
+      {% if istv %}
+        <div id="container">Tv Elements</div>
+      {% endif %}
+      {% if iswatch %}
+      <style>body>#player{
+        margin-top: 40px;
+      position:relative;max-width:1080px;padding-bottom:56.25%}body>#player>div{position:absolute;inset:0}</style>
+      <div id="player"></div>
+        <script>
+            const response = {
+                            videoDetails: {
+                                videoId: "Kre35Bd6kXc",
+                                title: "✨😇❌SEXTOU !!✨😇❌ BOA NOITE GENTE ESPERO QUE VOCES TAO BEM !! PARTIU OS MEMBROS E LIKES ??",
+                                lengthSeconds: "20189",
+                                keywords: ["aruanfelix", "aruan felix", "aruan", "placa"],
+                                channelId: "UCjli",
+                                isOwnerViewing: false,
+                                shortDescription:
+                                    "Envie uma mensagem de áudio pelo LivePix: \nhttps://livepix.gg/aruanfelix\n\nVIRE MEMBRO DO CANAL:\nhttps://www.youtube.com/aruanlive/join\n\n📞 E-mail Profissional: aruan@kr3w.gg\n📷 Instagram: https://instagram.com/aruanfelix",
+                                isCrawlable: true,
+                                thumbnail: {
+                                    thumbnails: [
+                                        {
+                                            url: "https://i.ytimg.com/vi/Kre35Bd6kXc/hqdefault.jpg?sqp=-oaymwEbCKgBEF5IVfKriqkDDggBFQAAiEIYAXABwAEG&rs=AOn4CLDoynvI0yw8eXAZsWpF8llj",
+                                            width: 168,
+                                            height: 94
+                                        },
+                                        {
+                                            url: "https://i.ytimg.com/vi/Kre35Bd6kXc/hqdefault.jpg?sqp=-oaymwEbCMQBEG5IVfKriqkDDggBFQAAiEIYAXABwAEG&rs=AOn4CLDgjvjVhn7UHr3PBQDXhNB0o0P6YA",
+                                            width: 196,
+                                            height: 110
+                                        },
+                                        {
+                                            url: "https://i.ytimg.com/vi/Kre35Bd6kXc/hqdefault.jpg?sqp=-oaymwEcCPYBEIoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAeRsXMgfsOmY8AgoHg6Zlm6gkVfw",
+                                            width: 246,
+                                            height: 138
+                                        },
+                                        {
+                                            url: "https://i.ytimg.com/vi/Kre35Bd6kXc/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAa1LTGrA-uWekYrhsRZlsiTp47sw",
+                                            width: 336,
+                                            height: 188
+                                        },
+                                        {
+                                            url: "https://i.ytimg.com/vi/Kre35Bd6kXc/maxresdefault.jpg?v=66638d00",
+                                            width: 1920,
+                                            height: 1080
+                                        }
+                                    ]
+                                },
+                                allowRatings: true,
+                                viewCount: "90252",
+                                author: "ARUAN [ LIVE ]",
+                                isLowLatencyLiveStream: true,
+                                isPrivate: false,
+                                isUnpluggedCorpus: false,
+                                latencyClass:
+                                    "MDE_STREAM_OPTIMIZATIONS_RENDERER_LATENCY_ULTRA_LOW",
+                                isLiveContent: true
+                            }
+                        };
+            (function(response, b){
+              var c={
+                {% if isMobile %}isMobile: true,{% endif %}
+              };
+              window.player.create(b, { args: { response } }, c)
+              
+            })(response, document.querySelector("#player"))
+                            
+        </script>
+      {% endif %}
+      {% if data %}<script>var data={{data}};</script>{% endif %}
+      {% if isMobile %}
+        <yo-app></yo-app>
+        <script>(function(a,b){a.response={data:b,pathname:location.pathname}})(document.querySelector("yo-app"),data)</script>
+      {% endif %}
+      {% if not istv and not isMobile %}
+        <yo-app>
+            <app-masthead slot="header">
+                <div slot="search-input">
+                    <input
+                        id="search"
+                        autocapitalize="none"
+                        autocomplete="off"
+                        autocorrect="off"
+                        hidden
+                        name="search_query"
+                        tabindex="0"
+                        type="text"
+                        spellcheck="false"
+                    />
+                </div>
+            </app-masthead>
+        </yo-app>
+      {% endif %}
+    </body>
+</html>

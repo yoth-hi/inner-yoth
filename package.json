@@ -1,0 +1,13 @@
+{
+  "name": "run",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build-all": "clear;npm run build-mobile",
+    "build-mobile": "rm ./frontend/mobile/* -fr;cd dev/mobile;npm run build;mv ./jsbin ../../frontend/mobile/jsbin;cd ../../"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
