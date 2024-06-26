@@ -11,7 +11,8 @@ class Watch extends Element {
   render() {
     return html`
     <div class="content-watch">
-      hdhdhff y y yy ydhdhd
+      <div class="player-size player-placeholder" style></div>
+      <app-slim-video-information-renderer></app-slim-video-information-renderer>
     </div>
     `
   }

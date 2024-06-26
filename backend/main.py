@@ -18,8 +18,12 @@ cached_templates = {}
 # Pré-carregar arquivos estáticos comuns na memória
 static_files_cache = {}
 
-def cache_static_files():
-    static_paths = ['index.html', 'main.js', 'styles.css']
+def cache_static_files(path=None):
+    static_paths = []
+    if(path):
+      static_paths = [path]
+    else:
+      static_paths = ['index.html', 'main.js', 'styles.css']
     for path in static_paths:
         file_path = join(current_directory, 'frontend', path)
         if exists(file_path) and isfile(file_path):
@@ -64,7 +68,6 @@ class handler(BaseHTTPRequestHandler):
     def serve_static(self, path):
         # Remover a barra inicial
         path = path.lstrip('/s/')
-        
         if path in static_files_cache:
             self.send_response(200)
             self.send_header('Content-type', self.get_content_type(path))

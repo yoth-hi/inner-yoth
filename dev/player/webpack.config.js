@@ -65,7 +65,7 @@ class SortPlugin {
     }
 }
 const TextDecoder_ = TextDecoder ? new TextDecoder : void 0;
-const ii = require("../../translations.json")
+const ii = require("../../backend/translations.json")
 function stringToUnicodeEscape(str) {
   let unicodeEscape = '';
   for (let i = 0; i < str.length; i++) {

@@ -54,3 +54,4 @@ class App extends Element {
   }
 }
 register(App, "yo-app")
+import"./mobile.player.css"

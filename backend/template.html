@@ -4,7 +4,7 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{{ title }}</title>
-        <script src="{{static_app}}app.js" {% if isdev %}type="module" {% endif %}charset="utf-8"></script>
+        <script src="{{static_app}}app.js" charset="utf-8"></script>
         {% if isdev or istv or isMobile %}<link href="{{static_app}}styles.css" rel="stylesheet">{% endif %}
         <script src="/s/player/jsbin/en/main.js"></script>
         <link href="/s/player/jsbin/player.css" rel="stylesheet">
@@ -14,10 +14,23 @@
         <div id="container">Tv Elements</div>
       {% endif %}
       {% if iswatch %}
-      <style>body>#player{
-        margin-top: 40px;
-      position:relative;max-width:1080px;padding-bottom:56.25%}body>#player>div{position:absolute;inset:0}</style>
-      <div id="player"></div>
+      <div class="player-host">
+        <style>
+          .player-host {
+    position: fixed;
+    top: 50px;
+    right: 0;
+    right: env(safe-area-inset-right);
+    left: 0;
+    left: env(safe-area-inset-left);
+    overflow: hidden;
+    z-index: 2;
+}
+        </style>
+        <div class="player-container">
+          <div id="player" class="player-size"></div>
+        </div>
+      </div>
         <script>
             const response = {
                             videoDetails: {

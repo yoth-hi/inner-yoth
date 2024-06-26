@@ -1,0 +1,14 @@
+#player {
+    color: #fff;
+    position: relative;
+    -moz-transition: background-color .3s ease-in-out,background-image .3s ease-in-out;
+    -webkit-transition: background-color .3s ease-in-out,background-image .3s ease-in-out;
+    transition: background-color .3s ease-in-out,background-image .3s ease-in-out;
+}
+.player-container .html5-video-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
