@@ -1,6 +1,8 @@
+
 app-slim-video-information-renderer {
   display: block;
   font-size: 12px;
+  cursor: pointer;
 }
 .slim-video-metadata-header {
   margin: 0 3px 3px;

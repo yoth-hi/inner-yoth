@@ -10,20 +10,19 @@ import random
 from .controller import renderContextPage, isPageHtml, isPageApi, RenderApi
 
 # Configuração global
-compression_quality = 4  # Usar um nível de compressão fixo para consistência
+compression_quality = random.randint(1, 4) # Usar um nível de compressão fixo para consistência
 current_directory = os.getcwd()
 template_env = Environment(loader=FileSystemLoader(join(current_directory, 'frontend', 'desktop')))
 cached_templates = {}
 
 # Pré-carregar arquivos estáticos comuns na memória
 static_files_cache = {}
-
 def cache_static_files(path=None):
     static_paths = []
     if(path):
       static_paths = [path]
     else:
-      static_paths = ['index.html', 'main.js', 'styles.css']
+      static_paths = ['player/jsbin/en/main.js', 'main.js', 'styles.css']
     for path in static_paths:
         file_path = join(current_directory, 'frontend', path)
         if exists(file_path) and isfile(file_path):
@@ -55,7 +54,7 @@ class handler(BaseHTTPRequestHandler):
         if True:#template_name not in cached_templates:
             with open(join(current_directory, 'backend', template_name), 'r', encoding='utf-8') as f:
                 template_content = f.read()
-                template_content = re.sub(r'\n| {2,}', ' ', template_content)
+                template_content = re.sub(r'\n| {1,}', ' ', template_content)
                 cached_templates[template_name] = template_env.from_string(template_content)
 
         context = renderContextPage(parsed_path, self)

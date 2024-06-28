@@ -7,7 +7,20 @@
     },
     {
       "src": "frontend/**",
-      "use": "@vercel/static"
+      "use": "@vercel/static",
+      "config": {
+        "headers": [
+          {
+            "source": "**/*.@(js|css|jpg|jpeg|png|svg|gif|ico)",
+            "headers": [
+              {
+                "key": "Cache-Control",
+                "value": "public, max-age=6000, must-revalidate"
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "routes": [

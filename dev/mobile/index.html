@@ -6,7 +6,7 @@
 <body>
   <yo-app></yo-app>
   <script>
-    var g="/watch" /*location.pathname;*/;
+    var g=location.pathname;
     const header = {
       logo: {
         theme: {
@@ -17,9 +17,17 @@
     const rp = {
       header
     };
+    const K = {
+      
+    };
     var data_ = {
       "/": {
-        ...rp
+        ...rp,
+        content:{
+          results:[
+            K,K,K,K,K,K,K,K,K,K,K,K,K
+          ],
+        },
       },
       "/watch": {
         ...rp,
@@ -38,7 +46,7 @@
 
     document.querySelector("yo-app").response = {
       data,
-      pathname: "/watch"/*location.pathname*/
+      pathname: location.pathname
     }
   </script>
 </body>

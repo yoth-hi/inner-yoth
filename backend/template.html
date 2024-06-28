@@ -1,20 +1,20 @@
 <!doctype html>
-<html lang="{{lang}}">
+<html lang={{lang}}>
     <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv=content-type content="text/html; charset=utf-8" />
+        <meta name=viewport content="width=device-width, initial-scale=1.0" />
         <title>{{ title }}</title>
-        <script src="{{static_app}}app.js" charset="utf-8"></script>
-        {% if isdev or istv or isMobile %}<link href="{{static_app}}styles.css" rel="stylesheet">{% endif %}
+        <script src="{{static_app}}app.js" charset=utf-8></script>
+        {% if isdev or istv or isMobile %}<link href="{{static_app}}styles.css" rel=stylesheet>{% endif %}
         <script src="/s/player/jsbin/en/main.js"></script>
-        <link href="/s/player/jsbin/player.css" rel="stylesheet">
+        <link href="/s/player/jsbin/player.css" rel=stylesheet>
     </head>
     <body>
       {% if istv %}
-        <div id="container">Tv Elements</div>
+        <div id=container>Tv Elements</div>
       {% endif %}
       {% if iswatch %}
-      <div class="player-host">
+      <div class=player-host>
         <style>
           .player-host {
     position: fixed;
@@ -27,8 +27,8 @@
     z-index: 2;
 }
         </style>
-        <div class="player-container">
-          <div id="player" class="player-size"></div>
+        <div class=player-container>
+          <div id=player class=player-size></div>
         </div>
       </div>
         <script>
@@ -100,17 +100,17 @@
       {% endif %}
       {% if not istv and not isMobile %}
         <yo-app>
-            <app-masthead slot="header">
-                <div slot="search-input">
+            <app-masthead slot=header>
+                <div slot=search-input>
                     <input
-                        id="search"
-                        autocapitalize="none"
-                        autocomplete="off"
-                        autocorrect="off"
+                        id=search
+                        autocapitalize=none
+                        autocomplete=off
+                        autocorrect=off
                         hidden
-                        name="search_query"
-                        tabindex="0"
-                        type="text"
+                        name=search_query
+                        tabindex=0
+                        type=text
                         spellcheck="false"
                     />
                 </div>
