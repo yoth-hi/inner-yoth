@@ -1,0 +1,11 @@
+{
+  "name": "dasktop",
+  "version": "0.0.1",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"not?:\""
+  },
+  "author": "@yoth-hi",
+  "license": "ISC",
+  "description": ""
+}
