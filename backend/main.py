@@ -7,7 +7,7 @@ import re
 import brotli
 import random
 
-from .controller import renderContextPage, isPageHtml, isPageApi
+from .controller import renderContextPage, isPageHtml, isPageApi, RenderApi
 
 # Configuração global
 compression_quality = 4  # Usar um nível de compressão fixo para consistência
@@ -40,9 +40,7 @@ class handler(BaseHTTPRequestHandler):
         if isPageHtml(path):
             self.serve_html(parsed_path, path)
         elif isPageApi(path):
-            self.send_response(200)
-            self.send_header('Content-type', 'text/plain')
-            self.end_headers()
+            RenderApi(path, self)
         else:
             self.serve_static(path)
 

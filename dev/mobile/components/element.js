@@ -38,15 +38,21 @@ class Element extends LitElement {
                 const [h, g, l] = t.match(/([\w\$]+)\(([\,\w]+)\)/);
                 const li = l.split(",");
                 li.forEach(a => {
-                    this.observers_[a] = n => {
+                    joinCall(this.observers_,a, n => {
                         const j = li.map(a => this[a]);
                         const m = this[g].apply(this, j)
-                    };
+                    });
                     this[a] && this.observers_[a](this[a]);
                 });
             }
         }
-
+function joinCall(obj, name, call){
+  const lest = obj[name];
+  obj[name] = function(){
+    lest?.apply(this, arguments)
+    call.apply(this, arguments)
+  }
+}
         // HGv(, this.observers_, this)
     }
     updated(changedProperties) {

@@ -19,12 +19,14 @@ class App extends Element {
     super()
     this._stoteElement = new Map;
     this._currentPage = void 0;
-    // this._onChengePage(location)
-    // on(this._onChengePage.bind(this))
   }
   static properties = {
     pageId: {
       type: String,
+      attribute: false
+    },
+    data: {
+      type: Object,
       attribute: false
     },
   };
@@ -39,11 +41,15 @@ class App extends Element {
     parent.appendChild(child)
   }
   _onChengeData(data) {
-    this.isLoaded = true;
-    this._currentPage && (
-      this._currentPage.dara = data)
+    if(this._currentPage){
+      this._currentPage.data = data
+      this.isLoaded = true;
+    } else {
+      data && setTimeout(this._onChengeData.apply(this, arguments), 5)
+    }
+    
   }
-  static observers = ["_onChengePage(pageId)"]
+  static observers = ["_onChengePage(pageId)","_onChengeData(data)"]
   _onChengePage(id) {
     if (id) {
       const element = getPageElement(this, id)

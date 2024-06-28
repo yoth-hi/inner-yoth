@@ -1,5 +1,6 @@
 import { EventTargt } from "../utils/EventTargetCustom.js";
 import Streaming from "../streaming/index.js";
+import WatchTime, { timing } from "./WatchTime.js"
 export const VIDEO = "sv";
 export const AUDIO = "av";
 // sv = video type
@@ -198,6 +199,7 @@ export default class {
     _startLavelId = 5;
     _requestNumber = 0;
     _joinBuff = [];
+    _timeded = new timing(this)
     constructor(api) {
       this._api=api
     }
@@ -279,7 +281,7 @@ export default class {
                 break;
             case "durationchange":
                 JG(this);
-
+                WatchTime(this)
                 break;
             case "timeupdate":
                 const isIn0Time =
@@ -299,6 +301,9 @@ export default class {
     }
     _onChangePresentingPlayerStateChange(state){
       this._api._onChangePresentingPlayerStateChange({ state })
+    }
+    _getDataWatchtime(){
+      return this
     }
 }
 const add = function (scope, buffer, t) {
