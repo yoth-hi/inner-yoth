@@ -16,6 +16,15 @@ export class Media extends ManagerMedia {
     _getDuration() {
         return this._element.duration;
     }
+    _getVolume() {
+        return this._element.volume;
+    }
+    _getMuted() {
+        return this._element.muted;
+    }
+    _setVolume(a) {
+        this._element.volume = a
+    }
     _getCurrentTime() {
         return this._element.currentTime;
     }
@@ -62,6 +71,9 @@ export class Media extends ManagerMedia {
     }
     _isPaused(){
       return this._element.paused
+    }
+    _isSeeking(){
+      return this._element.seeking
     }
 }
 const rL = function (a, b) {

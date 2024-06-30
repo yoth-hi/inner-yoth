@@ -198,10 +198,14 @@ export default class {
     _mediaElement = void 0;
     _startLavelId = 5;
     _requestNumber = 0;
+    _store$018 = {};
     _joinBuff = [];
     _timeded = new timing(this)
     constructor(api) {
       this._api=api
+    }
+    _getSessionId(){
+      return this._api._ID
     }
     _setMediaElement(mediaElement) {
         if (mediaElement) {
@@ -272,6 +276,8 @@ export default class {
         }
     }
     _on(a) {
+      let $START_SEEK = 0;
+      const d = this._mediaElement
         switch (a.type) {
             case "loadstart":
                 Nab(this);
@@ -285,17 +291,29 @@ export default class {
                 break;
             case "timeupdate":
                 const isIn0Time =
-                    this.mediaElement && !this.mediaElement.getCurrentTime();
+                    this._mediaElement && !this._mediaElement._getCurrentTime();
                 JG(this);
+                if(!this._isSeeking()){
+                  $START_SEEK = this._mediaElement._getCurrentTime()
+                }
                 break;
             case "pause":
                 this._onChangePresentingPlayerStateChange(1)
+              var f=d._getCurrentTime();
+              (this._store$018["ed"] ??= []).push(f)
                 break;
             case "play":
+              var f=d._getCurrentTime();
+              (this._store$018["st"] ??= []).push(f)
                 this._onChangePresentingPlayerStateChange(2)
                 break;
             case "resize":
                 this._api._resize()
+                break;
+            case "seeking":
+              var f=d._getCurrentTime();
+                break;
+            case "seeked":
                 break;
         }
     }
@@ -304,6 +322,9 @@ export default class {
     }
     _getDataWatchtime(){
       return this
+    }
+    _isSeeking(){
+      return this._mediaElement._isSeeking()
     }
 }
 const add = function (scope, buffer, t) {
