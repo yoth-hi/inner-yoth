@@ -6,15 +6,17 @@ def renderContextPage(parsed_path, self_):
   lang = "en"
   title = "Yoth"
   host = self_.headers.get('Host')
+  print(self_.headers)
   data = None
   context = {};
   path = parsed_path.path
   query = parseQuery(parsed_path.query)
-  isMobile = True# query.get("app") == "mobile"
   context["pageId"] = getPageIdByPath(path)
-  istv = context["pageId"] == "LAYOUT_TV"
+  isMobile = not query.get("app") == "desktop"
   isembed = context["pageId"] == "EMBED"
   iswatch = context["pageId"] == "WATCH"
+  isdev = context["isdev"] = host == "localhost:8080"
+  istv = context["pageId"] == "LAYOUT_TV"
   context["iswatch"] = iswatch
   context["istv"] = istv
   context["path"] = path
@@ -35,15 +37,15 @@ def renderContextPage(parsed_path, self_):
   context["title"] = title
   context["isMobile"] = isMobile
   
-  context["isdev"] = host == "localhost:8080"
   context["static_app"] = "/s/desktop/";
-  # if(istv):
-  #   context["static_app"] = "/s/tv/"
-  # if(not istv and isMobile):
-  context["static_app"] = "/s/mobile/"
-  context["static_app"] = context["static_app"] + "jsbin/"
+  if(istv):
+    context["static_app"] = "/s/tv/"
+  if(not istv and isMobile):
+    context["static_app"] = "/s/mobile/"
   context["data"] = toTextData(data)
-  #print(path, context)
+  context["isMobule"] = (not istv and not isMobile) and isdev
+  context["static_app"] += "jsbin/"
+  print(path, context)
   return context;
 
 ## utils
@@ -57,7 +59,6 @@ def getPageIdByPath(path):
     _id = "LAYOUT_TV"
   elif(path == "watch"):
     _id = "WATCH"
-  print(path)
   return _id
 def toTextData(dataJson):
   text = None;

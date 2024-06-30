@@ -72,7 +72,17 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(static_files_cache[path])
         else:
-            file_path = join(current_directory, 'frontend', path)
+            in_ = "frontend";
+            f = path[:7]
+            if(self.headers.get('Host') == "localhost:8080"):
+              if(path == "desktop/jsbin/dev.js"):
+                in_ = "dev";
+                path = "desktop/app.js"
+              elif(f == "desktop"):
+                path = "desktop/"+ path[14:]
+                in_ = "dev";
+            file_path = join(current_directory, in_, path)
+            print(file_path)
             if exists(file_path) and isfile(file_path):
                 self.send_response(200)
                 self.send_header('Content-type', self.get_content_type(path))

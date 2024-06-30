@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build-all": "clear;npm run build-player;npm run build-mobile",
+    "build-all": "clear;npm run build-desktop;npm run build-player;npm run build-mobile",
     "build-mobile": "rm ./frontend/mobile/* -fr;cd dev/mobile;npm run build;mv ./jsbin ../../frontend/mobile/jsbin;cd ../../",
-    "build-player": "rm ./frontend/player/* -fr;cd dev/player;npm run build;mv ./jsbin ../../frontend/player/jsbin;cd ../../"
+    "build-player": "rm ./frontend/player/* -fr;cd dev/player;npm run build;mv ./jsbin ../../frontend/player/jsbin;cd ../../",
+    "build-desktop": "rm ./frontend/desktop/* -fr;cd dev/desktop;npm run build;mv ./jsbin ../../frontend/desktop/jsbin;cd ../../"
   },
   "keywords": [],
   "author": "",

@@ -4,7 +4,11 @@
         <meta http-equiv=content-type content="text/html; charset=utf-8" />
         <meta name=viewport content="width=device-width, initial-scale=1.0" />
         <title>{{ title }}</title>
-        <script src="{{static_app}}app.js" charset=utf-8></script>
+        <link as="script" rel="preload" href="{{static_app}}app.js">
+        <script src="{{static_app}}app.js"
+          {% if isMobule %}type="module"{% endif %}
+        charset=utf-8></script>
+        
         {% if isdev or istv or isMobile %}<link href="{{static_app}}styles.css" rel=stylesheet>{% endif %}
         <script src="/s/player/jsbin/en/main.js"></script>
         <link href="/s/player/jsbin/player.css" rel=stylesheet>
@@ -99,7 +103,7 @@
         <script>(function(a,b){a.response={data:b,pathname:location.pathname}})(document.querySelector("yo-app"),data)</script>
       {% endif %}
       {% if not istv and not isMobile %}
-        <yo-app>
+        <yo-app mini-guide-visible>
             <app-masthead slot=header>
                 <div slot=search-input>
                     <input
@@ -107,7 +111,7 @@
                         autocapitalize=none
                         autocomplete=off
                         autocorrect=off
-                        hidden
+                        
                         name=search_query
                         tabindex=0
                         type=text
@@ -116,6 +120,7 @@
                 </div>
             </app-masthead>
         </yo-app>
+        <script>(function(a,b){a.response={data:b,pathname:location.pathname}})(document.querySelector("yo-app"),data)</script>
       {% endif %}
     </body>
 </html>
