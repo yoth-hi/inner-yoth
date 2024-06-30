@@ -97,6 +97,11 @@
                             
         </script>
       {% endif %}
+          {% if isdev %}
+        <script>
+          document.querySelector("video").src = "https://rr1---sn-2pboxu-8j2e.googlevideo.com/videoplayback?expire=1719788972&ei=TJGBZu60JcaH-LAP-NWP0AM&ip=177.137.102.141&id=o-AJO3ywyj06ZPUBq7zRVzPf_l0VY_3RZEEnqduvMCo7sI&itag=18&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=eq&mm=31%2C29&mn=sn-2pboxu-8j2e%2Csn-pmcg-bg0z&ms=au%2Crdu&mv=m&mvi=1&pcm2cms=yes&pl=24&gcr=br&initcwndbps=575000&vprv=1&svpuc=1&mime=video%2Fmp4&rqh=1&gir=yes&clen=871907925&ratebypass=yes&dur=10449.351&lmt=1717381079759063&mt=1719766866&fvip=4&c=ANDROID_TESTSUITE&txp=5538434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRQIhAIvXw0onkO1w9hjNlyvdFursweF88XD-MXVOQVViAxNUAiARIasbbhRJTznM5VcV1QQZF_ac-nGsUqXnEo2PZ3VO_g%3D%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpcm2cms%2Cpl%2Cinitcwndbps&lsig=AHlkHjAwRAIgVAxtWH4ZtILrF1HjRsDlwwimz8YhQhMvMgW_bqRtQmMCIGObqG7bNqHtJAJ1UtfzhT9Yi-E3KRE-0T50Nt4akuAe&title=%5BKPOP%20Playlist%5D%20%EC%9A%94%EC%A6%98%20%EB%93%A3%EB%8A%94%20%EC%BC%80%EC%9D%B4%ED%8C%9D%20%EB%85%B8%EB%8F%99%EC%9A%94%20%E2%9E%89"
+        </script>
+          {% endif %}
       {% if data %}<script>var data={{data}};</script>{% endif %}
       {% if isMobile %}
         <yo-app></yo-app>

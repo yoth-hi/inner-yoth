@@ -39,7 +39,7 @@ class handler(BaseHTTPRequestHandler):
         if isPageHtml(path):
             self.serve_html(parsed_path, path)
         elif isPageApi(path):
-            RenderApi(path, self)
+            RenderApi(path, self, parsed_path)
         else:
             self.serve_static(path)
 

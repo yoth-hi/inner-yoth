@@ -281,18 +281,20 @@ export default class {
         switch (a.type) {
             case "loadstart":
                 Nab(this);
+                WatchTime(this)
                 break;
             case "loadedmetadata":
                 Nab(this);
+                WatchTime(this)
                 break;
             case "durationchange":
                 JG(this);
-                WatchTime(this)
                 break;
             case "timeupdate":
                 const isIn0Time =
                     this._mediaElement && !this._mediaElement._getCurrentTime();
                 JG(this);
+                WatchTime(this)
                 if(!this._isSeeking()){
                   $START_SEEK = this._mediaElement._getCurrentTime()
                 }

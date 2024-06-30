@@ -2,8 +2,8 @@ import XHR from "../controllers/xml.ping.js"
 import _URL from "../controllers/URL.js"
 const K_=function(a,b,c,d){var e=a._querys[c];e||(e=[],a._querys[c]=e);e.push(b.toFixed(3)+":"+d.join(":"))};
 export default function(scope) {
-  clearInterval(scope._idInterval);
-  Ma(scope) || (scope._idInterval = setInterval(()=>Ma(scope), 100))
+  clearInterval(scope._idI288);
+  Ma(scope) || (scope._idI288 = setInterval(()=>Ma(scope), 100))
 }
   export const timing = class {
     timeStamp = NaN

@@ -1,5 +1,6 @@
 import json
 from urllib.parse import parse_qs
+from .database import SQL
 
 ## host
 def renderContextPage(parsed_path, self_):
@@ -29,10 +30,11 @@ def renderContextPage(parsed_path, self_):
     };
     if iswatch:
       playerData = getVideoPlayerData()
+      if(playerData):
+        data["playerOverlays"] = MainConstructor_playerOverlays(playerData)
+        title += " - "
+        title += playerData.get("title")
       data["content"] = MainConstructor_contentPage()
-      data["playerOverlays"] = MainConstructor_playerOverlays(playerData)
-      title += " - "
-      title += playerData.get("title")
     if isMobile:
       data["header"] = HeaderMobileWeb()
       data["content"]["results"] = [{},{},{},{}]
@@ -138,24 +140,91 @@ def MainConstructor_playerOverlays(playerData):
   }
 ## get - data player -
 def getVideoPlayerData():
-  ##sql get data video
-  return{
-    "title": "123jdjdtytttth yy3"
-  }
+    try:
+      resp = None#SQL(f"""SELECT title FROM video LIMIT 1;""")
+      if resp:
+        data = resp[0]
+        return {
+          "title": data[0]  # Acessar o título (primeiro elemento da tupla)
+        }
+      else:
+        print("Nenhum vídeo encontrado.")
+        return None
+    except Exception as e:
+        print(f"Erro ao buscar dados do vídeo: {e}")
+        return None
 
 
+def Y(arr,index=0):
+  if(arr):
+    return arr[0]
 ## API
 def NEXT(context, self_):
   return b"{ ?? }"
 def WATCHTIME(context, self_):
-  return b"OK"
+    video_id = "test"
+    # Parse dos parâmetros da consulta HTTP
+    q = parse_qs(context["parsed_path"].query)
+    startList = q.get('st', [])
+    endList = q.get('ed', [])
+    len_ = float(q.get('len', [])[0])
+    session = q.get('sid', [0])[0]  # Obter a sessão (assume que é um único valor)
+
+    # Verificar se há uma sessão válida
+    if not session:
+        self_.send_error(403, "")
+        return b""
+
+    # Preparar os dados para inserção/atualização no banco de dados
+    data = []
+    for index in range(len(startList)):
+        start = float(startList[index])
+        end = float(endList[index])
+        duration = end - start
+        id_ = int((start/len_)*100)
+
+        # Incluir os dados formatados na lista de dados
+        data.append((video_id, start, end, id_))
+
+    # Executar as consultas SQL para cada conjunto de dados de watchtime
+    for entry in data:
+        video_id, start, end, time_id = entry
+
+        # Verificar se já existe um registro de watchtime com timeId = 5 para o vídeo específico
+        sql_query = """
+        DO $$
+DECLARE
+    watchtime_id INT;
+BEGIN
+    -- Verificar se existe um registro de watchtime com timeId = 5 para o vídeo específico
+    SELECT id INTO watchtime_id FROM watchtime
+    WHERE video_id = %s
+    AND time_id = %s
+    LIMIT 1;
+
+    -- Se existe, incrementar o contador 'used'
+    IF found THEN
+        UPDATE watchtime
+        SET used = used + 1
+        WHERE id = watchtime_id;
+    ELSE
+        -- Se não existe, inserir um novo registro de watchtime
+        INSERT INTO watchtime (video_id, time_start, time_end, time_id)
+        VALUES (%s, %s, %s, %s);
+    END IF;
+END $$;
+
+        """
+        SQL(sql_query, (video_id, time_id, video_id, start, end, time_id))
+
+    return b"OK"
 
 ## API MANAGER
 APIS = {
   "watchtime": WATCHTIME
 }
 
-def RenderApi(path, self_):
+def RenderApi(path, self_, parsed_path):
   if not path.startswith("/v1/"):
     self_.send_response(404)
     self_.send_header('Content-type', 'text/plain')
@@ -164,6 +233,8 @@ def RenderApi(path, self_):
   context = {}
   status = 200
   path = path[3:]
+  context["path"] = path
+  context["parsed_path"] = parsed_path
   call = APIS[path[1:]]
   self_.send_response(status)
   self_.send_header('Content-type', 'text/plain')
