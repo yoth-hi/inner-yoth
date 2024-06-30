@@ -24,14 +24,18 @@ def renderContextPage(parsed_path, self_):
   context["lang"] = lang
   if not istv or not isembed:
     notificationCount = 0
-    data = {};
-    playerData = getVideoPlayerData()
-    data["content"] = MainConstructor_contentPage()
-    data["playerOverlays"] = MainConstructor_playerOverlays(playerData)
-    title += " - "
-    title += playerData.get("title")
+    data = {
+      "content":{}
+    };
+    if iswatch:
+      playerData = getVideoPlayerData()
+      data["content"] = MainConstructor_contentPage()
+      data["playerOverlays"] = MainConstructor_playerOverlays(playerData)
+      title += " - "
+      title += playerData.get("title")
     if isMobile:
       data["header"] = HeaderMobileWeb()
+      data["content"]["results"] = [{},{},{},{}]
     elif notificationCount != 0:
       title += " (" + notificationCount + ")"
   context["title"] = title
