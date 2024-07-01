@@ -65,6 +65,7 @@ export default function(scope) {
     }
     scope._timeded.mediaTime = g
     const q = {};
+    Object.assign(q,UF3(scope))
     j(store,"volume",q,[media._getVolume()])
     j(store,"st",q,find(storePlayer,"st",[]))
     j(store,"ed",q,find(storePlayer,"ed",[]))
@@ -80,4 +81,14 @@ export default function(scope) {
   }
   function find(obj,name, ifIsNull){
     return obj[name] ??= ifIsNull
+  }
+  function UF3(scope){
+    const { videoId, list } = scope._api._getVideoData()
+    const { _hl, _hostLanguage, _region } = scope._api._getPlayerConfig()
+    var g = {}
+    g["vid"] = videoId
+    g["hl"] = _hl
+    g["cr"] = _region
+    list&&(g["list"] = list)
+    return g
   }

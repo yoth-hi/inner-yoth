@@ -155,21 +155,22 @@ def getVideoPlayerData():
         return None
 
 
-def Y(arr,index=0):
+def Y(arr):
   if(arr):
-    return arr[0]
+    return arr[0].split(",")
 ## API
 def NEXT(context, self_):
   return b"{ ?? }"
 def WATCHTIME(context, self_):
-    video_id = "test"
     # Parse dos parâmetros da consulta HTTP
     q = parse_qs(context["parsed_path"].query)
-    startList = q.get('st', [])
-    endList = q.get('ed', [])
+    video_id = q.get('vid', [])[0]
+    startList = Y(q.get('st', []))
+    endList = Y(q.get('ed', []))
     len_ = float(q.get('len', [])[0])
     session = q.get('sid', [0])[0]  # Obter a sessão (assume que é um único valor)
-
+    used_seek = 0;
+    
     # Verificar se há uma sessão válida
     if not session:
         self_.send_error(403, "")
@@ -182,13 +183,15 @@ def WATCHTIME(context, self_):
         end = float(endList[index])
         duration = end - start
         id_ = int((start/len_)*100)
-
         # Incluir os dados formatados na lista de dados
         data.append((video_id, start, end, id_))
-
+    u = 0
     # Executar as consultas SQL para cada conjunto de dados de watchtime
     for entry in data:
         video_id, start, end, time_id = entry
+        if len(startList) > 1 and u > 0:
+          used_seek = 1
+        u += 1
 
         # Verificar se já existe um registro de watchtime com timeId = 5 para o vídeo específico
         sql_query = """
@@ -205,7 +208,7 @@ BEGIN
     -- Se existe, incrementar o contador 'used'
     IF found THEN
         UPDATE watchtime
-        SET used = used + 1
+        SET used = used + 1, used_seek = used_seek + %s
         WHERE id = watchtime_id;
     ELSE
         -- Se não existe, inserir um novo registro de watchtime
@@ -215,7 +218,7 @@ BEGIN
 END $$;
 
         """
-        SQL(sql_query, (video_id, time_id, video_id, start, end, time_id))
+        SQL(sql_query, (video_id, time_id, used_seek, video_id, start, end, time_id))
 
     return b"OK"
 

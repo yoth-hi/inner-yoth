@@ -80,6 +80,7 @@ class ProgressItem extends Dom {
     this._listen("mouseout", this._out)
     this._listen("touchstart", this._over)
     this._listen("touchend", this._out)
+    this._listen("click", this._out)
     this._onHover()
   }
   _over(){
@@ -104,7 +105,7 @@ class ProgressItem extends Dom {
     else this.element.classList.remove("hover")
     var list = [] 
     for(let t = 0;t<50;t++){
-      list.push(20 )
+      list.push(20)
     }
     
     list = [...list]

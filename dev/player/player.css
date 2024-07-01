@@ -218,6 +218,7 @@
     width: 100%;
     height: 100%;
     z-index: 31;
+    touch-action: manipulation;
     outline: none;
 }.app-progress-bar-container {
     display: block;
@@ -240,10 +241,12 @@
   position: absolute;
   left: 0;
   bottom: 0;
+  right: 0;
   transform-origin: bottom;
   transform: scaleY(0);
   transition: transform .16s;
   z-index: -1;
+  pointer-events: none;
 }
 .html5-video-player .hover .app-avg{
   transform: scaleY(1);
