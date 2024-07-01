@@ -20,11 +20,11 @@ const to = "/results"
 class App {
   constructor() {}
   attached() {
-    const input = this.$$("input")
+    const input = document.querySelector("app-masthead input")
     if (input) {
       this.searchInput = input
-      this.inicializeInput()
     }
+    this.inicializeInput()
   }
   static get properties() {
     return {
