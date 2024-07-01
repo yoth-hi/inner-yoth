@@ -183,3 +183,68 @@
     border-radius: 8px;
     background: #000e;
 }
+.app-swatch-background-color {
+  background: red;
+}.app-progress-linear-live-buffer, .app-ad-progress, .app-load-progress, .app-play-progress, .app-hover-progress, .app-1m-progress, .app-15m-progress, .app-30m-progress, .app-60m-progress, .app-timed-markers-container, .app-clip-start-exclude, .app-clip-end-exclude {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+}.app-progress-list {
+    z-index: 39;
+    background: rgba(255,255,255,.2);
+    height: 100%;
+    -webkit-transform: scaleY(.6);
+    -ms-transform: scaleY(.6);
+    transform: scaleY(.6);
+    -webkit-transition: -webkit-transform .1s cubic-bezier(.4,0,1,1);
+    transition: transform .1s cubic-bezier(.4,0,1,1),-webkit-transform .1s cubic-bezier(.4,0,1,1);
+    position: relative;
+}.app-chapters-container, .app-chapter-hover-container {
+    z-index: 32;
+    position: absolute;
+    left: 0;
+    height: 100%;
+}.app-chapter-hover-container {
+    float: left;
+}.app-progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 31;
+    outline: none;
+}.app-progress-bar-container {
+    display: block;
+    position: absolute;
+    width: 100%;
+    bottom: 47px;
+    height: 5px;
+}.app-progress-bar-container {
+    cursor: pointer;
+}.app-touch-mode .app-progress-bar-padding {
+    height: 40px;
+    bottom: -11px;
+}.app-avg path{
+  transition: d .16s;
+}
+.app-avg{
+  fill: rgba(255,255,255,.4)!important;
+  height: 60px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform-origin: bottom;
+  transform: scaleY(0);
+  transition: transform .16s;
+  z-index: -1;
+}
+.html5-video-player .hover .app-avg{
+  transform: scaleY(1);
+}

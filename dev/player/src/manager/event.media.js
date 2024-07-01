@@ -294,6 +294,8 @@ export default class {
                 const isIn0Time =
                     this._mediaElement && !this._mediaElement._getCurrentTime();
                 JG(this);
+                const h = this._mediaElement._getCurrentTime()
+                this._api._dispatch("timeupdate", [h,h/this._mediaElement._getDuration()])
                 WatchTime(this)
                 if(!this._isSeeking()){
                   $START_SEEK = this._mediaElement._getCurrentTime()

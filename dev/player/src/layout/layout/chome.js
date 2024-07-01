@@ -1,6 +1,7 @@
 import { Dom, Element, appendChildInTemplate } from "../../utils/Dom.js";
 import { Title } from "./top/title.js";
 import PlayButton from "./Bottom/buttons/play.js"
+import ProgButton from "./Bottom/progress.js"
 import FullScreenButton from "./Bottom/buttons/fullscreen.js"
 import Disposable, { CreateDisposeCallback } from "../../utils/Disposable.js";
 /*class Chrome extends Dom {
@@ -87,6 +88,7 @@ class IY extends Disposable {
         this._chrome = chrome;
         this._api = chrome._api;
 
+        this._progressBar = new ProgButton(this)
         this._chromeBottom = new Dom({
             _tag: "div",
             _className: "app-chrome-bottom",
@@ -99,8 +101,10 @@ class IY extends Disposable {
         });
 
         CreateDisposeCallback(this, this._chromeBottom);
+        CreateDisposeCallback(this, this._progressBar);
         appendChildInTemplate(this._chrome._api, this._chromeBottom.element, 2);
         this._chromeControls = this._chromeBottom.element.children[0];
+        this._chromeBottom.element.insertBefore(this._progressBar.element, this._chromeControls)
         
         const left = new Element({ _tag:"div", _className:"app-left-controls" })
         CreateDisposeCallback(this, left);
@@ -138,14 +142,40 @@ class IY extends Disposable {
         this._fullscreanButtom = new FullScreenButton(this._api)
         CreateDisposeCallback(this, this._fullscreanButtom);
         this._fullscreanButtom._appendTo(right.element)
+        this._data = /*[
+          { scale:.25 },
+          { scale:.25 },
+          { scale:.5 },
+        ]*/
         
         this._api.addEventListener("playeresize", (a)=>this._resize(a))
+        this._resize([{}])
+        this._updateTimeLime(this._data)
+        this._api.addEventListener("timeupdate",(a)=>this._onUpdateCurrentTime(a))
     }
-    _resize([w]){
+    _updateTimeLime(data){
+        this._progressBar._setData(data)
+        this._resize()
+    }
+    _onUpdateCurrentTime(a){
+      this._progressBar._onUpdateCurrentTime(a)
+    }
+    _resize([w]=[{}]){
       console.log(w)
       const ws = w.contentRect?.width ??  this._api._getRootNode().offsetWidth;
       const margin = ws > 1080 ? 20 : 15;
-      this._chromeBottom.element.style.width = `${ws-margin * 2}px`
+      let r;
+      this._chromeBottom.element.style.width = `${r = ws-margin * 2}px`
       this._chromeBottom.element.style.left = `${margin}px`
+      let index = 0;
+      let u = 2;
+      let size = 0;
+      this._progressBar._inst.forEach(element=>{
+        const data = this._data?.[index++];
+        let y = (data?.scale||1)*r
+        element.element.style.width = `${y - u}px`
+        element.element.style.left = `${size}px`
+        size += y + u*2
+      })
     }
 }

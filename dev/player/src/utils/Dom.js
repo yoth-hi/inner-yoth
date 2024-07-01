@@ -72,7 +72,7 @@ export class Element extends Disposable {
         { _tag, _childs, _ref,_props,_attrs, _className, _classList, _content },
         isSvg
     ) {
-        isSvg ??= _tag === "svg";
+        isSvg || (isSvg = _tag === "svg")
         let element;
         if (isSvg) {
             element = document.createElementNS(
@@ -88,10 +88,12 @@ export class Element extends Disposable {
                 this._elements[_className] = element;
             }
         } else if (_classList) {
+          let t = []
             for (let i = 0; i < _classList.length; i++) {
                 const _className = _classList[i];
                 if (registerDymamicValue(this, element, "class", _className)) {
-                    setPreValue(this, element, "class", _className);
+                    t.push(_className)
+                    setPreValue(this, element, "class", t.join(" "));
                     this._elements[_className] = element;
                 }
             }
