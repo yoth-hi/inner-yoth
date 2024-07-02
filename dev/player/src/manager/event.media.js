@@ -1,5 +1,6 @@
 import { EventTargt } from "../utils/EventTargetCustom.js";
 import Streaming from "../streaming/index.js";
+import Promise from "../utils/Promise.js";
 import WatchTime, { timing } from "./WatchTime.js"
 export const VIDEO = "sv";
 export const AUDIO = "av";
@@ -276,7 +277,6 @@ export default class {
         }
     }
     _on(a) {
-      let $START_SEEK = 0;
       const d = this._mediaElement
         switch (a.type) {
             case "loadstart":
@@ -298,26 +298,36 @@ export default class {
                 this._api._dispatch("timeupdate", [h,h/this._mediaElement._getDuration()])
                 WatchTime(this)
                 if(!this._isSeeking()){
-                  $START_SEEK = this._mediaElement._getCurrentTime()
+                  this._START_SEEK = this._mediaElement._getCurrentTime()
                 }
                 break;
             case "pause":
                 this._onChangePresentingPlayerStateChange(1)
               var f=d._getCurrentTime();
-              (this._store$018["ed"] ??= []).push(f)
                 break;
             case "play":
               var f=d._getCurrentTime();
-              (this._store$018["st"] ??= []).push(f)
-                this._onChangePresentingPlayerStateChange(2)
+              this._onChangePresentingPlayerStateChange(2)
                 break;
             case "resize":
                 this._api._resize()
                 break;
             case "seeking":
-              var f=d._getCurrentTime();
+                var f=d._getCurrentTime();
+                var j=this._START_SEEK
+                if(!this._proms){
+                  this._proms = new Promise;
+                  this._proms.then((a)=>{
+                    let st = Math.min(f,j)
+                    let ed = Math.max(j,f);
+                    (this._store$018["ed"] ??= []).push(ed);
+                    (this._store$018["st"] ??= []).push(st)
+                    this._proms = void 0
+                  })
+                }
                 break;
             case "seeked":
+                this._proms?.resolve(this._mediaElement._getCurrentTime())
                 break;
         }
     }

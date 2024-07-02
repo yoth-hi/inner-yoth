@@ -1,6 +1,10 @@
 import json
 from urllib.parse import parse_qs
-from .database import SQL
+from .database import SQL, createConn
+
+from .api.watchtime import WATCHTIME
+
+
 
 ## host
 def renderContextPage(parsed_path, self_):
@@ -155,72 +159,16 @@ def getVideoPlayerData():
         return None
 
 
+def NEXT(context, self_):
+  return {
+    "data":b"{ ?? }"
+  }
 def Y(arr):
   if(arr):
     return arr[0].split(",")
 ## API
-def NEXT(context, self_):
-  return b"{ ?? }"
-def WATCHTIME(context, self_):
-    # Parse dos parâmetros da consulta HTTP
-    q = parse_qs(context["parsed_path"].query)
-    video_id = q.get('vid', [])[0]
-    startList = Y(q.get('st', []))
-    endList = Y(q.get('ed', []))
-    len_ = float(q.get('len', [])[0])
-    session = q.get('sid', [0])[0]  # Obter a sessão (assume que é um único valor)
-    used_seek = 0;
-    
-    # Verificar se há uma sessão válida
-    if not session:
-        self_.send_error(403, "")
-        return b""
 
-    # Preparar os dados para inserção/atualização no banco de dados
-    data = []
-    for index in range(len(startList)):
-        start = float(startList[index])
-        end = float(endList[index])
-        duration = end - start
-        id_ = int((start/len_)*100)
-        # Incluir os dados formatados na lista de dados
-        data.append((video_id, start, end, id_))
-    u = 0
-    # Executar as consultas SQL para cada conjunto de dados de watchtime
-    for entry in data:
-        video_id, start, end, time_id = entry
-        if len(startList) > 1 and u > 0:
-          used_seek = 1
-        u += 1
 
-        # Verificar se já existe um registro de watchtime com timeId = 5 para o vídeo específico
-        sql_query = """
-        DO $$
-DECLARE
-    watchtime_id INT;
-BEGIN
-    -- Verificar se existe um registro de watchtime com timeId = 5 para o vídeo específico
-    SELECT id INTO watchtime_id FROM watchtime
-    WHERE video_id = %s
-    AND time_id = %s
-    LIMIT 1;
-
-    -- Se existe, incrementar o contador 'used'
-    IF found THEN
-        UPDATE watchtime
-        SET used = used + 1, used_seek = used_seek + %s
-        WHERE id = watchtime_id;
-    ELSE
-        -- Se não existe, inserir um novo registro de watchtime
-        INSERT INTO watchtime (video_id, time_start, time_end, time_id)
-        VALUES (%s, %s, %s, %s);
-    END IF;
-END $$;
-
-        """
-        SQL(sql_query, (video_id, time_id, used_seek, video_id, start, end, time_id))
-
-    return b"OK"
 
 ## API MANAGER
 APIS = {
@@ -239,9 +187,12 @@ def RenderApi(path, self_, parsed_path):
   context["path"] = path
   context["parsed_path"] = parsed_path
   call = APIS[path[1:]]
+  data = call(context, self_, createConn)
+  if(data.get("status")):
+    status = data.get("status")
   self_.send_response(status)
   self_.send_header('Content-type', 'text/plain')
   self_.end_headers()
-  data = call(context, self_)
-  self_.wfile.write(data)
+  if(data.get("data")):
+    self_.wfile.write(data.get("data"))
   return 

@@ -21,17 +21,19 @@ user = url.username
 password = url.password
 host = url.hostname
 port = url.port
+def createConn():
+  return psycopg2.connect(
+    dbname=dbname,
+    user=user,
+    password=password,
+    host=host,
+    port=port
+  )
 
 def SQL(sqlCode, arguments=None):
     try:
+        conn = createConn()
         # Conectando ao banco de dados
-        conn = psycopg2.connect(
-            dbname=dbname,
-            user=user,
-            password=password,
-            host=host,
-            port=port
-        )
 
         # Criando um cursor para executar comandos SQL
         cursor = conn.cursor()
