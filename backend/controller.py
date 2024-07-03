@@ -97,7 +97,7 @@ def LogoType():
   logo = "YOTH_LOGO";
   Event_ = getPageEventOrTheme()
   isEvent = not not Event_;
-  img = None
+  img = None;
   if isEvent:
     logo = Event_.get("type");
     img = Event_.get("img");
@@ -145,7 +145,7 @@ def MainConstructor_playerOverlays(playerData):
 ## get - data player -
 def getVideoPlayerData():
     try:
-      resp = None#SQL(f"""SELECT title FROM video LIMIT 1;""")
+      resp = [["@"]]#SQL(f"""SELECT title FROM video LIMIT 1;""")
       if resp:
         data = resp[0]
         return {
@@ -183,6 +183,7 @@ def RenderApi(path, self_, parsed_path):
     return False
   context = {}
   status = 200
+  contentType = "text/plain"
   path = path[3:]
   context["path"] = path
   context["parsed_path"] = parsed_path
@@ -191,7 +192,7 @@ def RenderApi(path, self_, parsed_path):
   if(data.get("status")):
     status = data.get("status")
   self_.send_response(status)
-  self_.send_header('Content-type', 'text/plain')
+  self_.send_header('Content-type', contentType)
   self_.end_headers()
   if(data.get("data")):
     self_.wfile.write(data.get("data"))

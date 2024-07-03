@@ -1,5 +1,8 @@
 {
-  "en":{
-    
+  "en": {
+    "viewers": "$VIEWRS viewers",
+    "viewers_thousands": "$VIEWRSK viewers",
+    "viewers_millions": "$VIEWRSM viewers",
+    "viewers_billions": "$VIEWRSB viewers"
   }
 }
