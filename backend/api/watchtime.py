@@ -36,7 +36,7 @@ def WATCHTIME(context, self_, createConn):
         sql_query = """
         DO $$
         DECLARE
-            watchtime_id INT;
+            watchtime_id UUID;
         BEGIN
             UPDATE watchtime
             SET used = used + 1, used_seek = used_seek + %s

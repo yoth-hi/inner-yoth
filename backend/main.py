@@ -10,7 +10,7 @@ import random
 from .controller import renderContextPage, isPageHtml, isPageApi, RenderApi
 
 # Configuração global
-compression_quality = random.randint(1, 4) # Usar um nível de compressão fixo para consistência
+compression_quality = random.randint(0, 4) # Usar um nível de compressão fixo para consistência
 current_directory = os.getcwd()
 template_env = Environment(loader=FileSystemLoader(join(current_directory, 'frontend', 'desktop')))
 cached_templates = {}
@@ -82,7 +82,6 @@ class handler(BaseHTTPRequestHandler):
                 path = "desktop/"+ path[14:]
                 in_ = "dev";
             file_path = join(current_directory, in_, path)
-            print(file_path)
             if exists(file_path) and isfile(file_path):
                 self.send_response(200)
                 self.send_header('Content-type', self.get_content_type(path))
