@@ -36,7 +36,7 @@ def WATCHTIME(context, self_, createConn):
         sql_query = """
         DO $$
         DECLARE
-            watchtime_id VARCHER;
+            watchtime_id INT;
         BEGIN
             UPDATE watchtime
             SET used = used + 1, used_seek = used_seek + %s
@@ -92,7 +92,9 @@ def WATCHTIME(context, self_, createConn):
         conn.rollback()
         # Handle the error, e.g., log it or send an appropriate HTTP response
         self_.send_error(500, str(e))
-        return {}
+        return {
+          
+        }
     finally:
         conn.close()
 
