@@ -63,6 +63,12 @@ export class Media extends ManagerMedia {
         } catch (b) {}
         return a || rL([], []);
     }
+    _getPlayed() {
+        try {
+            var a = this._element.played;
+        } catch (b) {}
+        return a || rL([], []);
+    }
     _play() {
         return this._element.play()?.catch(() => {});
     }
@@ -74,6 +80,9 @@ export class Media extends ManagerMedia {
     }
     _isSeeking(){
       return this._element.seeking
+    }
+    _readyState(){
+      return this._element.readyState
     }
 }
 const rL = function (a, b) {

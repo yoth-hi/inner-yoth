@@ -15,6 +15,7 @@ export default class extends Dom {
         this._api = api;
         this._listen("click", this._onClick);
         this._on(this._api, "presentingplayerstatechange", this._onChengeState);
+        this._onChengeState({ state: 1 }) 
     }
     _onClick() {
         if (this._api._isPaused()) {

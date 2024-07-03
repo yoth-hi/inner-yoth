@@ -59,13 +59,7 @@ const JG = function (sc) {
     }
     return j;
 };
-const Nab = function (sc) {
-    clearInterval(sc._tid);
-    JG(sc) ||
-        (sc._tid = setInterval(function () {
-            return JG(sc);
-        }, 100));
-};
+
 const addEventsMedia = function (scope) {
     const events =
         "loadstart loadedmetadata play playing progress pause ended suspend seeking seeked timeupdate durationchange ratechange error waiting resize".split(
@@ -193,6 +187,28 @@ const init = function (mediaElement, mediaSourceClassObjectController, scope) {
         }
     }
 };
+function needsData(videoElement) {
+    // Verifica se o vídeo está pronto para rodar
+    if (videoElement._readyState() < 2) {
+        console.log('O vídeo ainda não está pronto.');
+        return;
+    }
+
+    const currentTime = videoElement._getCurrentTime();
+    const futureTime = currentTime + 5;
+
+    // Verifica se há dados disponíveis na posição de tempo futura
+    const buffered = videoElement._getBuffered();
+    for (let i = 0; i < buffered.length; i++) {
+        if (buffered.start(i) <= futureTime && buffered.end(i) >= futureTime) {
+            console.log('Dados disponíveis até', buffered.end(i), 'segundos.');
+            return false; // Dados estão disponíveis
+        }
+    }
+
+    console.log('Faltam dados para o tempo futuro:', futureTime, 'segundos.');
+    return true; // Dados estão faltando
+}
 export default class {
     _loop = false;
     _playbackRate = 1;
@@ -200,10 +216,22 @@ export default class {
     _startLavelId = 5;
     _requestNumber = 0;
     _store$018 = {};
+    _videoData = {};
     _joinBuff = [];
+    _controller = new KF(this)
     _timeded = new timing(this)
+    _rc = {}
     constructor(api) {
+      this._controller._callback = this._on276.bind(this)
       this._api=api
+    }
+    _on276(){
+      if(true/**/){
+        if(needsData(this._mediaElement)){
+          const { videoTrack } = this._getCurrentDataPlayer();
+          Streaming(this, videoTrack)
+        }
+      }
     }
     _getSessionId(){
       return this._api._ID
@@ -212,10 +240,13 @@ export default class {
         if (mediaElement) {
             this._mediaElement = mediaElement;
             addEventsMedia(this);
+            this._mediaElement._play()
             this._mediaElement._controller = this;
             this._mediaElement._setPlaybackRate(this._playbackRate);
             mediaElement._start();
             this._setCallback(mediaElement);
+            this._mediaElement._setSrc(this._getCurrentDataPlayer().videoTrack.url)
+            this._mediaElement._setMuted(true)
         }
     }
     _setCallback(mediaElement) {
@@ -227,33 +258,45 @@ export default class {
             ? onOpen(mediaSourceClassObjectController)
             : setCallback(mediaSourceClassObjectController, onOpen);
     }
+    _createDataBuff(){
+      const dataVideo ={
+    "itag": 399,
+    "url": "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+               "mimeType": "video/mp4; codecs=\"av01.0.09M.08\"",
+    "bitrate": 4329129,
+    "width": 1920,
+    "height": 1080,
+    "initRange": {
+        "start": "0",
+        "end": "699"
+    },
+    "indexRange": {
+        "start": "700",
+        "end": "3863"
+    },
+    "lastModified": "1716974939608731",
+    "contentLength": "187605009",
+    "quality": "hd1080",
+    "fps": 60,
+    "qualityLabel": "1080p60",
+    "projectionType": "RECTANGULAR",
+    "averageBitrate": 1163151,
+    "colorInfo": {
+        "primaries": "COLOR_PRIMARIES_BT709",
+        "transferCharacteristics": "COLOR_TRANSFER_CHARACTERISTICS_BT709",
+        "matrixCoefficients": "COLOR_MATRIX_COEFFICIENTS_BT709"
+    },
+    "approxDurationMs": "1290322"
+}
+      this._videoData.videoTrack ??= new CreateTack(this,dataVideo);
+      
+      return this._videoData
+    }
     _getCurrentDataPlayer() {
-        return {
-            videoTrack: {
-                itag: 251,
-                url: "http://localhost:3000/?",
-                mimeType: 'audio/webm; codecs="opus"',
-                bitrate: 165862,
-                initRange: {
-                    start: "0",
-                    end: "269"
-                },
-                indexRange: {
-                    start: "270",
-                    end: "31392"
-                },
-                lastModified: "1718424813100834",
-                contentLength: "250991283",
-                quality: "tiny",
-                projectionType: "RECTANGULAR",
-                averageBitrate: 115951,
-                audioQuality: "AUDIO_QUALITY_MEDIUM",
-                approxDurationMs: "17317021",
-                audioSampleRate: "48000",
-                audioChannels: 2,
-                loudnessDb: -2.1700001
-            }
-        };
+      const { videoTrack } = this._createDataBuff()
+      return {
+          videoTrack
+      };
     }
     _load() {
         const mediaSourceClassObjectController =
@@ -279,27 +322,30 @@ export default class {
     _on(a) {
       const d = this._mediaElement
         switch (a.type) {
+            case "progress":
+            case "suspend":
+              this._onCheckNeedBuffer();
+            break;
             case "loadstart":
-                Nab(this);
                 WatchTime(this)
                 break;
             case "loadedmetadata":
-                Nab(this);
                 WatchTime(this)
                 break;
             case "durationchange":
-                JG(this);
+                //JG(this);
                 break;
             case "timeupdate":
                 const isIn0Time =
                     this._mediaElement && !this._mediaElement._getCurrentTime();
-                JG(this);
+                //JG(this);
                 const h = this._mediaElement._getCurrentTime()
                 this._api._dispatch("timeupdate", [h,h/this._mediaElement._getDuration()])
                 WatchTime(this)
                 if(!this._isSeeking()){
                   this._START_SEEK = this._mediaElement._getCurrentTime()
                 }
+                this._onCheckNeedBuffer();
                 break;
             case "pause":
                 this._onChangePresentingPlayerStateChange(1)
@@ -340,6 +386,25 @@ export default class {
     _isSeeking(){
       return this._mediaElement._isSeeking()
     }
+    _onCheckNeedBuffer(){
+      if(this._mediaElement){
+        const currentTime = this._mediaElement._getCurrentTime();
+        this._mediaTime = currentTime
+        
+        UE(this, currentTime)
+        currentTime > 5 && (this._rc._currentTime = currentTime);
+        let t;
+        const fx = () => {
+          if(this._mediaElement&&!t){
+            t = true;
+          }
+        }
+        this._mediaElement._getPlayed().length===0?setTimeout(fx,100):setTimeout(fx,500)
+      }
+    }
+    _getCurrentTime(){
+      return 0 
+    }
 }
 const add = function (scope, buffer, t) {
     scope._joinBuff.push(...buffer);
@@ -358,3 +423,53 @@ const Hfu = function (scope, buffer, t) {
             return add(scope, buffer, t);
         }));
 };
+
+function UE(a,currentTime){
+  currentTime -= isNaN(a.timestampOffset) ? 0 : a.timestampOffset;
+  YF(a._controller)
+}
+function YF(a){
+  a._isActive() || a._start()
+}
+class KF{
+  _timeoutId = 0;
+  _time = 1000;
+  _call = this._on.bind(this);
+  _callback = void 0;
+  _isActive(){
+    return this._timeoutId != 0
+  }
+  _start(){
+    this._stop()
+    this._timeoutId = setTimeout(this._call,this._time)
+  }
+  _stop(){
+    clearTimeout(this._timeoutId)
+    this._timeoutId = 0;
+  }
+  _on(){
+    this._timeoutId = 0;
+    this._callback?.()
+  }
+}
+
+class CreateTack{
+  _mbps = 1;
+  _bitrate = 0;
+  constructor(scope, data){
+    this._data = data;
+    this.url = data?.url;
+    if(data){
+      this._bitrate = (data.bitrate ?? 0);
+    }
+    scope._api.addEventListener("videodatachange", this._onChengeData);
+  }
+  _getBitrate(){
+    return this._bitrate
+  }
+  _onChengeData(){
+    const data = this._api._getVideoData();
+    const config = this._api._getPlayerConfig();
+    debugger
+  }
+}

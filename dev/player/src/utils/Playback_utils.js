@@ -7,9 +7,7 @@ export function StartPrepareInitialPlayback(app){
 export function StartInitializeApplicationPlayback(app){
   CreateMediaElement(app)
   app._controller._setMediaElement(app._mediaElement)
-  app._mediaElement._setSrc("https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4")
- app._mediaElement._setMuted(true)
-  // app._mediaElement._play()
+
 }
 export function CreateMediaElement(app){
   app._mediaElement = app._playerContextConfig._deviceIsAudioOnly ? new Media(createElement("Audio")) : listPre.pop() || new Media(createElement("Video"))
