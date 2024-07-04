@@ -1,5 +1,7 @@
 import os
 import psycopg2
+from functools import lru_cache
+
 import urllib.parse as urlparse
 
 def get_database_url():
@@ -30,8 +32,10 @@ def createConn():
     port=port
   )
 
-def SQL(sqlCode, arguments=None):
+def SQL(sqlCode, arguments=None, isReturn=0):
     try:
+        records = None
+        print(arguments)
         conn = createConn()
         # Conectando ao banco de dados
 
@@ -42,13 +46,20 @@ def SQL(sqlCode, arguments=None):
         cursor.execute(sqlCode, arguments)
 
         # Obtendo os resultados se for uma consulta SELECT
-        if sqlCode.strip().upper().startswith('SELECT'):
+        if isReturn == 0:
             records = cursor.fetchall()
-        else:
+        elif isReturn == 1:
             # Confirmando a transação se não for uma consulta SELECT
             conn.commit()
             records = None
-
+        else:
+            records = []
+            for i in range(isReturn):
+              records.append(cursor.fetchone())
+              print(records)
+              if isReturn > i:
+                cursor.nextset()
+            conn.commit()
         # Fechando o cursor e a conexão
         cursor.close()
         conn.close()
@@ -58,4 +69,7 @@ def SQL(sqlCode, arguments=None):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+@lru_cache(maxsize=128)
+def SQLC(sqlCode, arguments=None, isReturn=0):
+  return SQL(sqlCode, arguments, isReturn)
 

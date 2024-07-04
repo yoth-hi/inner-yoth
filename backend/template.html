@@ -8,6 +8,11 @@
         <script src="{{static_app}}app.js"
           {% if isMobule %}type="module"{% endif %}
         charset=utf-8></script>
+        <meta name="description" content="{{description}}">
+        <meta property="og:title" content="{{title}}">
+        <meta property="og:description" content="{{title}}">
+        <meta property="og:image" content="">
+        <meta property="og:url" content="">
         
         {% if isdev or istv or isMobile %}<link href="{{static_app}}styles.css" rel=stylesheet>{% endif %}
         <script src="/s/player/jsbin/en/main.js"></script>
@@ -99,7 +104,7 @@
       {% endif %}
           {% if isdev %}
         <script>
-          document.querySelector("video").src = "https://rr2---sn-4g5e6nzz.googlevideo.com/videoplayback?expire=1719828619&ei=KyyCZsuMLq206dsPosewmAU&ip=142.132.137.4&id=o-AOSCRUsV15h-Z2JNCsHG62dh4zK6zuPHUf_A3uNsA4k1&itag=18&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=ut&mm=31%2C26&mn=sn-4g5e6nzz%2Csn-f5f7lnld&ms=au%2Conr&mv=m&mvi=2&pl=22&initcwndbps=805000&vprv=1&svpuc=1&mime=video%2Fmp4&rqh=1&cnr=14&ratebypass=yes&dur=2290.416&lmt=1699731716976128&mt=1719806468&fvip=4&c=ANDROID_TESTSUITE&txp=5538434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRAIgLOaVF1RzYlscxbGKZgiihFXEsxJ3eW9bBzmXwPKsQWsCIGZ-41GpefxB9BQZ3vFMk05xL0R9OLtUiSEZR9R3jmp0&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AHlkHjAwRgIhAIBI8pbf_u2vmYWo_3UaXwVC-gryhJlp1TS6gX5UtTF1AiEA_Ws2iAG28gzI4rlxLYM9QzliR1tXn4esxkj_LkhnUHE%3D&title=%5B%F0%9D%97%A1%F0%9D%97%B2%F0%9D%98%84%F0%9D%97%9D%F0%9D%97%B2%F0%9D%97%AE%F0%9D%97%BB%F0%9D%98%80%20%F0%9D%97%A3%F0%9D%97%B9%F0%9D%97%AE%F0%9D%98%86%F0%9D%97%B9%F0%9D%97%B6%F0%9D%98%80%F0%9D%98%81%5D%20%EB%89%B4%EC%A7%84%EC%8A%A4%20%EB%85%B8%EB%9E%98%20%EB%AA%A8%EC%9D%8C%F0%9F%90%B0%20(%EC%A0%84%EA%B3%A1%20%7C%20All%20Songs)%20%23Playlist%20%23NewJeans%20%23KPop"
+       //   document.querySelector("video").src = "https://rr2---sn-4g5e6nzz.googlevideo.com/videoplayback?expire=1719828619&ei=KyyCZsuMLq206dsPosewmAU&ip=142.132.137.4&id=o-AOSCRUsV15h-Z2JNCsHG62dh4zK6zuPHUf_A3uNsA4k1&itag=18&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=ut&mm=31%2C26&mn=sn-4g5e6nzz%2Csn-f5f7lnld&ms=au%2Conr&mv=m&mvi=2&pl=22&initcwndbps=805000&vprv=1&svpuc=1&mime=video%2Fmp4&rqh=1&cnr=14&ratebypass=yes&dur=2290.416&lmt=1699731716976128&mt=1719806468&fvip=4&c=ANDROID_TESTSUITE&txp=5538434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRAIgLOaVF1RzYlscxbGKZgiihFXEsxJ3eW9bBzmXwPKsQWsCIGZ-41GpefxB9BQZ3vFMk05xL0R9OLtUiSEZR9R3jmp0&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AHlkHjAwRgIhAIBI8pbf_u2vmYWo_3UaXwVC-gryhJlp1TS6gX5UtTF1AiEA_Ws2iAG28gzI4rlxLYM9QzliR1tXn4esxkj_LkhnUHE%3D&title=%5B%F0%9D%97%A1%F0%9D%97%B2%F0%9D%98%84%F0%9D%97%9D%F0%9D%97%B2%F0%9D%97%AE%F0%9D%97%BB%F0%9D%98%80%20%F0%9D%97%A3%F0%9D%97%B9%F0%9D%97%AE%F0%9D%98%86%F0%9D%97%B9%F0%9D%97%B6%F0%9D%98%80%F0%9D%98%81%5D%20%EB%89%B4%EC%A7%84%EC%8A%A4%20%EB%85%B8%EB%9E%98%20%EB%AA%A8%EC%9D%8C%F0%9F%90%B0%20(%EC%A0%84%EA%B3%A1%20%7C%20All%20Songs)%20%23Playlist%20%23NewJeans%20%23KPop"
         </script>
           {% endif %}
       {% if data %}<script>var data={{data}};</script>{% endif %}

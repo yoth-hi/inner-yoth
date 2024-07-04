@@ -1,8 +1,8 @@
 import"./layout/index.js"
+import"./pages/index.js"
 import { Register, html } from "./components/DOM.js"
 import{isDark}from"./utils/thame.js"
 import{getController}from"./utils/cookie_simple.js"
-
 const _template = html`
 <div>
   <div id="header-contenter">
@@ -10,7 +10,7 @@ const _template = html`
   </div>
   <div>
     <app-mini-drower></app-mini-drower>
-    <page-manager id="page-manager">duhdhd</page-manager>
+    <page-manager id="page-manager"></page-manager>
   </div>
 </div>
 `

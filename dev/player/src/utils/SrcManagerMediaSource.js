@@ -25,12 +25,16 @@ export const SrcManagerMediaSource = class {
             this
         );
         this._eventsSourceBuffer = {
-            updateend: this._updateend
+            updateend: this._updateend.bind(this)
         };
     }
-    _updateend() {
-        
-        
+    
+    _updateend(a,b) {
+      switch (a) {
+        case "updateend":
+          
+          break;
+      }
     }
     _close() {}
     _open() {

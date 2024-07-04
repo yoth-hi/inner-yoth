@@ -1,6 +1,6 @@
 import json
 from urllib.parse import parse_qs
-from .database import SQL, createConn
+from .database import SQL, createConn, SQLC
 
 from .api.watchtime import WATCHTIME
 
@@ -10,6 +10,7 @@ from .api.watchtime import WATCHTIME
 def renderContextPage(parsed_path, self_):
   lang = "en"
   title = "Yoth"
+  description = ""
   host = self_.headers.get('Host')
   print(self_.headers)
   data = None
@@ -37,7 +38,8 @@ def renderContextPage(parsed_path, self_):
       if(playerData):
         data["playerOverlays"] = MainConstructor_playerOverlays(playerData)
         title += " - "
-        title += playerData.get("title")
+        title = playerData.get("title")
+        description = playerData.get("description")
       data["content"] = MainConstructor_contentPage()
     if isMobile:
       data["header"] = HeaderMobileWeb()
@@ -45,6 +47,7 @@ def renderContextPage(parsed_path, self_):
     elif notificationCount != 0:
       title += " (" + notificationCount + ")"
   context["title"] = title
+  context["description"] = title
   context["isMobile"] = isMobile
   
   context["static_app"] = "/s/desktop/";
@@ -144,12 +147,24 @@ def MainConstructor_playerOverlays(playerData):
   }
 ## get - data player -
 def getVideoPlayerData():
+    id_ = "test"
     try:
-      resp = [["@"]]#SQL(f"""SELECT title FROM video LIMIT 1;""")
+      resp = SQLC(f"""SELECT
+    v.title,
+    v.description,
+    v.id,
+    (SELECT COUNT(*) FROM viewers WHERE video_id = v.id) AS viewer_count
+FROM
+    video v
+WHERE id = %s
+LIMIT 1;
+      """,(id_,),0)
+      print(resp)
       if resp:
         data = resp[0]
         return {
-          "title": data[0]  # Acessar o título (primeiro elemento da tupla)
+          "title": data[0],
+          "description": data[1]
         }
       else:
         print("Nenhum vídeo encontrado.")

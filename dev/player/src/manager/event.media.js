@@ -76,6 +76,7 @@ const addEventsMedia = function (scope) {
 const SourceBufferController = class extends EventTargt {
     _appendWindowStart = 0;
     _timestampOffset = 0;
+    _list = []
     constructor(sourceBuffer, elementMedia, id, containerType, e, f) {
         super();
         this._sourceBuffer = sourceBuffer;
@@ -93,7 +94,7 @@ const SourceBufferController = class extends EventTargt {
     }
     _appendBuffer(buffer, b, c) {
         // this.PC = !1;
-        // c && (this.hE = c);
+        c && (this.hE = c);
         if (buffer.length) {
             this._sourceBuffer?.appendBuffer
                 ? this._sourceBuffer.appendBuffer(buffer)
@@ -221,20 +222,25 @@ export default class {
     _controller = new KF(this)
     _timeded = new timing(this)
     _rc = {}
+    _mediaTimeToLoad = 0;
     constructor(api) {
       this._controller._callback = this._on276.bind(this)
       this._api=api
     }
     _on276(){
       if(true/**/){
-        if(needsData(this._mediaElement)){
+        if(!this.t_||needsData(this._mediaElement)){
           const { videoTrack } = this._getCurrentDataPlayer();
           Streaming(this, videoTrack)
         }
       }
+      this.t_ = true
     }
     _getSessionId(){
       return this._api._ID
+    }
+    _loadedBuffer(arr,t){
+      this._appendBuffer(arr,t)
     }
     _setMediaElement(mediaElement) {
         if (mediaElement) {
@@ -247,6 +253,7 @@ export default class {
             this._setCallback(mediaElement);
             this._mediaElement._setSrc(this._getCurrentDataPlayer().videoTrack.url)
             this._mediaElement._setMuted(true)
+            this._onCheckNeedBuffer();
         }
     }
     _setCallback(mediaElement) {
@@ -262,7 +269,7 @@ export default class {
       const dataVideo ={
     "itag": 399,
     "url": "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-               "mimeType": "video/mp4; codecs=\"av01.0.09M.08\"",
+               "mimeType": 'video/mp4; codecs="avc1.64001f, mp4a.40.2"',
     "bitrate": 4329129,
     "width": 1920,
     "height": 1080,
@@ -306,9 +313,10 @@ export default class {
         loadSource(mediaSourceClassObjectController, video, null, this);
     }
     _appendBuffer(buffer, type) {
-        buffer = "object" === buffer ? buffer : [buffer];
+        buffer = "object" === typeof buffer ? buffer : [buffer];
         let t;
         switch (type) {
+            case "VIDEO":
             case VIDEO:
                 t = this._videoBufferController;
                 break;
@@ -364,6 +372,7 @@ export default class {
                 if(!this._proms){
                   this._proms = new Promise;
                   this._proms.then((a)=>{
+                    this._mediaTimeToLoad = a;
                     let st = Math.min(f,j)
                     let ed = Math.max(j,f);
                     (this._store$018["ed"] ??= []).push(ed);
@@ -405,13 +414,19 @@ export default class {
     _getCurrentTime(){
       return 0 
     }
+    _getMediaTimeToLoad(){
+      return this._mediaTimeToLoad
+    }
 }
 const add = function (scope, buffer, t) {
-    scope._joinBuff.push(...buffer);
+  
+  
     if (t._isUpdating()) {
         return false;
     } else {
-        const h = scope._joinBuff.shift();
+      
+//const h = scope._joinBuff.shift();
+        const h = buffer.shift();
         h && t._appendBuffer(h);
         return true;
     }
@@ -421,7 +436,7 @@ const Hfu = function (scope, buffer, t) {
     add(scope, buffer, t) ||
         (scope.__iiid = setInterval(() => {
             return add(scope, buffer, t);
-        }));
+        }),1);
 };
 
 function UE(a,currentTime){
@@ -456,11 +471,13 @@ class KF{
 class CreateTack{
   _mbps = 1;
   _bitrate = 0;
+  mimeType;
   constructor(scope, data){
     this._data = data;
     this.url = data?.url;
     if(data){
       this._bitrate = (data.bitrate ?? 0);
+      this.mimeType = data.mimeType
     }
     scope._api.addEventListener("videodatachange", this._onChengeData);
   }

@@ -62,7 +62,7 @@ const FETCH = class {
     }
     _start(url) {
       const request = new Request(url);
-      //return fetch(request).then(this._load, this._error)
+      return fetch(request).then(this._load, this._error)
     }
     _onError(a){
       this._errorMensager = a;
@@ -81,9 +81,9 @@ const XHR = class {
 
 const useFetch = true
 export default function(){
-  useFetch ? 
+  /*useFetch ? 
    new FETCH(...arguments):
-    new XHR(...arguments)
+    new XHR(...arguments)*/
 }
 const wa = function(a){
   a._reader.read().then(a._readerChunk, a._error).then(void 0)

@@ -1,6 +1,7 @@
 html {
   --app-background-color: #fff;
   --app-badge-chip-background: rgba(0,0,0,.05);
+  --app-watch-playlist-background: #3739
 }
 body {
   margin: 0;
@@ -178,4 +179,121 @@ app-search input {
   -webkit-flex-basis: 0.000000001px;
   -ms-flex-preferred-size: 0.000000001px;
   flex-basis: 0.000000001px;
+}
+
+
+
+
+
+
+
+
+
+app-watch {
+  width: 100%;
+  display: block;
+  --app-watch-secondary-width: 260px;
+  --app-watch-primary-width: calc(var(--app-watch-secondary-width)*5);
+  --app-watch-margin: 8px;
+}
+app-watch #container > #column {
+  display: flex;
+  padding-top: 8px;
+  padding-right: 16px;
+  padding: 0 16px;
+  margin: 0 auto;
+  max-width: min(2000px,calc(var(--app-watch-primary-width) + var(--app-watch-secondary-width)*1.8 + var(--app-watch-margin)*3));
+}
+app-watch #column > #primaty {
+  max-width: var(--app-watch-primary-width);
+  width: 100%;
+  margin-left: var(--app-watch-margin);
+}
+app-watch #full-player {
+  display: none;
+}
+app-watch[full-player-active] #full-player {
+  height: calc((100vw - var(--app-guide-width))*.5625);
+  background: #000;
+  display: block;
+}
+app-watch #column #player {
+  background: #3999;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+}
+app-watch #column #primaty-information {
+  background: var(--app-watch-playlist-background);
+  padding: 16px 14px;
+  border-radius: 16px;
+  margin: calc(var(--app-watch-margin)*2) 0;
+}
+app-watch #column #primaty-information-v2 {
+  padding: 16px 0;
+  border-radius: 16px;
+  margin: calc(var(--app-watch-margin)) 0;
+}
+app-watch #column > #secondary {
+  margin-right: var(--app-watch-margin);
+  width: 100%;
+  margin-left: var(--app-watch-margin);
+  min-height: 80vh;
+  max-width: calc(var(--app-watch-secondary-width)*1.6);
+}
+app-watch[is-row] #secondary {
+  display: none;
+  max-width: 0px;
+}
+app-watch #column #secondary #secondary-content {
+  margin-right: var(--app-watch-margin);
+  margin-left: var(--app-watch-margin);
+  max-width: calc(var(--app-watch-secondary-width)*1.6);
+}
+app-watch #column  #secondary-content {
+  width: 100%;
+  min-height: 80vh;
+  margin-top: 0px;
+  padding-top: var(--app-watch-margin);
+}
+app-watch #primaty .video-information-title{
+  margin: 0;
+  padding: 0;
+}
+
+
+
+app-card-video-column{
+  display: block;
+  opacity: 0;
+  transition: transform .16s, margin .16s, opacity .16s;
+  pointer-events: none;
+  width: 100%;
+  margin-bottom: 16px;
+  transform: scale(.8);
+  display: flex;
+}
+app-card-video-column[is-show]{
+  transform: scale(1);
+  pointer-events: inherit;
+  opacity: 1;
+}
+app-card-video-column:hover{
+  background: #8881;
+  border-radius: 16px;
+}
+app-card-video-column .details{
+  opacity:0;
+  height: 70px;
+  background: #122;
+}
+app-card-video-column .thumbnail{
+  border-radius: 16px;
+  background: #192;
+  width: 213.33px;
+  height: 120px;
+  overflow: hidden;
+  position: relative;
+}
+app-card-video-column:hover .details{
+  opacity:1;
 }
