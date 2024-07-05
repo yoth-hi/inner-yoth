@@ -1,3 +1,4 @@
+import { set as storeSet } from "./components/config.store.js"
 import"./layout/index.js"
 import"./pages/index.js"
 import { Register, html } from "./components/DOM.js"
@@ -18,7 +19,7 @@ const _template = html`
 
 class App {
   constructor(){
-    
+    storeSet("root",this)
   }
   attached(){
     const hasDarkTyped = window.matchMedia("(prefers-color-scheme: dark)")
@@ -33,6 +34,7 @@ class App {
         type: Object
       },
       pageId: String,
+      isWatchPage: String,
       response:{
         type:Object,
         observer:"onChengeResponce"

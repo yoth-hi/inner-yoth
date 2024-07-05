@@ -4,7 +4,7 @@ import {
 } from "../components/DOM.js"
 const _template = html`<div id="content"></div>`
 import"./watch.js"
-
+import { get as storeGet } from "../components/config.store.js"
 const getPage = function(arr, is){
   let element = arr.get(is)
   let name;
@@ -28,8 +28,11 @@ class App {
   pages = new Map
   constructor() {}
   attached() {
-    //this._content = this.querySelector("#content");
+    //setTimeout(()=>{
+      
     this.renderPage("WATCH")
+    //},1000)
+    //this._content = this.querySelector("#content");
   }
   renderPage(pageId) {
     if (
@@ -37,6 +40,7 @@ class App {
     ) {
       this.setPage(pageId)
     }
+    storeGet("root").isWatchPage = pageId == "WATCH"
   }
   setPage(a){
     this.setActivePage(getPage(this.pages,a))

@@ -7,3 +7,5 @@ import"./mini-drower.js"
 
 import"./card-video-column.js"
 import"./list-card-video-column.js"
+import"./text-number.js"
+import"./player.js"

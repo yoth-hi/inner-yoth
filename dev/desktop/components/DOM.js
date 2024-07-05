@@ -1,7 +1,7 @@
 import {
   ElementMixin
 } from 
-  //"https://unpkg.com/@polymer/polymer@3.5.1/lib/mixins/element-mixin.js?module"
+ // "https://unpkg.com/@polymer/polymer@3.5.1/lib/mixins/element-mixin.js?module"
   "@polymer/polymer/lib/mixins/element-mixin.js"
 
 var Upb = ["disabled", "disable-upgrade"]
@@ -76,7 +76,7 @@ function KG(a, b, c) {
     //debugger
     b[k]&&(a[k] = b[k])
     HH[k] = {
-      configurable: !0, enumerable: !0,
+      configurable: false, enumerable: false,
       get: function() {
         return a[k]
       },

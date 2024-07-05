@@ -1,5 +1,6 @@
 import psycopg2
 from urllib.parse import parse_qs
+from psycopg2.extras import execute_batch
 
 def Y(arr):
     if arr:
@@ -15,7 +16,8 @@ def WATCHTIME(context, self_, createConn):
     len_ = float(q.get('len', [0])[0])
     cmt = float(q.get('cmt', [0])[0])
     session = q.get('sid', [])[0]  # Assuming 'sid' is a single value
-    lest_time = int((cmt/len_)*100)
+    lest_time = int((cmt / len_) * 100)
+    
     # Verify if session is valid
     if not session:
         self_.send_error(403, "")
@@ -34,30 +36,16 @@ def WATCHTIME(context, self_, createConn):
 
         # Construct SQL query for watchtime update or insert
         sql_query = """
-        DO $$
-        DECLARE
-            watchtime_id UUID;
-        BEGIN
-            UPDATE watchtime
-            SET used = used + 1, used_seek = used_seek + %s
-            WHERE video_id = %s
-              AND time_id = %s
-            RETURNING id INTO watchtime_id;
-            
-            IF NOT FOUND THEN
-                INSERT INTO watchtime (video_id, time_start, time_end, time_id)
-                VALUES (%s, %s, %s, %s);
-            END IF;
-        END $$;
+        CALL update_watchtime(%s,%s,%s,%s,%s);
         """
-        sql_queries.append((sql_query, used_seek, video_id, time_id, video_id, start, end, time_id))
+        sql_queries.append((video_id, time_id, used_seek, start, end))
 
         # Set used_seek to 1 if there are multiple entries and it's not the first one
         if len(startList) > 1 and index > 0:
             used_seek = 1
 
     # Construct SQL query for updating/inserting viewers table
-    sql_query = """
+    sql_query_viewers = """
     DO $$
     DECLARE
         sid TEXT;
@@ -78,23 +66,22 @@ def WATCHTIME(context, self_, createConn):
     END $$;
     """
     
-
     # Connect to the database and execute SQL queries
     conn = createConn()
     try:
         with conn.cursor() as cursor:
-            cursor.execute(sql_query, (lest_time, session, video_id, video_id, session, lest_time))
-            for r in sql_queries:
-                sql_query, used_seek, video_id, time_id, video_id, start, end, time_id = r
-                cursor.execute(sql_query, (used_seek, video_id, time_id, video_id, start, end, time_id))
+            # Execute viewers update/insert
+            cursor.execute(sql_query_viewers, (lest_time, session, video_id, video_id, session, lest_time))
+            # Execute batch of watchtime updates/inserts
+            execute_batch(cursor, """
+                CALL update_watchtime(%s, %s, %s, %s, %s);
+            """, sql_queries)
         conn.commit()
     except psycopg2.Error as e:
         conn.rollback()
         # Handle the error, e.g., log it or send an appropriate HTTP response
         self_.send_error(500, str(e))
-        return {
-          
-        }
+        return {}
     finally:
         conn.close()
 

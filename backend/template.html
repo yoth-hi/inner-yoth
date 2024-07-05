@@ -35,6 +35,12 @@
     overflow: hidden;
     z-index: 2;
 }
+{%if not isMobile%}
+.player-size{position:relative; margin:0 auto;max-width:1200px;
+  aspect-ratio: 16/9;
+}
+.player-size > * {position:absolute;inset:0}
+{%endif%}
         </style>
         <div class=player-container>
           <div id=player class=player-size></div>

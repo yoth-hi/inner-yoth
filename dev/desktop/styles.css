@@ -211,13 +211,23 @@ app-watch #column > #primaty {
 }
 app-watch #full-player {
   display: none;
+  position: relative;
 }
 app-watch[full-player-active] #full-player {
   height: calc((100vw - var(--app-guide-width))*.5625);
   background: #000;
   display: block;
 }
-app-watch #column #player {
+app-watch[full-player-active][fullscreen] #full-player {
+  height: 100vh;
+  background: #000;
+  display: block;
+}
+app-watch #full-player #player--c{
+  position: absolute;
+  inset:0
+}
+app-watch #column #player--c {
   background: #3999;
   aspect-ratio: 16/9;
   border-radius: 16px;
@@ -259,6 +269,15 @@ app-watch #primaty .video-information-title{
   margin: 0;
   padding: 0;
 }
+app-watch #primaty .text-information{
+  line-height: 25px;
+  display:flex;
+  font-size: 14px;
+  font-weight: 500;
+}
+app-watch #primaty .text-information > * {
+  margin-right: 4px;
+}
 
 
 
@@ -296,4 +315,20 @@ app-card-video-column .thumbnail{
 }
 app-card-video-column:hover .details{
   opacity:1;
+}
+
+
+
+
+
+app-text-number{
+  display: flex;
+  height: 25px;
+  overflow: hidden;
+}
+app-text-number span {
+  transition: transform .16s;
+  display: flex;
+  flex-direction: column;
+  line-height: 25px;
 }
