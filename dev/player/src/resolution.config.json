@@ -1,0 +1,270 @@
+{
+  "337": {
+    "width":3840,
+    "height":2160,
+    "bitrate":30000000,
+    "fps":30
+  },
+  "336": {
+    "width":2560,
+    "height":1440,
+    "bitrate":15000000,
+    "fps":30
+  },
+  "335": {
+    "width":1920,
+    "height":1080,
+    "bitrate":7500000,
+    "fps":30
+  },
+  "702": {
+    "width":7680,
+    "height":4320,
+    "bitrate":40000000,
+    "fps":60
+  },
+  "701": {
+    "width":3840,
+    "height":2160,
+    "bitrate":20000000,
+    "fps":60
+  },
+  "700": {
+    "width":2560,
+    "height":1440,
+    "bitrate":10000000,
+    "fps":60
+  },
+  "412": {
+    "width":1920,
+    "height":1080,
+    "bitrate":8500000,
+    "fps":60,
+    "cryptoblockformat":"subsample"
+  },
+  "359": {
+    "width":1920,
+    "height":1080,
+    "bitrate":8000000,
+    "fps":30,
+    "cryptoblockformat":"subsample"
+  },
+  "411": {
+    "width":1920,
+    "height":1080,
+    "bitrate":3316000,
+    "fps":60,
+    "cryptoblockformat":"subsample"
+  },
+  "410": {
+    "width":1280,
+    "height":720,
+    "bitrate":4746000,
+    "fps":60,
+    "cryptoblockformat":"subsample"
+  },
+  "409": {
+    "width":1280,
+    "height":720,
+    "bitrate":1996000,
+    "fps":60,
+    "cryptoblockformat":"subsample"
+  },
+  "360": {
+    "width":1920,
+    "height":1080,
+    "bitrate":5331000,
+    "fps":30,
+    "cryptoblockformat":"subsample"
+  },
+  "358": {
+    "width":1280,
+    "height":720,
+    "bitrate":3508000,
+    "fps":30,
+    "cryptoblockformat":"subsample"
+  },
+  "357": {
+    "width":1280,
+    "height":720,
+    "bitrate":3206000,
+    "fps":30,
+    "cryptoblockformat":"subsample"
+  },
+  "274": {
+    "width":1280,
+    "height":720,
+    "bitrate":1446000,
+    "fps":30,
+    "cryptoblockformat":"subsample"
+  },
+  "315": {
+    "width":3840,
+    "height":2160,
+    "bitrate":20000000,
+    "fps":60
+  },
+  "308": {
+    "width":2560,
+    "height":1440,
+    "bitrate":10000000,
+    "fps":60
+  },
+  "303": {
+    "width":1920,
+    "height":1080,
+    "bitrate":5000000,
+    "fps":60
+  },
+  "302": {
+    "width":1280,
+    "height":720,
+    "bitrate":2500000,
+    "fps":60
+  },
+  "299": {
+    "width":1920,
+    "height":1080,
+    "bitrate":7500000,
+    "fps":60
+  },
+  "298": {
+    "width":1280,
+    "height":720,
+    "bitrate":3500000,
+    "fps":60
+  },
+  "571": {
+    "width":7680,
+    "height":4320,
+    "bitrate":30000000,
+    "fps":60
+  },
+  "401": {
+    "width":3840,
+    "height":2160,
+    "bitrate":15000000,
+    "fps":60
+  },
+  "400": {
+    "width":2560,
+    "height":1440,
+    "bitrate":7500000,
+    "fps":60
+  },
+  "399": {
+    "width":1920,
+    "height":1080,
+    "bitrate":2000000,
+    "fps":60
+  },
+  "398": {
+    "width":1280,
+    "height":720,
+    "bitrate":1000000,
+    "fps":60
+  },
+  "397": {
+    "width":854,
+    "height":480,
+    "bitrate":400000,
+    "fps":30
+  },
+  "396": {
+    "width":640,
+    "height":360,
+    "bitrate":250000,
+    "fps":30
+  },
+  "313":
+  {
+    "width":3840,
+    "height":2160,
+    "bitrate":8000000,
+    "fps":30
+  },
+  "271": {
+    "width":2560,
+    "height":1440,
+    "bitrate":4000000,
+    "fps":30
+  },
+  "248": {
+    "width":1920,
+    "height":1080,
+    "bitrate":2000000,
+    "fps":30
+  },
+  "247": {
+    "width":1280,
+    "height":720,
+    "bitrate":1500000,
+    "fps":30
+  },
+  "244": {
+    "width":854,
+    "height":480,
+    "bitrate":520000,
+    "fps":30
+  },
+  "243": {
+    "width":640,
+    "height":360,
+    "bitrate":280000,
+    "fps":30
+  },
+  "137": {
+    "width":1920,
+    "height":1080,
+    "bitrate":4000000,
+    "fps":30
+  },
+  "136": {
+    "width":1280,
+    "height":720,
+    "bitrate":3000000,
+    "fps":30
+  },
+  "135": {
+    "width":854,
+    "height":480,
+    "bitrate":1000000,
+    "fps":30
+  },
+  "385": {
+    "width":1920,
+    "height":1080,
+    "bitrate":6503313,
+    "fps":60
+  },
+  "376": {
+    "width":1280,
+    "height":720,
+    "bitrate":5706960,
+    "fps":60
+  },
+  "384": {
+    "width":1280,
+    "height":720,
+    "bitrate":3660979,
+    "fps":60
+  },
+  "225": {
+    "width":1280,
+    "height":720,
+    "bitrate":5805000,
+    "fps":30
+  },
+  "224": {
+    "width":1280,
+    "height":720,
+    "bitrate":4530000,
+    "fps":30
+  },
+  "145": {
+    "width":1280,
+    "height":720,
+    "bitrate":2682052,
+    "fps":30
+  }
+}

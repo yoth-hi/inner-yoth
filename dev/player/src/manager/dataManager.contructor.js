@@ -1,6 +1,9 @@
-import {Renge} from "../streaming/index.js"
-const VP=function(a){
-  if(!a)return new Renge(0,0);var b=Number(a.start);a=Number(a.end);if(!isNaN(b)&&!isNaN(a)&&(b=new Renge(b,a),b._length>0))return b};
+import {
+  Renge
+} from "../streaming/index.js"
+const VP = function(a) {
+  if (!a)return new Renge(0, 0); var b = Number(a.start); a = Number(a.end); if (!isNaN(b)&&!isNaN(a) && (b = new Renge(b, a), b._length > 0))return b
+};
 
 const tXa = function(a, b) {
   if (b.length === 0)return null;
@@ -27,30 +30,42 @@ const tXa = function(a, b) {
     (e = uQ(e.fE || b.url || "", e.wH, e.s)) && (d.streamType === "FORMAT_STREAM_TYPE_OTF"?rQ(f, new kQ(e, d, "sq/0")):
       rQ(f, new pQ(e, d, VP(b.initRange), VP(b.indexRange)))); f.isOtf=!0; c = f
   } else {*/
-    /*d = d === void 0?0: d; f = new sQ("", h.experiments, !1); f.duration = d || 0; h = g.v(b);
+  f = new sQ("", h?.experiments, !1)
+  d = d ?? 0
+  f.duration = d || 0;
+  /*
+    h = g.v(b);
     for (b = h.next(); !b.done; b = h.next())l = b.value,
     b = tQ(l, c, f.duration),
     d = VP(l.initRange),
     e = VP(l.indexRange),
     m = gP(l),
     (l = uQ(m.fE || l.url || "", m.wH, m.s)) && rQ(f, new pQ(l, b, d, e));
-    c = f*/
-    for(const item of b){
-      console.log(item)
-      const indexRange = VP(l.indexRange);
-      const initRange = VP(l.initRange);
-      debugger
-    }
- /*}
+    */
+  for (const item of b) {
+    const indexRange = VP(item.indexRange);
+    const initRange = VP(item.initRange);
+    console.log(initRange, indexRange)
+
+  }
+  c = f
+  /*}
   f = a.isLivePlayback&&!a.le&&!a.Ya&&!a.isPremiere;
   a.L("html5_live_head_playable") && (!wS(a) && f && a.ma("missingLiveHeadPlayable", {}), a.Da.qa === "yt" && (c.bb=!0));
-  c.Wa = xS(a); 
+  c.Wa = xS(a);
   */
   return c
 };
-const at=Array.prototype.some?function(a,b){return Array.prototype.some.call(a,b,void 0)}:function(a,b){for(var c=a.length,d=typeof a==="string"?a.split(""):a,e=0;e<c;e++)if(e in d&&b.call(void 0,d[e],e,a))return!0;
-return!1};
-const iUa=function(a){return at(a,function(b){return"FORMAT_STREAM_TYPE_OTF"===b.type})?"FORMAT_STREAM_TYPE_OTF":"FORMAT_STREAM_TYPE_UNKNOWN"};
+const at = Array.prototype.some?function(a, b) {
+  return Array.prototype.some.call(a, b, void 0)}:function(a, b) {
+  for (var c = a.length, d = typeof a === "string"?a.split(""): a, e = 0; e < c; e++)if (e in d && b.call(void 0, d[e], e, a))return!0;
+  return!1
+};
+const iUa = function(a) {
+  return at(a, function(b) {
+    return"FORMAT_STREAM_TYPE_OTF" === b.type
+  })?"FORMAT_STREAM_TYPE_OTF": "FORMAT_STREAM_TYPE_UNKNOWN"
+};
 export const ConstructorObjectData = function (scopeData, data = {}) {
   const store = scopeData.__store ?? {};
   const {
@@ -62,8 +77,10 @@ export const ConstructorObjectData = function (scopeData, data = {}) {
   } = response;
 
   const formats = streamingData?.adaptiveFormats || []
-  if (formats.length > 0)var Si = tXa(videoDetails, formats);
-
+  if (formats.length > 0) {
+    var Si = tXa(videoDetails, formats);
+    console.log(Si)
+  }
   if (videoDetails) {
     if (videoDetails.title) {
       store.title = videoDetails.title;
@@ -91,3 +108,16 @@ export const ConstructorObjectData = function (scopeData, data = {}) {
   scopeData._playerResponse = response;
   return (scopeData.__store = store);
 };
+
+class sQ {
+  duration=0;
+  isLive=false;
+  _status=0;
+  isLiveHeadPlayable=false;
+  _endTime=false;
+  constructor(url = "", isLivePlayback = false) {
+    this.sourceUrl = url
+    this.isLivePlayback = isLivePlayback;
+  }
+  isLoading(){return this._state===1};
+}

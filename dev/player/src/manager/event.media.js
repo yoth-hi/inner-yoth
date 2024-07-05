@@ -268,9 +268,9 @@ export default class {
     _createDataBuff(){
       const dataVideo ={
     "itag": 399,
-    "url": "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-               "mimeType": 'video/mp4; codecs="avc1.64001f, mp4a.40.2"',
-    "bitrate": 4329129,
+    "url": "https://firebasestorage.googleapis.com/v0/b/yoth-service.appspot.com/o/try%20not%20to%20laugh%20at%20impossible%20memes.mp4?alt=media&token=dff4913c-b36f-4708-ab4b-dc7854457546",
+               "mimeType": 'video/webm; codecs="vp9"',
+    "bitrate": 1500000,
     "width": 1920,
     "height": 1080,
     "initRange": {
@@ -444,6 +444,7 @@ function UE(a,currentTime){
   YF(a._controller)
 }
 function YF(a){
+  //a type KF
   a._isActive() || a._start()
 }
 class KF{

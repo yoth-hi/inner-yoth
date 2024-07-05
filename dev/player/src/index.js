@@ -1,4 +1,4 @@
-//import"./LOG.js";
+import"./LOG.js";
 import Disposable, { CreateDisposeCallback } from "./utils/Disposable.js";
 import { CreateDataConfigManager } from "./manager/DataConfig.js";
 import { PlayerContextConfigManager } from "./manager/PlayerContextConfig.js";

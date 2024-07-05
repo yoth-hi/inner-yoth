@@ -1,4 +1,5 @@
 import { SrcManagerMediaSource } from "../utils/SrcManagerMediaSource.js"
+import a from "../resolution.config.json"
 
 export const ManagerMedia = class ManagerMedia {
     constructor() {}

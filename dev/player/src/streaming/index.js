@@ -100,6 +100,9 @@ export class Renge {
           if(element!==void 0){
             element.push(buff)
             this._scope._loadedBuffer(this._dataVideo,type)
+          } 
+          if(element.length==0){
+            this._scope["_loaded_" + type] = true;
           }
       }
   }
@@ -109,25 +112,39 @@ export class Renge {
 
 
 export default function(sc, data){
+  sc["_loaded_"+y] ??= true
+  if(
+!sc["_loaded_"+y] 
+  )return;
   sc._settingLoadChunk ??= 5;
-  const { _mbps = 1, _bitrate, url } = sc._videoData.videoTrack || {}
-  const bitrateInMbps = _bitrate / 1000;
-  const loadingTimePerSecond = bitrateInMbps / _mbps;
-  const loadingTimePerSecondTotal = Math.floor(loadingTimePerSecond * sc._settingLoadChunk)
   const timeStartSecord = sc._getMediaTimeToLoad()
-  const y = Math.floor(timeStartSecord * _bitrate/8);
-  const range = (new Renge(y, y+loadingTimePerSecondTotal)).toString()
-  sc._mediaTimeToLoad += loadingTimePerSecondTotal
+  let { _mbps = 1, _bitrate, url } = sc._videoData.videoTrack || {}
+  console.log(_mbps)
+  _bitrate = parseInt(_bitrate /= 100)
+  const y = sc._mediaTimeToLoad * _bitrate 
+  // const range = (new Renge(parseInt(y), parseInt(y+(_bitrate*)*sc._settingLoadChunk))).toString()
+  
+  sc.j ??= 0;
+  const range = (new Renge(sc.j, (sc.j = (sc._mediaTimeToLoad||1)*parseInt(_bitrate*8)) - 1 )).toString()
+  sc._mediaTimeToLoad += sc._settingLoadChunk
+
+  
   UF(sc,{
     range,
   },url,"VIDEO")
 }
 
 function UF(scope, obj,url,y){
+  
   const g = new  _URL(url,obj)
+
   scope["_loaded_"+y] = false;
+  const j = Date.now()
   return new Load(g,(a)=>{
-    const length = a._length
-    scope["_loaded_"+y] = true;
+    const length = a._length;
+    
+    const timeTaken = (Date.now() - j) / 1000;
+    const k = (length / timeTaken) / 8;
+    scope._videoData.videoTrack._mbps = k;
   } ,Yf(scope),y)
 }
