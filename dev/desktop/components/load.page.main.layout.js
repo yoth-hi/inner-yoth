@@ -3,7 +3,7 @@ import { data } from "./data.config.js";
 import { dispatch } from "./Event.js";
 import { EVENT_NAME_ON_CHENGE_DATA_HEADER_AND_GUIDE } from "./vars.js";
 const get_ = function(){
-  return data["CONTEXT"]
+  return data["CONTEXT"] || window.config?.CONTEXT
 }
 export const target = new EventTarget
 export const getMainDataFTLayout = async function() {

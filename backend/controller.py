@@ -262,6 +262,7 @@ def Y(arr):
 def getBodyRequest(self_):
   content_length = int(self_.headers['Content-Length'])
   post_data = self_.rfile.read(content_length)
+  print(65,post_data)
   return json.loads(post_data)
   
 GUIDE_ITEMS_SIMPLE = ["HOME"]
