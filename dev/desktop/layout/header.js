@@ -1,5 +1,5 @@
 import { Register, html } from "../components/DOM.js"
-
+import { getMainDataFTLayout, target } from "../components/load.page.main.layout.js"
 const _template = html`
 <div id="container" >
   <div id="start" >
@@ -24,8 +24,8 @@ class App {
       },
     }
   }
-  attached(){
-    
+  ready(){
+    getMainDataFTLayout()
   }
 }
 

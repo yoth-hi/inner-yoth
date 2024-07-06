@@ -16,9 +16,9 @@ def renderContextPage(parsed_path, self_):
   title = "Yoth"
   description = ""
   host = self_.headers.get('Host')
+  lang__ = parse_accept_language_header(self_.headers.get("Accept-Language","en-US,en;q=1"))
   print(self_.headers)
   data = None
-  lang__ = parse_accept_language_header(self_.headers.get("Accept-Language","en-US,en;q=1"))
   context = {};
   path = parsed_path.path
   query = parseQuery(parsed_path.query)
@@ -32,9 +32,8 @@ def renderContextPage(parsed_path, self_):
   context["istv"] = istv
   context["path"] = path
   context["host"] = host
-  context["lang"] = lang
   context["hl"] = lang__
-  print(lang__)
+  context["lang"] = (lang__[0][0] or "en-US")
   if not istv or not isembed:
     notificationCount = 0
     data = {
@@ -260,12 +259,48 @@ def Y(arr):
   if(arr):
     return arr[0].split(",")
 ## API
+def getBodyRequest(self_):
+  content_length = int(self_.headers['Content-Length'])
+  post_data = self_.rfile.read(content_length)
+  return json.loads(post_data)
+  
+GUIDE_ITEMS_SIMPLE = ["HOME"]
+GUIDE_ITEMS_SIMPLE_ENDPOINT = ["/"]
+def GUIDE(context, self_, createConn):
+  data = getBodyRequest(self_) or {};
+  print(data)
+  client = data.get("client", None);
+  if(not client):
+    return {
+      status: 403
+    }
+  lang = client.get("hl","en")
+  guideItems = []
+  itemsPaths = GUIDE_ITEMS_SIMPLE_ENDPOINT
+  index = 0;
+  for item in GUIDE_ITEMS_SIMPLE:
+    guideItems.append({
+      "accessibility":{
+        "label":"t"
+      },
+      "title":getI18n(item.lower(), lang),
+      "endpoint": EndPoint(itemsPaths[index])
+    })
+    index += 1
+  data = {
+    "user":{},
+    "guideItems": guideItems
+  }
+  return{
+    "data":f"{toTextData(data)}".encode('utf-8')
+  }
 
 
 
 ## API MANAGER
 APIS = {
-  "watchtime": WATCHTIME
+  "watchtime": WATCHTIME,
+  "guide": GUIDE
 }
 
 def RenderApi(path, self_, parsed_path):
@@ -303,5 +338,7 @@ def convert_seconds(total_seconds):
 def i18n_view(viewer=0):
     return f"{viewer:,}"
 def getI18n(key,lang="en",param={}):
-  t = translations[lang] or translations["en"]
+  t = translations.get(lang) or translations.get(lang.split("-")[0])  or translations["en"]
   return t.get(key)
+def format_string(template, **kwargs):
+    return template.format(**kwargs)

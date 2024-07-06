@@ -1,9 +1,9 @@
 import { Register, html } from "../components/DOM.js"
 import { renderList } from "../components/list.js"
 const _template = html`
-<a href="/" on-click="handleLink">
+<a href="/" on-click="handleLink" aria-label="{{data.accessibility.label}}">
   <app-icon class="icon"></app-icon>
-  <span class="title">Histórico</span>
+  <span class="title" role="text">{{data.title}}</span>
 </a>
 `
 

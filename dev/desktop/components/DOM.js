@@ -1,7 +1,7 @@
 import {
   ElementMixin
 } from 
- // "https://unpkg.com/@polymer/polymer@3.5.1/lib/mixins/element-mixin.js?module"
+ //"https://unpkg.com/@polymer/polymer@3.5.1/lib/mixins/element-mixin.js?module"
   "@polymer/polymer/lib/mixins/element-mixin.js"
 
 var Upb = ["disabled", "disable-upgrade"]
@@ -48,6 +48,10 @@ export function Register (call, is, html) {
     }
     listen(a,b,c){
       a.addEventListener(b,(e)=>{
+        let a = isCustomEvent(e)
+        if(a){
+          a = e.detail
+        }
         if(typeof c === "string"){
           this[c](e,a)
         } else {
@@ -68,6 +72,9 @@ export function Register (call, is, html) {
     },
     observedAttributes
   }, is)
+}
+function isCustomEvent(obj) {
+    return obj instanceof CustomEvent;
 }
 function KG(a, b, c) {
   
