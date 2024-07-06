@@ -13,10 +13,10 @@
         <meta property="og:description" content="{{title}}">
         <meta property="og:image" content="">
         <meta property="og:url" content="">
-        
         {% if isdev or istv or isMobile %}<link href="{{static_app}}styles.css" rel=stylesheet>{% endif %}
-        <script src="/s/player/jsbin/en/main.js"></script>
         <link href="/s/player/jsbin/player.css" rel=stylesheet>
+        <script>var config={{config}}</script>
+        <script src="/s/player/jsbin/en/main.js"></script>
     </head>
     <body>
       {% if istv %}
@@ -136,7 +136,7 @@
                 </div>
             </app-masthead>
         </yo-app>
-        <script>(function(a,b){a.response={data:b,pathname:location.pathname}})(document.querySelector("yo-app"),data)</script>
+        <script>(function(a,b,c){a.response={data:b,pageId:c}})(document.querySelector("yo-app"),data,"{{pageId}}")</script>
       {% endif %}
     </body>
 </html>

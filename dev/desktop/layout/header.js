@@ -6,7 +6,7 @@ const _template = html`
     <app-logo></app-logo>
   </div>
   <div id="center" >
-    <app-search></app-search>
+    <app-search data="{{data.searchBox}}"></app-search>
   </div>
   <div id="end" >end</div>
 </div>

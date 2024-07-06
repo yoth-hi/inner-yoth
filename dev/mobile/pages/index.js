@@ -60,6 +60,7 @@ class App extends Element {
     window.scrollTo(0, 0);
     element.removeAttribute("hidden")
     element.isActive = true;
+    this.data&&(element.data = this.data)
     if (element === this._currentPage) {
       this._currentPage?.removeAttribute("hidden")
       this._currentPage.isActive = true;

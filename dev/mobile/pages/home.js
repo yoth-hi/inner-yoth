@@ -45,7 +45,7 @@ class App extends Element {
     return html`
     <div class="content-home">
       <ul>
-        <div class="content-home-grid">${this.data?.content?.results?.map(data=>html`<app-card-video .data="${data}"></app-card-video>`)}</div>
+        <div class="content-home-grid">${this.data?.content?.results?.map(data_=>html`<app-card-video .data="${data_}"></app-card-video>`)}</div>
       </ul>
       <app-spiner>
       </app-spiner>

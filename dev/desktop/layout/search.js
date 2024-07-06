@@ -29,6 +29,7 @@ class App {
   static get properties() {
     return {
       data: {
+        observer: "onChengeData",
         type: Object
       },
       hasInput: {
@@ -37,7 +38,6 @@ class App {
       },
       placeholder: {
         type: String,
-        value: "...",
         observer: "onChengePlaceholder"
       },
       focusing: {
@@ -53,6 +53,9 @@ class App {
   }
   onClick(){
     
+  }
+  onChengeData(data){
+    this.placeholder = data?.inputData?.placeholder
   }
   onChengePlaceholder(a){
     const h = () => {

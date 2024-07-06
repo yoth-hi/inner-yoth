@@ -3,7 +3,11 @@ from urllib.parse import parse_qs
 from .database import SQL, createConn, SQLC
 
 from .api.watchtime import WATCHTIME
+from .utils import getConfig, parse_accept_language_header
 
+translations = {}
+with open('backend/translations.json', 'r') as f:
+  translations = json.load(f)
 
 
 ## host
@@ -14,6 +18,7 @@ def renderContextPage(parsed_path, self_):
   host = self_.headers.get('Host')
   print(self_.headers)
   data = None
+  lang__ = parse_accept_language_header(self_.headers.get("Accept-Language","en-US,en;q=1"))
   context = {};
   path = parsed_path.path
   query = parseQuery(parsed_path.query)
@@ -28,6 +33,8 @@ def renderContextPage(parsed_path, self_):
   context["path"] = path
   context["host"] = host
   context["lang"] = lang
+  context["hl"] = lang__
+  print(lang__)
   if not istv or not isembed:
     notificationCount = 0
     data = {
@@ -40,12 +47,14 @@ def renderContextPage(parsed_path, self_):
         title += " - "
         title = playerData.get("title")
         description = playerData.get("description")
-      data["content"] = MainConstructor_contentPage()
+    data["content"] = MainConstructor_contentPage()
     if isMobile:
       data["header"] = HeaderMobileWeb()
-      data["content"]["results"] = [{},{},{},{}]
-    elif notificationCount != 0:
-      title += " (" + notificationCount + ")"
+    else:
+      if notificationCount != 0:
+        title += " (" + notificationCount + ")"
+      data["header"] = HeaderDasktopWeb(context)
+    
   context["title"] = title
   context["description"] = title
   context["isMobile"] = isMobile
@@ -55,9 +64,13 @@ def renderContextPage(parsed_path, self_):
     context["static_app"] = "/s/tv/"
   if(not istv and isMobile):
     context["static_app"] = "/s/mobile/"
+  if(context["pageId"] == "FEED_HOME"):
+    data["content"]["results"] = getDataHomePage_ListItems()
+    #
   context["data"] = toTextData(data)
   context["isMobule"] = (not istv and not isMobile) and isdev
   context["static_app"] += "jsbin/"
+  context["config"] = toTextData(getConfig(context,self_))
   print(path, context)
   return context;
 
@@ -125,6 +138,18 @@ def HeaderMobileWeb():
   return{
     "logo": LogoType()
   }
+def HeaderDasktopWeb(ctx):
+  isLoggad = False
+  lang = ctx["lang"]
+  #getI18n("$APPNAME_HOME",[])
+  return{
+    "logo": LogoType(),
+    "searchBox":{
+      "inputData":{
+        "placeholder":getI18n("search", lang)
+      }
+    }
+  }
 
 ## entrypoint
 def EndPoint(path, context={}):
@@ -138,6 +163,29 @@ def EndPoint(path, context={}):
 
 def MainConstructor_contentPage():
   return{}
+def ConstructorCardVideo(data):
+  title = data.get("title")
+  id_ = data.get("id")
+  duration = int(+data.get("duration"))
+  view_count = int(+data.get("viewCount"))
+  return{
+    "accessibility":{
+      "label":title
+    },
+    "title":title,
+    "videoId": id_,
+    "viewCount":{
+      "text": i18n_view(view_count),
+      "count":view_count
+    },
+    "thumbnailOverlays":{
+      "accessibility":{
+        "label":""
+      },
+      "style":"DEFAULT",
+      "text":convert_seconds(duration)
+    }
+  }
 def MainConstructor_playerOverlays(playerData):
   title = playerData.get("title")
   return{
@@ -172,7 +220,35 @@ LIMIT 1;
     except Exception as e:
         print(f"Erro ao buscar dados do vídeo: {e}")
         return None
+## get - data browse -
+def getData_ListItemsRecommeded(filters={}):
+  bytag = filters.get("keywords",None)
+  limit = filters.get("limit",5)
+  resp = SQLC(f"""
+    SELECT v.title, v.description, v.id, v.duration,
+    (SELECT COUNT(*) FROM viewers WHERE id = v.id)
+    FROM video v
+    WHERE status = 'public'
+    LIMIT %s;
+  """,(limit,))
+  print(resp)
+  data = []
+  for i in resp:
+    data.append({
+      "title": i[0],
+      "description": i[1],
+      "id": i[2],
+      "duration": i[3],
+      "viewCount": i[4],
+    })
+  return data
 
+def getDataHomePage_ListItems():
+  rdata = getData_ListItemsRecommeded();
+  data = [];
+  for item in rdata:
+    data.append(ConstructorCardVideo(item))
+  return data;
 
 def NEXT(context, self_):
   return {
@@ -212,3 +288,18 @@ def RenderApi(path, self_, parsed_path):
   if(data.get("data")):
     self_.wfile.write(data.get("data"))
   return 
+def convert_seconds(total_seconds):
+    hours = total_seconds // 3600
+    remaining_seconds = total_seconds % 3600
+    minutes = remaining_seconds // 60
+    seconds = remaining_seconds % 60
+
+    if hours > 0:
+        return f"{hours}:{minutes:02}:{seconds:02}"
+    else:
+        return f"{minutes}:{seconds:02}"
+def i18n_view(viewer=0):
+    return f"{viewer:,}"
+def getI18n(key,lang="en",param={}):
+  t = translations[lang] or translations["en"]
+  return t.get(key)

@@ -1,8 +1,14 @@
 {
   "en": {
-    "viewers": "$VIEWRS viewers",
-    "viewers_thousands": "$VIEWRSK viewers",
-    "viewers_millions": "$VIEWRSM viewers",
-    "viewers_billions": "$VIEWRSB viewers"
+    "search":"Search"
+  },
+  "pt":{
+    "search": "Pesquisar"
+  },
+  "ko":{
+    "search": "검색"
+  },
+  "ja":{
+    "search":"検索"
   }
 }

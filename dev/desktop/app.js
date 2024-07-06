@@ -11,7 +11,7 @@ const _template = html`
   </div>
   <div>
     <app-mini-drower></app-mini-drower>
-    <page-manager id="page-manager"></page-manager>
+    <page-manager page-id="{{pageId}}" data="{{data}}" id="page-manager"></page-manager>
   </div>
 </div>
 `
@@ -43,6 +43,7 @@ class App {
   }
   onChengeResponce({ data, pageId }={}){
     this.data = data;
+    this.pageId = pageId;
     const header = document.querySelector("app-masthead");
     header.data = data&&data.header||{};
   }

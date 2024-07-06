@@ -7,17 +7,21 @@ import"./watch.js"
 import { get as storeGet } from "../components/config.store.js"
 const getPage = function(arr, is){
   let element = arr.get(is)
+  
   let name;
   if(!element){
     switch(is){
       case "WATCH":
         name = "app-watch"
         break;
-      case "HOME":
+      case "FEED_HOME":
         name = "app-home"
         break;
     }
     element = document.createElement(name);
+    if(!element.inst){
+      element.innerHTML = "<span>THIS NOT IS RENDE"
+    }
     arr.set(is, element)
   }
   return element
@@ -30,15 +34,29 @@ class App {
   attached() {
     //setTimeout(()=>{
       
-    this.renderPage("WATCH")
     //},1000)
     //this._content = this.querySelector("#content");
+  }
+  static get properties() {
+    return {
+      data: {
+        type: Object
+      },
+      pageId: {
+        type:String,
+        observer:"renderPage"
+      }
+    }
   }
   renderPage(pageId) {
     if (
       pageId == "WATCH"
     ) {
       this.setPage(pageId)
+    } else {
+      //(data) =>{ on load data
+      this.setPage(pageId)
+      //}
     }
     storeGet("root").isWatchPage = pageId == "WATCH"
   }

@@ -112,9 +112,10 @@ export class Renge {
 
 
 export default function(sc, data){
-  sc["_loaded_"+y] ??= true
+  var f = "VIDEO"
+  sc["_loaded_"+f] ??= true
   if(
-!sc["_loaded_"+y] 
+!sc["_loaded_"+f] 
   )return;
   sc._settingLoadChunk ??= 5;
   const timeStartSecord = sc._getMediaTimeToLoad()
