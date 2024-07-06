@@ -1,14 +1,22 @@
 {
   "en": {
-    "search":"Search"
+    "home": "Home",
+    "search":"Search",
+    "subscribe":"Subscribe"
   },
-  "pt":{
-    "search": "Pesquisar"
+  "pt": {
+    "home": "Início",
+    "search": "Pesquisar",
+    "subscribe":"Inscrever-se"
   },
-  "ko":{
-    "search": "검색"
+  "ko": {
+    "home":"홈",
+    "search": "검색",
+    "subscribe":"구독"
   },
-  "ja":{
-    "search":"検索"
+  "ja": {
+    "home":"ホーム",
+    "search":"検索",
+    "subscribe":"購読する"
   }
 }

@@ -13,7 +13,7 @@ const _template = html`
   <slot name="search-container" ></slot>
 </form>
 <button on-click="onSubmit" id="search-icon-legacy" aria-label$="[[placeholder]]" >
-<app-icon icon="[[icon]]" ></app-icon>  <tp-yt-paper-tooltip prefix="" >[[placeholder]]</tp-yt-paper-tooltip></button>
+<app-icon icon="[[icon]]" ></app-icon>  <app-paper-tooltip prefix="" >[[placeholder]]</app-paper-tooltip></button>
 `
 
 const to = "/results"

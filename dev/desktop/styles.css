@@ -27,7 +27,7 @@ a {
   transform: translateY(0);
   transition: transform .3s ease;
 }
-app-masthead #container {
+app-masthead > #container {
   height: 56px;
   padding: 0 16px;
   display: flexbox;
@@ -35,6 +35,10 @@ app-masthead #container {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+app-masthead #center {
+  display: flex;
+  flex:0 1 600px;
 }
 #page-manager {
   overflow-x: inherit;
@@ -111,18 +115,18 @@ app-icon {
 
 
 app-search #search-icon {
-  position: absolute;
-  left:-25px;
-  width: 24px;
   opacity:0;
   transition-property: left,opacity;
   transition-duration: .10s,.06s;
-  /* Durações para cada propriedade */
-  transition-delay: .06s,.08s;
+  transition-delay: .06s,.08s; 
 }
 app-search[focusing] #search-icon {
   opacity:1;
   left:15px;
+}
+app-search #search-form {
+  width: 100%;
+  display:flex;
 }
 app-search {
   position: relative;
@@ -130,17 +134,24 @@ app-search {
   transition-duration: .10s,.16s,.16s;
   /* Durações para cada propriedade */
   transition-delay: .06s, 0s, 0s;
-  display: flex;
+  display: flex;flex: 1;
   border-radius: 20px 20px;
   box-shadow: 0px 0px 5px #8887;
 }
+app-search #container > div {
+  flex:1;
+}
 app-search #container {
   height: 40px;
+  width: 100%!important;
+  flex:1;
+  display: flex;
+  align-items: center;
   border-radius: 20px 0px 0px 20px;
   background: var(--app-background-color);
 }
 app-search[focusing] {
-  box-shadow: 0px 0px 16px #8887;
+  box-shadow: 0px 0px 10px #8887;
   transform: scale(1.01);
   padding-left: 20px;
 }
@@ -331,4 +342,22 @@ app-text-number span {
   display: flex;
   flex-direction: column;
   line-height: 25px;
+}
+
+
+app-paper-tooltip {
+  position: absolute;
+  padding: 4px 10px;
+  background: #aeaeae;
+  display: block;
+  opacity: 0;
+  color:#fff;
+  font-size: 12px;
+  border-radius: 4px;
+  bottom: -40%;
+  pointer-events:none;
+  transition: opacity .16s;
+}
+app-paper-tooltip[hover]{
+  opacity: 1;
 }

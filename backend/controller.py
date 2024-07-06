@@ -102,6 +102,8 @@ def isPageApi(path):
     path == "/next" or
     path == "/browse" or
     path == "/like/like" or
+    path == "/guide" or
+    path == "/header" or
     path == "/like/deslike"
   )
 def parseQuery(query_string = ""):
