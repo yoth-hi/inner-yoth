@@ -15,6 +15,10 @@
         <meta property="og:image" content="">
         <meta property="og:url" content="">
         {% if isdev or istv or isMobile %}<link href="{{static_app}}styles.css" rel=stylesheet>{% endif %}
+        {% if not istv and not isMobile %}
+          <link rel="alternate" media="handheld" href="?app=mobile">
+          <link rel="alternate" media="only screen and (max-width: 640px)" href="?app=mobile">
+        {% endif %}
         <link href="/s/player/jsbin/player.css" rel=stylesheet>
         <script src="/s/player/jsbin/en/main.js"></script>
     </head>

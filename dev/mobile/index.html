@@ -20,14 +20,11 @@
     const K = {
       title:"hGG"
     };
+var data__={"content": {"results": [{"accessibility": {"label": "test"}, "title": "test", "videoId": "test", "viewCount": {"text": "88", "count": 88}, "thumbnailOverlays": {"accessibility": {"label": ""}, "style": "DEFAULT", "text": "1:40"}}]}, "header": {"logo": {"accessibility": "", "icon": {"logo": "YOTH_LOGO", "isEvent": false, "img": null}, "endpoint": {"url": "/", "context": {"pageId": "FEED_HOME"}}}}};
     var data_ = {
       "/": {
         ...rp,
-        content:{
-          results:[
-            K,K,K,K,K,K,K,K,K,K,K,K,K
-          ],
-        },
+        ...data__
       },
       "/watch": {
         ...rp,
@@ -43,7 +40,6 @@
       }
     };
     let data = data_[g];
-
     document.querySelector("yo-app").response = {
       data,
       pathname: location.pathname

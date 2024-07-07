@@ -101,12 +101,10 @@ app-mini-drower-item > a .title {
 app-mini-drower-item > a .icon {
   height: 24px;
   width: 24px;
-  background: #122;
   margin-bottom: 4px;
 }
 
 app-icon {
-  background: #122;
   display: block;
   height: 24px;
   width: 24px;
@@ -158,13 +156,13 @@ app-search[focusing] {
 app-search #search-icon-legacy {
   height: 40px;
   border-radius: 0px 20px 20px 0px;
-  background: var(--app-background-color);
+  background: #8882;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  width: 50px;
+  width: 70px;
 }
 app-search input {
   -webkit-appearance: none;

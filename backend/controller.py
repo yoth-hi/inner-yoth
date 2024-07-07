@@ -80,7 +80,12 @@ def getPageIdByPath(path):
     path = path[1:]
   if(path == ""):
     _id = "FEED_HOME"
-  elif(path == "tv"):
+  elif(
+    path.startswith('/channel') or
+    path.startswith('/@')
+  ):
+    _id = "CHANNEL"
+  elif(path == ""):
     _id = "LAYOUT_TV"
   elif(path == "watch"):
     _id = "WATCH"
@@ -91,7 +96,12 @@ def toTextData(dataJson):
     text = json.dumps(dataJson)
   return text
 def isPageHtml(path):
-  return path == "/" or "/watch" == path or path == "/tv"
+  return (
+    path == "/" or
+    path == "/watch" or
+    path == "/tv" or
+    path == "/feed/trending"
+  );
 def isPageApi(path):
   if not path.startswith("/v1/"):
     return False
@@ -154,6 +164,10 @@ def HeaderDasktopWeb(ctx):
 
 ## entrypoint
 def EndPoint(path, context={}):
+  channel_id = context.get("channel_id")
+  path = path or ""
+  if(channel_id):
+    path = "/channel/" + channel_id
   return {
     'url':path,
     "context": {
@@ -169,6 +183,8 @@ def ConstructorCardVideo(data):
   id_ = data.get("id")
   duration = int(+data.get("duration"))
   view_count = int(+data.get("viewCount"))
+  channelName = data.get("channelName")
+  channelId = data.get("channelId")
   return{
     "accessibility":{
       "label":title
@@ -185,6 +201,12 @@ def ConstructorCardVideo(data):
       },
       "style":"DEFAULT",
       "text":convert_seconds(duration)
+    },
+    "owner":{
+      "endpoint":EndPoint(None,{
+        "channel_id": channelId
+      }),
+      "title":channelName
     }
   }
 def MainConstructor_playerOverlays(playerData):
@@ -227,10 +249,13 @@ def getData_ListItemsRecommeded(filters={}):
   limit = filters.get("limit",5)
   resp = SQLC(f"""
     SELECT v.title, v.description, v.id, v.duration,
-    (SELECT COUNT(*) FROM viewers WHERE id = v.id)
-    FROM video v
-    WHERE status = 'public'
-    LIMIT %s;
+       (SELECT COUNT(*) FROM viewers vw WHERE vw.video_id = v.id) AS viewer_count,
+       c.name AS channel_name,
+       c.id AS channel_name
+FROM video v
+JOIN "video.channel" c ON v.channel_id = c.id
+WHERE v.status = 'public'
+LIMIT %s;
   """,(limit,))
   print(resp)
   data = []
@@ -241,6 +266,8 @@ def getData_ListItemsRecommeded(filters={}):
       "id": i[2],
       "duration": i[3],
       "viewCount": i[4],
+      "channelName": i[5],
+      "channelId": i[6],
     })
   return data
 
@@ -265,8 +292,16 @@ def getBodyRequest(self_):
   print(65,post_data)
   return json.loads(post_data)
   
-GUIDE_ITEMS_SIMPLE = ["HOME"]
-GUIDE_ITEMS_SIMPLE_ENDPOINT = ["/"]
+GUIDE_ITEMS_SIMPLE = [
+  "HOME",
+  "REELS",
+  "TRENDING"
+]
+GUIDE_ITEMS_SIMPLE_ENDPOINT = [
+  "/",
+  None,
+  "/feed/trending"
+]
 def GUIDE(context, self_, createConn):
   data = getBodyRequest(self_) or {};
   print(data)
@@ -280,12 +315,20 @@ def GUIDE(context, self_, createConn):
   itemsPaths = GUIDE_ITEMS_SIMPLE_ENDPOINT
   index = 0;
   for item in GUIDE_ITEMS_SIMPLE:
+    title = getI18n(item.lower(), lang),
+    if(itemsPaths[index]):
+      endpoint = EndPoint(itemsPaths[index])
+    else:
+      endpoint = {
+        "render":item
+      }
     guideItems.append({
       "accessibility":{
-        "label":"t"
+        "label": title
       },
-      "title":getI18n(item.lower(), lang),
-      "endpoint": EndPoint(itemsPaths[index])
+      "title":title,
+      "endpoint": endpoint,
+      "icon": item
     })
     index += 1
   data = {

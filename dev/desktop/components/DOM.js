@@ -1,8 +1,8 @@
 import {
   ElementMixin
 } from 
- //"https://unpkg.com/@polymer/polymer@3.5.1/lib/mixins/element-mixin.js?module"
-  "@polymer/polymer/lib/mixins/element-mixin.js"
+ "./_prod.js"
+
 
 var Upb = ["disabled", "disable-upgrade"]
 export function Register (call, is, html) {

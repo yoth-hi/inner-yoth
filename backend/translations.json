@@ -1,22 +1,30 @@
 {
   "en": {
     "home": "Home",
+    "reels":"Reels",
     "search":"Search",
-    "subscribe":"Subscribe"
+    "subscribe":"Subscribe",
+    "trending":"Trending"
   },
   "pt": {
     "home": "Início",
+    "reels":"Reels",
     "search": "Pesquisar",
-    "subscribe":"Inscrever-se"
+    "subscribe":"Inscrever-se",
+    "trending":"Em alta"
   },
   "ko": {
     "home":"홈",
+    "reels":"릴스",
     "search": "검색",
-    "subscribe":"구독"
+    "subscribe":"구독",
+    "trending":"트렌딩"
   },
   "ja": {
     "home":"ホーム",
+    "reels":"リール",
     "search":"検索",
-    "subscribe":"購読する"
+    "subscribe":"購読する",
+    "trending":"トレンド"
   }
 }

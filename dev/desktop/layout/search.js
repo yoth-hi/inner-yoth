@@ -6,19 +6,21 @@ import {
 const _template = html`
 <form id="search-form" on-submit="onSubmit" action="/results">
   <div id="container" on-click="onClick">
-    <app-icon id="search-icon" icon="[[icon]]" on-mousedown="focusInput" ></app-icon>
+    <app-icon is-ecm="true" id="search-icon" icon="[[icon]]" on-mousedown="focusInput" ></app-icon>
     <slot name="search-input"></slot>
     <div id="search-clear-button" on-click="clearSearch" hidden="[[!isClearButtonVisible]]" >X</div>
   </div>
   <slot name="search-container" ></slot>
 </form>
 <button on-click="onSubmit" id="search-icon-legacy" aria-label$="[[placeholder]]" >
-<app-icon icon="[[icon]]" ></app-icon>  <app-paper-tooltip prefix="" >[[placeholder]]</app-paper-tooltip></button>
+<app-icon icon="[[icon]]" is-ecm="true"></app-icon>  <app-paper-tooltip prefix="" >[[placeholder]]</app-paper-tooltip></button>
 `
 
 const to = "/results"
 class App {
-  constructor() {}
+  constructor() {
+    this.inicializeInput()
+  }
   attached() {
     const input = document.querySelector("app-masthead input")
     if (input) {
@@ -39,6 +41,10 @@ class App {
       placeholder: {
         type: String,
         observer: "onChengePlaceholder"
+      },
+      icon: {
+        type: String,
+        value:"SEARCH"
       },
       focusing: {
         type: Boolean,
