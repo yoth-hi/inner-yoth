@@ -118,7 +118,3 @@ if __name__ == '__main__':
     httpd = HTTPServer(server_address, handler)
     print('Running server on port 8000...')
     httpd.serve_forever()
-config = {
-  "runtime":"edge",
-  "regions":["iad1","gru1","hnd1"]
-}

@@ -3,11 +3,7 @@
   "builds": [
     {
       "src": "backend/main.py",
-      "use": "@vercel/python",
-      "config": {
-        "runtime":"edge",
-        "regions":["iad1","gru1","hnd1"]
-      }
+      "use": "@vercel/python"
     },
     {
       "src": "frontend/**",
