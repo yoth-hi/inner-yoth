@@ -23,7 +23,7 @@ const _template = html`
 const to = "/results"
 class App {
   constructor() {
-    this.inicializeInput()
+    this.onFindSlot()
   }
   ready() {
     const input = document.querySelector("app-masthead input")
@@ -128,9 +128,8 @@ class App {
     this.hundlePagePush(url)
   }
   onFindSlot(x){
-    
     const a = 
-    x.querySelector('input')||
+    x?.querySelector('input')||
     document.querySelector('input')
     if(a){
       this.searchInput = a
