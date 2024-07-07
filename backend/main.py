@@ -54,9 +54,9 @@ class handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.send_header('X-Content-Type-Options', 'nosniff')
+        self.send_header('X-Frame-Options', 'SAMEORIGIN')
         self.send_header('Content-Encoding', 'br')
         self.send_header('Pragma', 'no-cache')
-        self.send_header('X-Frame-Options', 'SAMEORIGIN')
         self.send_header('compressed', f"{compression_quality}")
         self.send_header('Permissions-Policy', 'ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*')
         self.end_headers()
@@ -118,3 +118,7 @@ if __name__ == '__main__':
     httpd = HTTPServer(server_address, handler)
     print('Running server on port 8000...')
     httpd.serve_forever()
+config = {
+  "runtime":"edge",
+  "regions":["iad1","gru1","hnd1"]
+}
