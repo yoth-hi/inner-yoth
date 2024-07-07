@@ -38,13 +38,13 @@ export function Register (call, is, html) {
       return m
     }
     $$(a){return this.hostElement.querySelector(a)}
-    handleLink(a){
-      const url = a.currentTarget.href||void 0
-      a.preventDefault();
+    handleLink(a,b=""){
+      const url = a?.currentTarget?.href||b
+      a?.preventDefault();
       this.hundlePagePush(url)
     }
     hundlePagePush(url){
-      
+      console.log(url)
     }
     listen(a,b,c){
       a.addEventListener(b,(e)=>{

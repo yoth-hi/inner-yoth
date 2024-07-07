@@ -3,17 +3,21 @@ import {
   html
 } from "../components/DOM.js"
 
+import SugestionBox from "./sugestionBox.js"
+
+
 const _template = html`
 <form id="search-form" on-submit="onSubmit" action="/results">
   <div id="container" on-click="onClick">
     <app-icon is-ecm="true" id="search-icon" icon="[[icon]]" on-mousedown="focusInput" ></app-icon>
     <slot name="search-input"></slot>
-    <div id="search-clear-button" on-click="clearSearch" hidden="[[!isClearButtonVisible]]" >X</div>
+    <div id="search-clear-button" on-click="clearSearch" hidden="[[!isClearButtonVisible]]"></div>
   </div>
-  <slot name="search-container" ></slot>
+  <div id="sugestion-container" ></div>
 </form>
 <button on-click="onSubmit" id="search-icon-legacy" aria-label$="[[placeholder]]" >
-<app-icon icon="[[icon]]" is-ecm="true"></app-icon>  <app-paper-tooltip prefix="" >[[placeholder]]</app-paper-tooltip></button>
+<app-icon icon="[[icon]]" is-ecm="."></app-icon>
+<app-paper-tooltip prefix="" >[[placeholder]]</app-paper-tooltip></button>
 `
 
 const to = "/results"
@@ -21,8 +25,10 @@ class App {
   constructor() {
     this.inicializeInput()
   }
-  attached() {
+  ready() {
     const input = document.querySelector("app-masthead input")
+    const boxContent = document.querySelector("app-masthead #sugestion-container")
+    SugestionBox(boxContent, this)
     if (input) {
       this.searchInput = input
     }
@@ -38,6 +44,9 @@ class App {
         type: Boolean,
         value: false
       },
+      parent: {
+        type: HTMLElement
+      },
       placeholder: {
         type: String,
         observer: "onChengePlaceholder"
@@ -49,7 +58,8 @@ class App {
       focusing: {
         type: Boolean,
         value: false,
-        reflectToAttribute: true
+        reflectToAttribute: true,
+        observer: "onChengeFocusing"
       },
       isClearButtonVisible: {
         type: Boolean,
@@ -57,6 +67,10 @@ class App {
       },
     }
   }
+  onChengeFocusing(isFocusing){
+  //  this.parent.isFocusedSearchBar = isFocusing
+  }
+
   onClick(){
     
   }
@@ -91,20 +105,29 @@ class App {
     this.searchInput.focus()
   }
   onChengeInput() {
+    this._sugestionBox.onChengeInput(this.searchInput.value,this.searchInput)
     if (this.searchInput)this.hasInput = this.isClearButtonVisible = this.searchInput.value !== ""
   }
+  _onResize(){
+    this._sugestionBox._onResize()
+  }
   clearSearch(a) {
+    this._sugestionBox.onChengeInput("",this.searchInput)
     a.preventDefault();;
     this.searchInput.value = "";
     this.hasInput = this.isClearButtonVisible=!1;
     this.focusInput()
   };
   onSubmit(a){
-    a.preventDefault();
+    a.preventDefault?.();
+    const V = typeof a == "string" ? a:this.searchInput.value
+    if(V!==this.searchInput.value){
+      this.searchInput.value = V
+    }
     this.searchInput.blur()
     if(!this.hasInput)return;
-    const url = to + "?search_query=" + encodeURIComponent(this.searchInput.value).replace(/%20/g,"+")
-    this.hundlePagePush(to)
+    const url = to + "?search_query=" + encodeURIComponent(V).replace(/%20/g,"+")
+    this.hundlePagePush(url)
   }
 }
 

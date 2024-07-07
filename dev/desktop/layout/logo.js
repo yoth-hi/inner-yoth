@@ -1,7 +1,7 @@
 import { Register, html } from "../components/DOM.js"
 
 const _template = html`
-<a on-click="handleLink">YOTH</a>
+<a on-click="handleLink" href="/">YOTH</a>
 `
 
 
