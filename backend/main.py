@@ -39,7 +39,6 @@ class handler(BaseHTTPRequestHandler):
         if isPageHtml(path):
             self.serve_html(parsed_path, path)
         elif isPageApi(path):
-            self.send_header('X-Content-Type-Options', 'nosniff')
             RenderApi(path, self, parsed_path)
         else:
         #    self.send_header('Age', '305232')
