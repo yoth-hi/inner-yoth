@@ -1,5 +1,11 @@
 {
   "version": 2,
+  "functions":{
+    "backend/main.py":{
+       "runtime":"edge",
+        "regions":["iad1","gru1","hnd1"]
+    }
+  },
   "builds": [
     {
       "src": "backend/main.py",
