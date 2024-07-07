@@ -10,29 +10,31 @@ class App extends Element {
     this.hasAttribute("rule") || this.setAttribute("rule", "tablist")
     this._index = 0
     this._lists = [{
-      title: "123",
+      title: "Home",
       href:"/",
-      iconAc:"",
-      icon:""
+      icon:"HOME"
     },
       {
-        title: "123",
-        href:"/ele",
-        iconAc:"",
+        title: "Reels",
+        href:"/reels/",
+        icon:"REELS"
+      },
+      {
+        title: "Trending",
+        href:"/feed/trending",
+        icon:"TRENDING"
+      },
+      {
+        title: "Followrs",
+        href:"#",
         icon:""
       },
       {
-        title: "123",
-        href:"/h",
-        iconAc:"",
+        title: "Libary",
+        href:"/feed/libary",
         icon:""
       },
-      {
-        title: "123",
-        href:"/gg",
-        iconAc:"",
-        icon:""
-      }];
+      ];
     on(this._onChangePage.bind(this))
   }
   static properties = {
@@ -81,8 +83,12 @@ class List extends Element {
     return html`
     <div role="tab" @click="${this._onClick}" class="pivot-bar-item-tab" aria-selected="${this._isSelected?"true":"false"}">
       <span>
-        <span data-type-selected>Sel</span>
-        <span data-type-no-selected>NoS</span>
+        <span data-type-selected>
+          <app-icon icon="${("SELECTED_"+this.data?.icon)}"></app-icon>
+        </span>
+        <span data-type-no-selected>
+          <app-icon icon="${this.data?.icon}"></app-icon>
+        </span>
       </span>
       <span class="pivot-bar-item-tab-text">${this.data.title}</span>
     </div>
