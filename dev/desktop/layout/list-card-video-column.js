@@ -1,7 +1,5 @@
 import { Register, html } from "../components/DOM.js"
-const _template = html`
-
-`
+const _template = html``
 
 
 class App {

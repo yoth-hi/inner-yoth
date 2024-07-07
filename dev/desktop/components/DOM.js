@@ -14,7 +14,7 @@ export function Register (call, is, html) {
   call.prototype.properties || {}
   class GG extends ElementMixin(call) {
     get _template() {
-      return t ??= html()
+      return t ??= html?.()
     }
     set _template(a) {
       return t = a
@@ -36,6 +36,9 @@ export function Register (call, is, html) {
     }
     static get properties() {
       return m
+    }
+    onFindSlot(x){
+      call.prototype.onFindSlot?.apply(this,arguments)
     }
     $$(a){return this.hostElement.querySelector(a)}
     handleLink(a,b=""){
@@ -139,19 +142,35 @@ export const html = function(html_) {
   }
 }
 function QSP(doc = document) {
-  const a = doc.querySelectorAll("slot");
-  if (a.length) {
-    a.forEach((m)=> {
-      const t = doc.querySelector(`[slot="${m.name}"]`)
-      if (t) {
-        m.parentElement.insertBefore(t, m)
-        m.remove()
+  doc.querySelectorAll("slot").forEach(slot => {
+    const target = doc.querySelector(`[slot="${slot.name}"]`);
+    if (target) {
+      slot.parentElement.insertBefore(target, slot);
+      const dataHost = slot.parentElement.__dataHost;
+      if (dataHost) {
+        dataHost.onFindSlot(target);
       }
-    })
-  }
+      slot.remove();
+    }
+  });
 }
 
-setInterval(QSP, 16)
+// Função para observar mudanças no DOM e chamar QSP
+function observeDOMChanges() {
+  const observer = new MutationObserver(() => {
+    QSP();
+  });
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true
+    // Configurações adicionais conforme necessário
+  });
+}
+
+// Chamar observeDOMChanges para iniciar a observação
+observeDOMChanges();
+
 
 function jGR(a){
   return class extends a{

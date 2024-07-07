@@ -96,8 +96,6 @@ class App {
       this.listen(this.searchInput, "focus", ()=>(this.focusing=true))
       this.listen(this.searchInput, "blur", ()=>(this.focusing=false))
       this.hasEvents = true
-    } else {
-      setTimeout(()=>this.inicializeInput(a),10)
     }
   }
   focusInput(a) {
@@ -128,6 +126,18 @@ class App {
     if(!this.hasInput)return;
     const url = to + "?search_query=" + encodeURIComponent(V).replace(/%20/g,"+")
     this.hundlePagePush(url)
+  }
+  onFindSlot(x){
+    
+    const a = 
+    x.querySelector('input')||
+    document.querySelector('input')
+    if(a){
+      this.searchInput = a
+      this.inicializeInput(a)
+    } else {
+      setTimeout((x)=>this.onFindSlot(x),5)
+    }
   }
 }
 

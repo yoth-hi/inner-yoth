@@ -3,6 +3,7 @@
     "home": "Home",
     "reels":"Reels",
     "search":"Search",
+    "sign_up":"Sign Up",
     "subscribe":"Subscribe",
     "trending":"Trending"
   },
@@ -10,6 +11,7 @@
     "home": "Início",
     "reels":"Reels",
     "search": "Pesquisar",
+    "sign_up":"Cadastre-se",
     "subscribe":"Inscrever-se",
     "trending":"Em alta"
   },
@@ -17,6 +19,7 @@
     "home":"홈",
     "reels":"릴스",
     "search": "검색",
+    "sign_up":"가입하기",
     "subscribe":"구독",
     "trending":"트렌딩"
   },
@@ -24,6 +27,7 @@
     "home":"ホーム",
     "reels":"リール",
     "search":"検索",
+    "sign_up":"登録",
     "subscribe":"購読する",
     "trending":"トレンド"
   }

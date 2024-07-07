@@ -22,6 +22,7 @@ class sugestionBox {
     if(is){
       input.setAttribute("aria-controls","suggestions-box")
     } else input.removeAttribute("aria-controls")
+    this._onResize()
   }
   _preRender(arr){
     const v = this.value_.trim()

@@ -4,6 +4,7 @@ import"./logo.js"
 
 import"./mini-drower-item.js"
 import"./mini-drower.js"
+import"./ButtonCustomer.js"
 
 import"./card-video-column.js"
 import"./list-card-video-column.js"
@@ -12,3 +13,4 @@ import"./paper-tooltip.js"
 import"./player.js"
 import"./Button.js"
 import"./icon.js"
+import"./owner-card.js"

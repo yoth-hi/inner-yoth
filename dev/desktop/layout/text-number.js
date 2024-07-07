@@ -5,16 +5,18 @@ import {
 import {
   renderList
 } from "../components/list.js"
+
 const _template = html`
 <div id="items"></div>
 `
-
 
 class App {
   constructor() {
     this._items = []
   }
+
   ready() {}
+
   static get properties() {
     return {
       number: {
@@ -23,18 +25,23 @@ class App {
       }
     }
   }
+
   attached() {
     this.hostElement.setAttribute("role", "text")
   }
+
   onChengeData(number) {
-    const w = String(number).length;
+    const str = String(number)
+    this.hostElement.setAttribute("aria-label", str)
+    const w = str.length;
     for (let i = 0; i < w; i++) {
-      const y = this.createText(i, +String(number)[i]);
+      this.createText(i, +str[i]);
     }
-    setTimeout(()=> {
-      this.onChengeData(number+parseInt(100009*Math.random()))
+    setTimeout(() => {
+      this.onChengeData(number += parseInt(727*Math.random()))
     }, 2000)
   }
+
   createText(i, index) {
     const k = this._items[i];
     if (!k) {
@@ -55,35 +62,38 @@ class App {
     } else {
       k.parent.style.display = ""
     }
-    Gf(
-      this._items[i].index, index,
-      (index)=> {
-        // for (let e = 0; e < 10; e++) {
-        //   this._items[i].items[e].style.transform = `scale(${e == index?1: .9})`
+    const duration = 500 + index * 100; // Aumenta a duração da animação com base no valor do índice
+    animateToIndex(this._items[i].index, index, (index) => {
+      this._items[i].parent.style.transform = "translateY(" + -(index * 100) + "%)"
+      this._items[i].index = index;
+    }, duration)
+  }
+}
 
-        // }
-        this._items[i].parent.style.transform = "translateY("+-(index*100)+"%)"
-        this._items[i].index = index;
-      },
-      i)
-  }
-}
-function Gf(t, n, on, k) {
-  let af = t;
-  let y = () => {
-    on(af);
-    // if(af > n){
-    //   setTimeout(y, k*15)
-    // }
-    if (af === n) {
-      clearInterval(h);
-      return;
+function animateToIndex(start, end, on, duration) {
+  let currentIndex = start;
+  let startTime = null;
+
+  function animate(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const progress = timestamp - startTime;
+    const progressPercentage = Math.min(progress / duration, 1);
+    const nextIndex = Math.floor(start + (end - start) * progressPercentage);
+
+    if (nextIndex !== currentIndex) {
+      on(nextIndex);
+      currentIndex = nextIndex;
     }
-    af++;
-    if (af > 9) {
-      af = 0;
+
+    if (progress < duration) {
+      requestAnimationFrame(animate);
+    } else {
+      on(end);
     }
   }
-  const h = setInterval(y,k * 16);
+
+  requestAnimationFrame(animate);
 }
-Register(App, "app-text-number", _template)
+
+Register(App, "app-text-number", _template);
+

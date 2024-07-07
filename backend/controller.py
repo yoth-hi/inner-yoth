@@ -19,6 +19,7 @@ def renderContextPage(parsed_path, self_):
   lang__ = parse_accept_language_header(self_.headers.get("Accept-Language","en-US,en;q=1"))
   print(self_.headers)
   data = None
+  playerData = None
   context = {};
   path = parsed_path.path
   query = parseQuery(parsed_path.query)
@@ -28,6 +29,7 @@ def renderContextPage(parsed_path, self_):
   iswatch = context["pageId"] == "WATCH"
   isdev = context["isdev"] = host == "localhost:8080"
   istv = context["pageId"] == "LAYOUT_TV"
+  id_ = "text"
   context["iswatch"] = iswatch
   context["istv"] = istv
   context["path"] = path
@@ -40,7 +42,7 @@ def renderContextPage(parsed_path, self_):
       "content":{}
     };
     if iswatch:
-      playerData = getVideoPlayerData()
+      playerData = getDataVideo()
       if(playerData):
         data["playerOverlays"] = MainConstructor_playerOverlays(playerData)
         title += " - "
@@ -65,8 +67,12 @@ def renderContextPage(parsed_path, self_):
     context["static_app"] = "/s/mobile/"
   if(context["pageId"] == "FEED_HOME"):
     data["content"]["results"] = getDataHomePage_ListItems()
+  elif(iswatch and id_):
+    data["content"]["results"] = getDataWatchPage_ListItems(id_)
     #
+  playerData = getVideoPlayerData(playerData)
   context["data"] = toTextData(data)
+  context["playerData"] = toTextData(playerData)
   context["isMobule"] = (not istv and not isMobile) and isdev
   context["static_app"] += "jsbin/"
   context["config"] = toTextData(getConfig(context,self_))
@@ -159,6 +165,23 @@ def HeaderDasktopWeb(ctx):
       "inputData":{
         "placeholder":getI18n("search", lang)
       }
+    },
+    "headerEndItems":{
+      "isLoggad":False,
+      "items":[
+        {
+          "type":"BUTTON_CUSTOMER",
+          "text":getI18n("sign_up",lang),
+          "accessibility":{
+            "label":getI18n("sign_up",lang)
+          },
+          "icon":"USER",
+          "isFull":False,
+          "isRow":True,
+          "isBorder":False,
+          "endpoint":EndPoint_2("https://yonix.vercel.app/login")
+        }
+      ]
     }
   }
 
@@ -172,6 +195,14 @@ def EndPoint(path, context={}):
     'url':path,
     "context": {
       "pageId": getPageIdByPath(path)
+    }
+  }
+def EndPoint_2(url, context={}):
+  type_ = context.get("target","_blank")
+  return {
+    'url':url,
+    "context": {
+      "target": type_
     }
   }
 
@@ -211,23 +242,30 @@ def ConstructorCardVideo(data):
   }
 def MainConstructor_playerOverlays(playerData):
   title = playerData.get("title")
+  description = playerData.get("description","")
+  id_ = playerData.get("id")
   return{
+    "videoId":id_,
     "videoDetalis":{
-      "title": title
+      "title": title,
+      "description": description
     }
   }
 ## get - data player -
-def getVideoPlayerData():
+def getDataVideo():
     id_ = "test"
     try:
       resp = SQLC(f"""SELECT
     v.title,
     v.description,
     v.id,
-    (SELECT COUNT(*) FROM viewers WHERE video_id = v.id) AS viewer_count
-FROM
-    video v
-WHERE id = %s
+    (SELECT COUNT(*) FROM viewers WHERE video_id = v.id) AS viewer_count,
+    c.name AS channel_name,
+    c.id AS channel_id,
+    v.keywords
+FROM video v
+JOIN "video.channel" c ON v.channel_id = c.id
+WHERE v.id = %s
 LIMIT 1;
       """,(id_,),0)
       print(resp)
@@ -235,13 +273,17 @@ LIMIT 1;
         data = resp[0]
         return {
           "title": data[0],
-          "description": data[1]
+          "description": data[1],
+          "id": data[2],
+          "viewCount": data[3],
+          "channelName": data[4],
+          "keywords": data[6],
         }
       else:
-        print("Nenhum vídeo encontrado.")
+        print(f"No videos found. id:{id_}")
         return None
     except Exception as e:
-        print(f"Erro ao buscar dados do vídeo: {e}")
+        print(f"\n\nError fetching video data: {e}\n\n")
         return None
 ## get - data browse -
 def getData_ListItemsRecommeded(filters={}):
@@ -277,6 +319,12 @@ def getDataHomePage_ListItems():
   for item in rdata:
     data.append(ConstructorCardVideo(item))
   return data;
+def getDataWatchPage_ListItems(id_):
+  rdata = getData_ListItemsRecommeded();
+  data = [];
+  for item in rdata:
+    data.append(ConstructorCardVideo(item))
+  return data;
 
 def NEXT(context, self_):
   return {
@@ -289,7 +337,6 @@ def Y(arr):
 def getBodyRequest(self_):
   content_length = int(self_.headers['Content-Length'])
   post_data = self_.rfile.read(content_length)
-  print(65,post_data)
   return json.loads(post_data)
   
 GUIDE_ITEMS_SIMPLE = [
@@ -386,3 +433,32 @@ def getI18n(key,lang="en",param={}):
   return t.get(key)
 def format_string(template, **kwargs):
     return template.format(**kwargs)
+
+def getVideoPlayerData(playerData=None):
+  if not playerData:
+    playerData = getDataVideo()
+  id_ = playerData.get("id")
+  title = playerData.get("title")
+  description = playerData.get("description")
+  channelName = playerData.get("channelName")
+  viewCount = playerData.get("viewCount")
+  keywords = playerData.get("keywords",[])
+  print(61,playerData)
+  return{
+    "videoDetails": {
+      "videoId": id_,
+      "title": title,
+      "lengthSeconds": -1,
+      "keywords":keywords,
+      "channelId": None,
+      "isOwnerViewing": None,
+      "shortDescription":description,
+      "isCrawlable": None,
+      "thumbnail": None,
+      "allowRatings": None,
+      "viewCount": f"{viewCount}",
+      "author": channelName,
+      "isPrivate": False,
+      "isLiveContent": False
+    }
+  }

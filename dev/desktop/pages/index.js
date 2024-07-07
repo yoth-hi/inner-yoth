@@ -53,6 +53,7 @@ class App {
       pageId == "WATCH"
     ) {
       this.setPage(pageId)
+      this.currentPage.data = this.data 
     } else {
       //(data) =>{ on load data
       this.setPage(pageId)

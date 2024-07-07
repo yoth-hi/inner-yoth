@@ -28,6 +28,7 @@ a {
   transition: transform .3s ease;
 }
 app-masthead > #container {
+  --app-button-customer-border:0.1px;
   height: 56px;
   padding: 0 16px;
   display: flexbox;
@@ -173,10 +174,10 @@ app-masthead .back.button-header-commun {
   display: none;
 }
 app-masthead[is-mobile]:not([is-focused-search-bar]) .search.button-header-commun {
-  display: block;
+  display: flex;
 }
 app-masthead[is-mobile][is-focused-search-bar] .back.button-header-commun {
-  display: block;
+  display: flex!important;
 }
 app-masthead[is-mobile] app-search {
   display: none;
@@ -282,9 +283,8 @@ app-watch #column #player--c {
 }
 app-watch #column #primaty-information {
   background: var(--app-watch-playlist-background);
-  padding: 16px 14px;
-  border-radius: 16px;
-  margin: calc(var(--app-watch-margin)*2) 0;
+  border-radius: 48px;
+  margin-bottom: calc(var(--app-watch-margin)*2);
 }
 app-watch #column #primaty-information-v2 {
   padding: 16px 0;
@@ -355,7 +355,7 @@ app-card-video-column .details{
 }
 app-card-video-column .thumbnail{
   border-radius: 16px;
-  background: #192;
+  background: #0004;
   width: 213.33px;
   height: 120px;
   overflow: hidden;
@@ -369,7 +369,7 @@ app-card-video-column:hover .details{
 
 
 
-app-text-number{
+app-text-number {
   display: flex;
   height: 25px;
   overflow: hidden;
@@ -442,4 +442,109 @@ app-paper-tooltip[hover]{
     margin-inline-end: 0px;
     padding-inline-start: 0px;
     margin: 10px 0;
+}
+
+
+app-button-customer {
+  white-space: nowrap;
+  background: #0000;
+  display: block;
+  cursor: pointer;
+  transition: box-shadow .16s, background .16s;
+  box-shadow: 0px 0px 0px #8887;
+}
+app-masthead app-button-customer {
+  color: #000;
+}
+app-masthead app-button-customer:hover {
+  color: #fff;
+  background: #000;
+}
+app-button-customer[is-full] {
+  background: #000;
+  fill: #fff;
+  color:#fff;
+}
+app-button-customer:hover {
+  box-shadow: 0px 0px 19px 6px #8887;
+}
+app-button-customer[is-row] {
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  height: 40px;
+  padding: 0px 16px;
+}
+app-button-customer[is-border] {
+  border-width: var(--app-button-customer-border,2px);
+  border-style: solid;
+  border-color: #000;
+}
+app-logo {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-right: 4px;
+  min-width: 72px;
+  font-weight: 700;
+  font-family: Tahoma;
+}
+
+app-button-icon:hover{
+  background: #8883;
+  
+}
+app-button-icon{
+  transition: .16s;
+  background: #0000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+app-button-icon app-icon{
+  display: flex!important;
+  align-items: center;
+  justify-content: center;
+  padding: 0px!important;
+}
+
+app-card-owner {
+  height: 48px;
+  display: block;
+}
+app-card-owner app-image {
+  display: block;
+  height: 48px;
+  width: 48px;
+  background: #8889;
+  border-radius: 24px;
+  margin-right: 8px;
+}
+app-card-owner .contenter {
+  height: 48px;
+  display: flex;
+  align-items: center;
+}
+app-card-owner .name {
+  font-size: 14px;
+}
+app-card-owner .metadata {
+  font-size: 12px;
+  white-space: nowrap;
+  display: flex;
+  line-height: 18px;
+}
+app-card-owner .metadata app-text-number span{
+  font-size: 12px;
+  height: 18px;
+  line-height: 18px;
+}
+app-card-owner .metadata app-text-number{
+  height: 18px!important
+}
+app-card-owner .subtext {
+  margin-left:5px;
+  display:block;
 }

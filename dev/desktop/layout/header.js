@@ -1,4 +1,7 @@
 import { Register, html } from "../components/DOM.js"
+import {
+  renderList
+} from "../components/list.js"
 import { getMainDataFTLayout, target } from "../components/load.page.main.layout.js"
 const _template = html`
 <div id="container" >
@@ -15,7 +18,8 @@ const _template = html`
     <app-button-icon on-click="focusSearchBar" is-round="." class="search button-header-commun" icon="SEARCH" is-ecm=".">
       <app-paper-tooltip>{{data.searchBox.inputData.placeholder}}</app-paper-tooltip>
     </app-button-icon>
-    end
+    <div id="items">
+    </div>
   </div>
 </div>
 `
@@ -29,7 +33,8 @@ class App {
   static get properties() {
     return {
       data: {
-        type: Object
+        type: Object,
+        observer:"onChengeData"
       },
       _hostElement: {
         type: HTMLElement
@@ -67,6 +72,20 @@ class App {
     const g = this.hostElement.querySelector("app-search input")
     g.focus()
   }
+  onChengeData(data){
+    this.renderEndItems(data?.headerEndItems?.items)
+  }
+  renderEndItems(arr){
+    renderList((a)=>{
+      switch(a.type){
+        case "BUTTON_CUSTOMER":
+          return "app-button-customer"
+          break;
+      }
+    }, this.$["items"], arr,(a,data,m)=>{
+      a.data = data
+    })
+  }
 }
 
-Register(App, "app-masthead", _template)
+Register(App, "app\-masthead", _template)
