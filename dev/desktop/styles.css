@@ -239,7 +239,7 @@ app-search input {
 
 
 
-app-watch {
+app-watch:not([hidden]) {
   width: 100%;
   display: block;
   --app-watch-secondary-width: 260px;
