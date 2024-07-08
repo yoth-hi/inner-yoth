@@ -1,6 +1,8 @@
 import json
-from urllib.parse import parse_qs
+from urllib.parse import parse_qs, urlparse
 from .database import SQL, createConn, SQLC
+import requests
+import xml.etree.ElementTree as ET
 
 from .api.watchtime import WATCHTIME
 from .utils import getConfig, parse_accept_language_header
@@ -120,6 +122,7 @@ def isPageApi(path):
     path == "/browse" or
     path == "/like/like" or
     path == "/guide" or
+    path == "/sugestions" or
     path == "/header" or
     path == "/like/deslike"
   )
@@ -391,13 +394,24 @@ def GUIDE(context, self_, createConn=None):
   return{
     "data":f"{toTextData(data)}".encode('utf-8')
   }
-
+def SUGESTIONS(context, self_, createConn=None):
+  parsed_path = urlparse(self_.path)
+  query_params = parse_qs(parsed_path.query)
+  data = getSugestion(
+    query_params.get('q', [None])[0],
+    query_params.get('lang', ["en"])[0]
+  )
+  return{
+    "status":200,
+    "data":f"{toTextData(data)}".encode('utf-8')
+  }
 
 
 ## API MANAGER
 APIS = {
   "watchtime": WATCHTIME,
-  "guide": GUIDE
+  "guide": GUIDE,
+  "sugestions": SUGESTIONS
 }
 
 def RenderApi(path, self_, parsed_path):
@@ -483,3 +497,14 @@ def getViewFormate(number, lang):
   t = getTypeNumberI18n(number);
   h = getI18n(f"$COUNT_view{t}",lang,COUNT=number)
   return h
+
+URL_GOOGLE = "https://suggestqueries.google.com/complete/search?output=toolbar&hl={hl}&q={q}&gl=in"
+def getSugestion(q,lang):
+  url = format_string(URL_GOOGLE,hl=lang,q=q)
+  response = requests.get(url)
+  suggestions = []
+  root = ET.fromstring(response.content)
+  for suggestion in root.findall(".//suggestion"):
+      data = suggestion.get('data');
+      suggestions.append([data,data])
+  return suggestions

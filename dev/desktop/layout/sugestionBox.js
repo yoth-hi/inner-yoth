@@ -1,4 +1,4 @@
-
+import fetch from "../components/fetch.js"
 class sugestionBox {
   _items = [];
   constructor(parent, host){
@@ -24,14 +24,16 @@ class sugestionBox {
     } else input.removeAttribute("aria-controls")
     this._onResize()
   }
-  _preRender(arr){
+  async _preRender(arr){
     const v = this.value_.trim()
     if (v.length < 1) {
       this.parent.style.display = "none"
       this._renderItems([])
     }else {
       this.parent.style.display = "block"
-      this._renderItems(arr)
+      const h = await new fetch("/v1/sugestions?q="+encodeURIComponent(v))
+      console.log(h)
+      this._renderItems(h)
     }
   }
   _onResize(){
