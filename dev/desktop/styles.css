@@ -1,4 +1,5 @@
 html {
+  --app-grid-item-margin: 16px;
   --app-background-color: #fff;
   --app-badge-chip-background: rgba(0,0,0,.05);
   --app-watch-playlist-background: #3739
@@ -547,4 +548,59 @@ app-card-owner .metadata app-text-number{
 app-card-owner .subtext {
   margin-left:5px;
   display:block;
+}
+app-card-video:hover:before {
+  
+  background: #2222;
+}
+app-card-video:before {
+  background: #0000;
+  transition: background .16s;
+  position:absolute;
+  content: '';
+  border-radius: 8px;
+  inset:-4px;
+  z-index: -1;
+}
+app-card-video  {
+    display: block;
+    position: relative;
+    margin-left: calc(var(--app-grid-item-margin)/2);
+    margin-right: calc(var(--app-grid-item-margin)/2);
+    margin-bottom: 40px;
+    width: calc(100%/var(--app-grid-items-per-row) - var(--app-grid-item-margin) - .01px);
+}
+app-grid-card-video {
+  overflow-y: scroll;
+  display: block;
+  min-height: calc(100vh - 56px);
+  width: calc(100vw - 72px);
+}
+app-grid-card-video .app-card-video-thumbnail {
+    border-radius: 16px;
+    position: relative;
+    background: #111;
+    padding-bottom: 56.25%;
+}
+app-grid-card-video .image-avatar {
+    width: 36px;
+    height: 36px;
+    background: #111;
+    border-radius: 50%;
+}
+app-grid-card-video .image-avatar-link {
+    width: 36px;
+    display: block;
+    margin-top: 12px;
+    margin-right: 12px;
+}
+app-grid-card-video .details {
+    display: flex;
+}
+app-grid-card-video .meta {
+  color: #0009;
+  font-size: 12px;
+}
+app-grid-card-video h3 {
+    margin: 12px 0 4px 0;
 }

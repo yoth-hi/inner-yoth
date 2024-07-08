@@ -50,6 +50,12 @@ class handler(BaseHTTPRequestHandler):
             RenderApi(path, self, parsed_path)
 
     def serve_html(self, parsed_path, path):
+        host = self.headers.get('Host')
+        
+        # Verifica o user-agent para determinar se é mobile
+        user_agent = self.headers.get('User-Agent')
+        is_mobile = re.search(r'Mobi|Android', user_agent, re.IGNORECASE)
+        isProd = not (host == "127.0.0.1:8080" or host == "localhost:8080")
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.send_header('X-Content-Type-Options', 'nosniff')
@@ -66,7 +72,7 @@ class handler(BaseHTTPRequestHandler):
                 template_content = re.sub(r'\n| {1,}', ' ', template_content)
                 cached_templates[template_name] = template_env.from_string(template_content)
 
-        context = renderContextPage(parsed_path, self)
+        context = renderContextPage(parsed_path, self, is_mobile)
         render = cached_templates[template_name].render(context)
         compressed_content = brotli.compress(render.encode('utf-8'), quality=compression_quality)
         self.wfile.write(compressed_content)

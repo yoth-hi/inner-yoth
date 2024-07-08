@@ -4,6 +4,7 @@ import {
 } from "../components/DOM.js"
 const _template = html`<div id="content"></div>`
 import"./watch.js"
+import"./home.js"
 import { get as storeGet } from "../components/config.store.js"
 const getPage = function(arr, is){
   let element = arr.get(is)
@@ -20,7 +21,7 @@ const getPage = function(arr, is){
     }
     element = document.createElement(name);
     if(!element.inst){
-      element.innerHTML = "<span>THIS NOT IS RENDE"
+      element.innerHTML = "<span>This page is in development</span>"
     }
     arr.set(is, element)
   }
@@ -53,11 +54,14 @@ class App {
       pageId == "WATCH"
     ) {
       this.setPage(pageId)
-      this.currentPage.data = this.data 
     } else {
       //(data) =>{ on load data
       this.setPage(pageId)
       //}
+    }
+    if(!this.isStart){
+      this.currentPage.data = this.data 
+      this.isStart = false
     }
     storeGet("root").isWatchPage = pageId == "WATCH"
   }

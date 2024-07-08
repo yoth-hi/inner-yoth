@@ -5,7 +5,9 @@
     "search":"Search",
     "sign_up":"Sign Up",
     "subscribe":"Subscribe",
-    "trending":"Trending"
+    "trending":"Trending",
+    "$COUNT_view":"{COUNT} View",
+    "$COUNT_views":"{COUNT} Views"
   },
   "pt": {
     "home": "Início",
@@ -13,7 +15,9 @@
     "search": "Pesquisar",
     "sign_up":"Cadastre-se",
     "subscribe":"Inscrever-se",
-    "trending":"Em alta"
+    "trending":"Em alta",
+    "$COUNT_view":"{COUNT} Visualização",
+    "$COUNT_views":"{COUNT} Visualizações"
   },
   "ko": {
     "home":"홈",
@@ -21,7 +25,9 @@
     "search": "검색",
     "sign_up":"가입하기",
     "subscribe":"구독",
-    "trending":"트렌딩"
+    "trending":"트렌딩",
+    "$COUNT_view":"{COUNT} 회 조회수",
+    "$COUNT_views":"{COUNT} 회 조회수"
   },
   "ja": {
     "home":"ホーム",
@@ -29,6 +35,8 @@
     "search":"検索",
     "sign_up":"登録",
     "subscribe":"購読する",
-    "trending":"トレンド"
+    "trending":"トレンド",
+    "$COUNT_view":"{COUNT} 回の視聴",
+    "$COUNT_views":"{COUNT} 回の視聴"
   }
 }

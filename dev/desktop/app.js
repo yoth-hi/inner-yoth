@@ -1,8 +1,10 @@
+import{ManagerHistory}from"./components/DOM.js"
 import { set as storeSet } from "./components/config.store.js"
 import"./layout/index.js"
 import"./pages/index.js"
 import { Register, html } from "./components/DOM.js"
 import{isDark}from"./utils/thame.js"
+import{getPagesIdByPath}from"./components/pages.config.js"
 import{getController}from"./utils/cookie_simple.js"
 const _template = html`
 <div>
@@ -20,6 +22,8 @@ const _template = html`
 class App {
   constructor(){
     storeSet("root",this)
+    this.listen(window,"popstate","_onChengePage")
+    ManagerHistory.onpush(this._onChengePage.bind(this))
   }
   attached(){
     const hasDarkTyped = window.matchMedia("(prefers-color-scheme: dark)")
@@ -50,6 +54,10 @@ class App {
   onDeviceThemeChanged(){
     const dark = isDark()
     getController().save({ dark })
+  }
+  _onChengePage(){
+    const id = getPagesIdByPath(location.pathname)
+    this.pageId = id
   }
 }
 

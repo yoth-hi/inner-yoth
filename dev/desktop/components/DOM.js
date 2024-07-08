@@ -1,9 +1,11 @@
+import{history}from"./pushState.js"
 import {
   ElementMixin
 } from 
  "./_prod.js"
-
-
+ 
+ 
+export const ManagerHistory = new history();
 var Upb = ["disabled", "disable-upgrade"]
 export function Register (call, is, html) {
   call.prototype.is = is;
@@ -47,7 +49,7 @@ export function Register (call, is, html) {
       this.hundlePagePush(url)
     }
     hundlePagePush(url){
-      console.log(url)
+      ManagerHistory.pushState(url)
     }
     listen(a,b,c){
       a.addEventListener(b,(e)=>{

@@ -11,7 +11,7 @@ with open('backend/translations.json', 'r') as f:
 
 
 ## host
-def renderContextPage(parsed_path, self_):
+def renderContextPage(parsed_path, self_, is_mobile):
   lang = "en"
   title = "Yoth"
   description = ""
@@ -24,7 +24,7 @@ def renderContextPage(parsed_path, self_):
   path = parsed_path.path
   query = parseQuery(parsed_path.query)
   context["pageId"] = getPageIdByPath(path)
-  isMobile = not query.get("app") == "desktop"
+  isMobile = not not is_mobile #not query.get("app") == "desktop"
   isembed = context["pageId"] == "EMBED"
   iswatch = context["pageId"] == "WATCH"
   isdev = context["isdev"] = host == "localhost:8080"
@@ -35,7 +35,7 @@ def renderContextPage(parsed_path, self_):
   context["path"] = path
   context["host"] = host
   context["hl"] = lang__
-  context["lang"] = (lang__[0][0] or "en-US")
+  context["lang"] =lang= (lang__[0][0] or "en-US")
   if not istv or not isembed:
     notificationCount = 0
     data = {
@@ -66,10 +66,12 @@ def renderContextPage(parsed_path, self_):
   if(not istv and isMobile):
     context["static_app"] = "/s/mobile/"
   if(context["pageId"] == "FEED_HOME"):
-    data["content"]["results"] = getDataHomePage_ListItems()
+    data["content"]["results"] = getDataHomePage_ListItems(lang)
   elif(iswatch and id_):
     data["content"]["results"] = getDataWatchPage_ListItems(id_)
     #
+  #if isMobile:
+  context["pivotBar"] = getPivotBar(lang, context,self_)
   playerData = getVideoPlayerData(playerData)
   context["data"] = toTextData(data)
   context["playerData"] = toTextData(playerData)
@@ -209,7 +211,7 @@ def EndPoint_2(url, context={}):
 
 def MainConstructor_contentPage():
   return{}
-def ConstructorCardVideo(data):
+def ConstructorCardVideo(data,lang):
   title = data.get("title")
   id_ = data.get("id")
   duration = int(+data.get("duration"))
@@ -223,7 +225,7 @@ def ConstructorCardVideo(data):
     "title":title,
     "videoId": id_,
     "viewCount":{
-      "text": i18n_view(view_count),
+      "text": getViewFormate(view_count,lang),
       "count":view_count
     },
     "thumbnailOverlays":{
@@ -313,17 +315,17 @@ LIMIT %s;
     })
   return data
 
-def getDataHomePage_ListItems():
+def getDataHomePage_ListItems(lang):
   rdata = getData_ListItemsRecommeded();
   data = [];
   for item in rdata:
-    data.append(ConstructorCardVideo(item))
+    data.append(ConstructorCardVideo(item,lang))
   return data;
 def getDataWatchPage_ListItems(id_):
   rdata = getData_ListItemsRecommeded();
   data = [];
   for item in rdata:
-    data.append(ConstructorCardVideo(item))
+    data.append(ConstructorCardVideo(item,"en"))
   return data;
 
 def NEXT(context, self_):
@@ -349,15 +351,7 @@ GUIDE_ITEMS_SIMPLE_ENDPOINT = [
   None,
   "/feed/trending"
 ]
-def GUIDE(context, self_, createConn):
-  data = getBodyRequest(self_) or {};
-  print(data)
-  client = data.get("client", None);
-  if(not client):
-    return {
-      status: 403
-    }
-  lang = client.get("hl","en")
+def getGuideListItems(self_, lang,context):
   guideItems = []
   itemsPaths = GUIDE_ITEMS_SIMPLE_ENDPOINT
   index = 0;
@@ -378,9 +372,21 @@ def GUIDE(context, self_, createConn):
       "icon": item
     })
     index += 1
+  return guideItems
+  
+def GUIDE(context, self_, createConn=None):
+  data = getBodyRequest(self_) or {};
+  print(data)
+  client = data.get("client", None);
+  lang = client.get("hl","en")
+  if(not client):
+    return {
+      status: 403
+    }
+  
   data = {
     "user":{},
-    "guideItems": guideItems
+    "guideItems": getGuideListItems(self_,lang, context)
   }
   return{
     "data":f"{toTextData(data)}".encode('utf-8')
@@ -428,9 +434,9 @@ def convert_seconds(total_seconds):
         return f"{minutes}:{seconds:02}"
 def i18n_view(viewer=0):
     return f"{viewer:,}"
-def getI18n(key,lang="en",param={}):
+def getI18n(key,lang="en",**kwargs):
   t = translations.get(lang) or translations.get(lang.split("-")[0])  or translations["en"]
-  return t.get(key)
+  return t.get(key,"").format(**kwargs)
 def format_string(template, **kwargs):
     return template.format(**kwargs)
 
@@ -462,3 +468,18 @@ def getVideoPlayerData(playerData=None):
       "isLiveContent": False
     }
   }
+
+def getPivotBar(lang, context, self_):
+  items = getGuideListItems(context,"en" ,self_)
+  return{
+    "items":items
+  }
+def getTypeNumberI18n(number):
+  with_ = ""
+  if number > 1:
+    with_ = "s"  
+  return with_
+def getViewFormate(number, lang):
+  t = getTypeNumberI18n(number);
+  h = getI18n(f"$COUNT_view{t}",lang,COUNT=number)
+  return h
