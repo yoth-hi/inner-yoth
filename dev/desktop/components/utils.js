@@ -106,3 +106,12 @@ export const requestFullscreen = function(a) {
 	export const isFullscreenEnabled = function() {
 		return !!IC(["fullscreenEnabled", "webkitFullscreenEnabled", "mozFullScreenEnabled", "msFullscreenEnabled"], document)
 	};
+/**
+ * Adiciona ou atualiza um parâmetro de query na URL e redireciona o navegador.
+ * @param {string} url - A URL atual (normalmente `window.location.href`).
+ * @param {string} paramName - O nome do parâmetro de query a ser pego
+ */
+export function getQueryParameter(url, paramName) {
+  let newUrl = new URL(url);
+  return newUrl.searchParams.get(paramName);
+}

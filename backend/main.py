@@ -46,7 +46,7 @@ class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         parsed_path = urlparse(self.path)
         path = unquote(parsed_path.path)
-        if isPageApi(path):
+        if isPageApi(path,"POST"):
             RenderApi(path, self, parsed_path)
 
     def serve_html(self, parsed_path, path):

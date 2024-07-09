@@ -5,6 +5,7 @@ import {
 
 import SugestionBox from "./sugestionBox.js"
 import {getI18n} from "../components/data.config.js"
+import {NAME_SEARCH_QUERY} from "../components/vars.js"
 
 
 const _template = html`
@@ -130,7 +131,7 @@ class App {
     }
     this.searchInput.blur()
     if(!this.hasInput)return;
-    const url = to + "?search_query=" + encodeURIComponent(V).replace(/%20/g,"+")
+    const url = to + "?"+NAME_SEARCH_QUERY+"=" + encodeURIComponent(V).replace(/%20/g,"+")
     this.hundlePagePush(url)
   }
   onFindSlot(x){

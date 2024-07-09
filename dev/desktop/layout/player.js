@@ -36,7 +36,7 @@ class App {
   onChengeFunction(a){
     this.player = a(this)
     const t = this.player.element.parentElement;
-    t!==this.hostElement&&(t.remove())
+    t!==this.hostElement&&(t?.remove())
     this.hostElement.appendChild(this.player.element)
   }
 }

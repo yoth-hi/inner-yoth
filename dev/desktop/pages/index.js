@@ -2,9 +2,12 @@ import {
   Register,
   html
 } from "../components/DOM.js"
+import toLoad from "../components/loadDataPage.js"
 const _template = html`<div id="content"></div>`
 import"./watch.js"
 import"./home.js"
+import { dispatch } from "../components/Event.js"
+import { EVENT_NAME_ON_NAVEGATE_START,EVENT_NAME_ON_NAVEGATE_FINISH } from "../components/vars.js"
 import { get as storeGet } from "../components/config.store.js"
 const getPage = function(arr, is){
   let element = arr.get(is)
@@ -50,19 +53,26 @@ class App {
     }
   }
   renderPage(pageId) {
+    const hasPageCurrent = !!this.currentPage
     if (
       pageId == "WATCH"
     ) {
       this.setPage(pageId)
+      this.currentPage.isStart = !hasPageCurrent
+      dispatch(document,EVENT_NAME_ON_NAVEGATE_FINISH,void 0)
     } else {
-      //(data) =>{ on load data
-      this.setPage(pageId)
-      //}
+      if(this.is2pg){
+        toLoad(pageId,(data) => {
+          this.setPage(pageId)
+          this.data = data
+          this.currentPage.data = this.data 
+        })
+      } else {
+          this.setPage(pageId)
+          this.currentPage.data = this.data 
+      }
     }
-    if(!this.isStart){
-      this.currentPage.data = this.data 
-      this.isStart = false
-    }
+    this.is2pg = true
     storeGet("root").isWatchPage = pageId == "WATCH"
   }
   setPage(a){

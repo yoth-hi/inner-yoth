@@ -10,6 +10,8 @@ import{getController}from"./utils/cookie_simple.js"
 const _template = html`
 <div>
   <div id="header-contenter">
+    <app-progress>
+    </app-progress>
     <slot name="header"></slot>
   </div>
   <div>

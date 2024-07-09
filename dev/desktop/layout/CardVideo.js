@@ -8,11 +8,13 @@ import {
 
 const _template = html`
 <div>
-  <div class="app-card-video-thumbnail"></div>
+  <a on-click="handleLink" href$="/watch?v={{data.videoId}}">
+    <div class="app-card-video-thumbnail"></div>
+  </a>
 </div>
 <div class="details">
   <div>
-    <a href="{{data.owner.endpoint.url}}" class="image-avatar-link">
+    <a on-click="handleLink" href="{{data.owner.endpoint.url}}" class="image-avatar-link">
       <div class="image-avatar">
         <img role="img" src="" />
       </div>
@@ -20,7 +22,7 @@ const _template = html`
   </div>
   <div>
     <h3>
-      <a href="/watch?v=28">
+      <a on-click="handleLink" href$="/watch?v={{data.videoId}}">
         <span>{{data.title}}</span>
       </a>
     </h3>

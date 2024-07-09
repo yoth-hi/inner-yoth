@@ -7,8 +7,16 @@ import {
 } from "../components/config.store.js"
 import {
   getEventNameFullScreenChange,
+  getQueryParameter,
   getFullScreenElement
 } from "../components/utils.js"
+import {
+  loadNextPage
+}from"../components/loadDataPage.js"
+import {
+  EVENT_NAME_ON_NAVEGATE_START,
+  EVENT_NAME_ON_NAVEGATE_FINISH
+} from "../components/vars.js"
 const _template = html`
 <div id="container">
 <div id="full-player">
@@ -35,7 +43,7 @@ const _template = html`
 </div>
 <div id="primaty-information">
 <div class="">
-  <app-card-owner></app-card-owner>
+<app-card-owner></app-card-owner>
 </div>
 </div>
 <div id="dscription-information">
@@ -62,6 +70,11 @@ class Watch {
     this.listen(document, getEventNameFullScreenChange(document), ()=> {
       this.fullscreen = !!getFullScreenElement(false)
     })
+    this.listen(document, EVENT_NAME_ON_NAVEGATE_FINISH, "onFinishNavegate")
+  }
+  onFinishNavegate() {
+    const id = getQueryParameter(location.href, "v")
+    this.videoId = id
   }
   ready() {
     this.resize()
@@ -80,7 +93,8 @@ class Watch {
       },
       videoId: {
         type: String,
-        reflectToAttribute: true
+        reflectToAttribute: true,
+        observer: "onChengeVideoId"
       },
       fullscreen: {
         type: Boolean,
@@ -100,6 +114,16 @@ class Watch {
         computed: "computedIsFullMode(fullscreen)",
         observer: "toFullPlayer"
       }
+    }
+  }
+  async onChengeVideoId(a) {
+    //   if(!this.isStart){return};
+    if (
+      (/^\/live\//.test(location.pathname) ||
+        location.pathname === "/watch") && a
+    ) {
+      const y = await loadNextPage(a)
+      this.data = y
     }
   }
   onChengeData(data) {
@@ -146,9 +170,12 @@ class Watch {
       this.isRow = is
     }
   }
-  getPlayer() {
+  getPlayer(M) {
     const _get = ()=> {
-      const element = lsd ?? (lsd = document.querySelector(".html5-video-player"))
+      let element = lsd ?? (lsd = document.querySelector(".html5-video-player"))
+      if (!element) {
+        element = lsd = window.player.create(M.hostElement, {}, {})
+      }
       const _player = {
         element
       }

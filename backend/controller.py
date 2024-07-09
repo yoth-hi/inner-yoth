@@ -17,6 +17,14 @@ def getI18nQSP(lang):
     "SEARCH_PLACEHOLDER":getI18n("search",lang)
   }
   return toTextData(data) or "{}";
+def renderSuperDataApi(lang, self_, context,data={}):
+  pageId = context.get("pageId")
+  if(not data.get("content")):
+    data["content"] = MainConstructor_contentPage()
+  if(context.get("pageId") == "FEED_HOME"):
+    data["content"]["results"] = getDataHomePage_ListItems(lang)
+  
+  return data;
 ## host
 def renderContextPage(parsed_path, self_, is_mobile):
   linksPre = "";
@@ -74,9 +82,8 @@ def renderContextPage(parsed_path, self_, is_mobile):
     context["static_app"] = "/s/tv/"
   if(not istv and isMobile):
     context["static_app"] = "/s/mobile/"
-  if(context["pageId"] == "FEED_HOME"):
-    data["content"]["results"] = getDataHomePage_ListItems(lang)
-  elif(iswatch and id_):
+  renderSuperDataApi(lang,self_,context,data)
+  if(iswatch and id_):
     data["content"]["results"] = getDataWatchPage_ListItems(id_)
     #
   #if isMobile:
@@ -122,13 +129,15 @@ def isPageHtml(path):
     path == "/tv" or
     path == "/feed/trending"
   );
-def isPageApi(path):
+def isPageApi(path,type_="GET"):
   if not path.startswith("/v1/"):
     return False
   path = path[3:]
-  return (
-    path == "/watchtime" or
-    path == "/next" or
+  GETS = (
+    path == "/watchtime"
+  )
+  POST = (
+    path == "/detalis_player" or
     path == "/browse" or
     path == "/like/like" or
     path == "/guide" or
@@ -136,6 +145,11 @@ def isPageApi(path):
     path == "/header" or
     path == "/like/deslike"
   )
+  if(type_=="GET"):
+    return GETS
+  else:
+    return POST
+
 def parseQuery(query_string = ""):
   query_params = parse_qs(query_string)
   return {key: value[0] for key, value in query_params.items()}
@@ -416,13 +430,32 @@ def SUGESTIONS(context, self_, createConn=None):
     "status":200,
     "data":f"{strJson}".encode('utf-8')
   }
-
+def BROWSE(context, self_, createConn):
+  body = getBodyRequest(self_) or {};
+  lang = body.get("client",{}).get("hl")
+  data = {}
+  renderSuperDataApi(lang, self_, body,data)
+  data = toTextData(data) or "{}"
+  return{
+    "data":f"{data}".encode('utf-8')
+  }
+def GET_DATAILS_PLAYER(context, self_, createConn):
+  body = getBodyRequest(self_) or {};
+  lang = body.get("client",{}).get("hl")
+  data = {}
+  
+  data = toTextData(data) or "{}"
+  return{
+    "data":f"{data}".encode('utf-8')
+  }
 
 ## API MANAGER
 APIS = {
   "watchtime": WATCHTIME,
   "guide": GUIDE,
-  "sugestions": SUGESTIONS
+  "sugestions": SUGESTIONS,
+  "browse": BROWSE,
+  "detalis_player": GET_DATAILS_PLAYER,
 }
 
 def RenderApi(path, self_, parsed_path):
