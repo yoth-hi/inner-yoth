@@ -13,26 +13,17 @@
   "routes": [
     {
       "src": "/s/(.*)",
-      "dest": "frontend/$1"
+      "dest": "frontend/$1",
+      "headers": [
+        {
+          "key": "Content-Encoding",
+          "value": "gzip"
+        }
+      ]
     },
     {
       "src": "/(.*)",
       "dest": "backend/main.py"
     }
   ],
-  "headers": [
-    {
-      "source": "/s/(.*).js",
-      "headers": [
-        {
-          "key": "Content-Encoding",
-          "value": "gzip"
-        },
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
-    }
-  ]
 }
