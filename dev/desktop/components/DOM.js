@@ -162,7 +162,7 @@ function observeDOMChanges() {
   const observer = new MutationObserver(() => {
     QSP();
   });
-  observer.observe(document.body, {
+  observer.observe(document.documentElement, {
     childList: true,
     subtree: true,
     attributes: true

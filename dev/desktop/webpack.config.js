@@ -93,6 +93,7 @@ class compyleCss {
                 let assetSource = compilation.assets[filename].source();
                 if (
                   /\.css$/.test(filename)||
+                  /\.text$/.test(filename)||
                   /\.html/.test(filename)
                 ) {
                     assetSource = assetSource.replace(/\n|\ {2,}/g, "");

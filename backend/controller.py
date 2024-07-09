@@ -3,6 +3,7 @@ from urllib.parse import parse_qs, urlparse
 from .database import SQL, createConn, SQLC
 import requests
 import xml.etree.ElementTree as ET
+from functools import lru_cache
 
 from .api.watchtime import WATCHTIME
 from .utils import getConfig, parse_accept_language_header
@@ -11,9 +12,14 @@ translations = {}
 with open('backend/translations.json', 'r') as f:
   translations = json.load(f)
 
-
+def getI18nQSP(lang):
+  data = {
+    "SEARCH_PLACEHOLDER":getI18n("search",lang)
+  }
+  return toTextData(data) or "{}";
 ## host
 def renderContextPage(parsed_path, self_, is_mobile):
+  linksPre = "";
   lang = "en"
   title = "Yoth"
   description = ""
@@ -34,6 +40,7 @@ def renderContextPage(parsed_path, self_, is_mobile):
   id_ = "text"
   context["iswatch"] = iswatch
   context["istv"] = istv
+  context["getI18nQSP"] = getI18nQSP
   context["path"] = path
   context["host"] = host
   context["hl"] = lang__
@@ -79,6 +86,9 @@ def renderContextPage(parsed_path, self_, is_mobile):
   context["playerData"] = toTextData(playerData)
   context["isMobule"] = (not istv and not isMobile) and isdev
   context["static_app"] += "jsbin/"
+  g = context.get("static_app")
+  linksPre += f"<{g}/app.js>; rel=preload; as=script"
+  self_.send_header('Link', f"{linksPre}")
   context["config"] = toTextData(getConfig(context,self_))
   print(path, context)
   return context;
@@ -399,11 +409,12 @@ def SUGESTIONS(context, self_, createConn=None):
   query_params = parse_qs(parsed_path.query)
   data = getSugestion(
     query_params.get('q', [None])[0],
-    query_params.get('lang', ["en"])[0]
+    query_params.get('hl', ["en"])[0]
   )
+  strJson = toTextData(data or []) or "[]"
   return{
     "status":200,
-    "data":f"{toTextData(data)}".encode('utf-8')
+    "data":f"{strJson}".encode('utf-8')
   }
 
 
@@ -498,13 +509,16 @@ def getViewFormate(number, lang):
   h = getI18n(f"$COUNT_view{t}",lang,COUNT=number)
   return h
 
-URL_GOOGLE = "https://suggestqueries.google.com/complete/search?output=toolbar&hl={hl}&q={q}&gl=in"
-def getSugestion(q,lang):
-  url = format_string(URL_GOOGLE,hl=lang,q=q)
-  response = requests.get(url)
-  suggestions = []
-  root = ET.fromstring(response.content)
-  for suggestion in root.findall(".//suggestion"):
-      data = suggestion.get('data');
-      suggestions.append([data,data])
-  return suggestions
+
+URL_GOOGLE = "https://suggestqueries-clients6.youtube.com/complete/search?ds=yt&client=firefox&hl={hl}&q={q}&gl=ko"
+#https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=pt&gl=br&gs_rn=64&gs_ri=youtube&ds=yt&cp=1&gs_id=2&q=r&xhr=t&xssi=t
+@lru_cache(maxsize=128)
+def getSugestion(q, lang):
+    url = URL_GOOGLE.format(hl=lang, q=q)
+    suggestions = []
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        # The second element in the response JSON is the list of suggestions
+        suggestions = [[item, item] for item in data[1]]
+    return suggestions

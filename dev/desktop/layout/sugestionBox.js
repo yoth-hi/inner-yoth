@@ -1,9 +1,12 @@
 import fetch from "../components/fetch.js"
+import { getValue } from "../components/data.config.js"
+
 class sugestionBox {
   _items = [];
-  constructor(parent, host){
+  constructor(parent, host, data){
     this.value_  =""
     this.parent = parent;
+    //this.data_ = data;
     this.subparent = document.createElement("ul")
     this.subparent.setAttribute("role","listbox")
     this.subparent.setAttribute("id","suggestions-box")
@@ -30,10 +33,14 @@ class sugestionBox {
       this.parent.style.display = "none"
       this._renderItems([])
     }else {
+      const h = await new fetch("/v1/sugestions?q="+encodeURIComponent(v)+"&hl="+getValue("HL","en"))
       this.parent.style.display = "block"
-      const h = await new fetch("/v1/sugestions?q="+encodeURIComponent(v))
       console.log(h)
-      this._renderItems(h)
+      this._renderItems(h);
+      if(h.length < 1){
+        this.parent.style.display = "none"
+      }
+      
     }
   }
   _onResize(){

@@ -1,71 +1,40 @@
 <!doctype html>
 <html lang={{lang}}>
-    <head>
-        <meta http-equiv=content-type content="text/html; charset=utf-8" />
-        <meta name=viewport content="width=device-width, initial-scale=1.0" />
-        <title>{{ title }}</title>
-        <script>var config={{config}}</script>
-        <link as="script" rel="preload" href="{{static_app}}app.js">
-        <meta name="description" content="{{description}}">
-        <meta property="og:title" content="{{title}}">
-        <meta property="og:description" content="{{title}}">
-        <meta property="og:image" content="">
-        <meta property="og:url" content="">
-        {% if isdev or istv or isMobile %}<link href="{{static_app}}styles.css" rel=stylesheet>{% endif %}
-        {% if not istv and not isMobile %}
-          <link rel="alternate" media="handheld" href="?app=mobile">
-          <link rel="alternate" media="only screen and (max-width: 640px)" href="?app=mobile">
-        {% endif %}
-        <link href="/s/player/jsbin/player.css" rel=stylesheet>
-        <script src="/s/player/jsbin/en/main.js"></script>
-    </head>
-    <body>
-      <script src="{{static_app}}app.js"
-        {% if isMobule %}type="module"{% endif %}
-      charset=utf-8></script>
-      {% if istv %}
-        <div id=container>Tv Elements</div>
-      {% endif %}
-      {% if iswatch %}
-      <div class=player-host>
-        <style>
-          .player-host {
-    position: fixed;
-    top: 50px;
-    right: 0;
-    right: env(safe-area-inset-right);
-    left: 0;
-    left: env(safe-area-inset-left);
-    overflow: hidden;
-    z-index: 2;
-}
-{%if not isMobile%}
-.player-size{position:relative; margin:0 auto;max-width:1200px;
-  aspect-ratio: 16/9;
-}
-.player-size > * {position:absolute;inset:0}
-{%endif%}
-        </style>
-        <div class=player-container>
-          <div id=player class=player-size></div>
-        </div>
-      </div>
-        <script>
-            const response = {{playerData}};
-            (function(response, b){var c={ 
-              {% if isMobile %}isMobile: true,{% endif %}};
-              window.player.create(b, { args: { response } }, c)
-              
-            })(response, document.querySelector("#player"))
-                            
-        </script>
-      {% endif %}
-          {% if isdev %}
-        <script>
-       //   document.querySelector("video").src = "https://rr2---sn-4g5e6nzz.googlevideo.com/videoplayback?expire=1719828619&ei=KyyCZsuMLq206dsPosewmAU&ip=142.132.137.4&id=o-AOSCRUsV15h-Z2JNCsHG62dh4zK6zuPHUf_A3uNsA4k1&itag=18&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=ut&mm=31%2C26&mn=sn-4g5e6nzz%2Csn-f5f7lnld&ms=au%2Conr&mv=m&mvi=2&pl=22&initcwndbps=805000&vprv=1&svpuc=1&mime=video%2Fmp4&rqh=1&cnr=14&ratebypass=yes&dur=2290.416&lmt=1699731716976128&mt=1719806468&fvip=4&c=ANDROID_TESTSUITE&txp=5538434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRAIgLOaVF1RzYlscxbGKZgiihFXEsxJ3eW9bBzmXwPKsQWsCIGZ-41GpefxB9BQZ3vFMk05xL0R9OLtUiSEZR9R3jmp0&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AHlkHjAwRgIhAIBI8pbf_u2vmYWo_3UaXwVC-gryhJlp1TS6gX5UtTF1AiEA_Ws2iAG28gzI4rlxLYM9QzliR1tXn4esxkj_LkhnUHE%3D&title=%5B%F0%9D%97%A1%F0%9D%97%B2%F0%9D%98%84%F0%9D%97%9D%F0%9D%97%B2%F0%9D%97%AE%F0%9D%97%BB%F0%9D%98%80%20%F0%9D%97%A3%F0%9D%97%B9%F0%9D%97%AE%F0%9D%98%86%F0%9D%97%B9%F0%9D%97%B6%F0%9D%98%80%F0%9D%98%81%5D%20%EB%89%B4%EC%A7%84%EC%8A%A4%20%EB%85%B8%EB%9E%98%20%EB%AA%A8%EC%9D%8C%F0%9F%90%B0%20(%EC%A0%84%EA%B3%A1%20%7C%20All%20Songs)%20%23Playlist%20%23NewJeans%20%23KPop"
-        </script>
-          {% endif %}
-      {% if data %}<script>var data={{data}};</script>{% endif %}
+<head>
+  <meta http-equiv=content-type content="text/html; charset=utf-8" />
+  <meta name=viewport content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }}</title>
+  <script>var config={{config}}</script>
+  <meta name="description" content="{{description}}">
+  <meta property="og:title" content="{{title}}">
+  <meta property="og:description" content="{{title}}">
+  <meta property="og:image" content="">
+  <meta property="og:url" content="">
+  {% if isdev or istv or isMobile %}<link href="{{static_app}}styles.css" rel=stylesheet>{% endif %}
+  {% if not istv and not isMobile %}
+    <script src="/s/webcomponents-sd.js" async></script>
+    <script>var I18n={{getI18nQSP(lang)}}</script>
+    <link rel="alternate" media="handheld" href="?app=mobile">
+    <link rel="alternate" media="only screen and (max-width: 640px)" href="?app=mobile">
+  {% endif %}
+  <link as="script" rel="preload" href="{{static_app}}app.js">
+  <script src="{{static_app}}app.js" {% if isMobule %}type="module"{% endif %} charset=utf-8 async></script>
+  <link href="/s/player/jsbin/player.css" rel=stylesheet>
+  <script src="/s/player/jsbin/en/main.js"></script>
+</head>
+<body>
+  {% if istv %}<div id=container>Tv Elements</div>{% endif %}
+  {% if iswatch %}
+  <div class=player-host>
+    <style>.player-host{position:fixed;top:50px;right:0;right:env(safe-area-inset-right);left:0;left:env(safe-area-inset-left);overflow:hidden;z-index:2}{%if not isMobile%}.player-size{position:relative;margin:0 auto;max-width:1200px;aspect-ratio:16/9}.player-size>*{position:absolute;inset:0}{%endif%}</style>
+    <div class=player-container>
+      <div id=player class=player-size></div>
+    </div>
+  </div>
+  <script>const response={{playerData}}</script>
+  <script>(function(response, b){var c={ {% if isMobile %}isMobile: true,{% endif %}};window.player.create(b,{args:{ response }}, c)})(response,document.querySelector("#player"))</script>
+  {% endif %}
+  {% if data %}<script>var data={{data}};</script>{% endif %}
       {% if isMobile %}
         <yo-app></yo-app>
         <script>(function(a,b){a.response={data:b,pathname:location.pathname}})(document.querySelector("yo-app"),data)</script>
@@ -87,6 +56,11 @@
                     />
                 </div>
             </app-masthead>
+            <div class="pg-sk">
+            {%if not iswatch%}
+            
+            {% endif %}
+            </div>
         </yo-app>
         <script>(function(a,b,c){a.response={data:b,pageId:c}})(document.querySelector("yo-app"),data,"{{pageId}}")</script>
       {% endif %}

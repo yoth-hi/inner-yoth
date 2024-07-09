@@ -7,20 +7,7 @@
     },
     {
       "src": "frontend/**",
-      "use": "@vercel/static",
-      "config": {
-        "headers": [
-          {
-            "source": "**/*.@(js|css|jpg|jpeg|png|svg|gif|ico)",
-            "headers": [
-              {
-                "key": "Cache-Control",
-                "value": "public, max-age=31536000"
-              }
-            ]
-          }
-        ]
-      }
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -31,6 +18,25 @@
     {
       "src": "/(.*)",
       "dest": "backend/main.py"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/s/(.*).js",
+      "headers": [
+        {
+          "key": "Content-Encoding",
+          "value": "gzip"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        }
+      ]
     }
   ]
 }

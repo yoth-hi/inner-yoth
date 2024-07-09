@@ -4,6 +4,7 @@ import {
 } from "../components/DOM.js"
 
 import SugestionBox from "./sugestionBox.js"
+import {getI18n} from "../components/data.config.js"
 
 
 const _template = html`
@@ -34,6 +35,10 @@ class App {
     }
     this.inicializeInput()
   }
+  attached(){
+    this.hostElement.hasAttribute("role") || this.hostElement.setAttribute("role", "search");
+      
+  }
   static get properties() {
     return {
       data: {
@@ -47,9 +52,13 @@ class App {
       parent: {
         type: HTMLElement
       },
+      searchInput: {
+        type: HTMLElement
+      },
       placeholder: {
         type: String,
-        observer: "onChengePlaceholder"
+        observer: "onChengePlaceholder",
+        computed:"onComputedPlaceholder(searchInput)"
       },
       icon: {
         type: String,
@@ -75,19 +84,16 @@ class App {
     
   }
   onChengeData(data){
-    this.placeholder = data?.inputData?.placeholder
+   // this.placeholder = data?.inputData?.placeholder
   }
   onChengePlaceholder(a){
-    const h = () => {
-      this.searchInput.placeholder = a
-      this.searchInput["aria-label"] = a
-    }
-    if(a){
-      if(this.searchInput)h()
-      else {
-        setTimeout(()=>(this.inicializeInput(a),this.onChengePlaceholder(a)),0)
-      }
-    }
+  }
+  onComputedPlaceholder(a){
+    const label = getI18n("SEARCH_PLACEHOLDER");
+  //  if(label){
+      this.searchInput.placeholder = label
+     return this.searchInput["aria-label"] = label
+  //  }
   }
   inicializeInput(a) {
     if (!this.hasEvents && this.searchInput) {

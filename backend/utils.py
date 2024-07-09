@@ -3,6 +3,7 @@ import secrets
 import base64
 from urllib.parse import parse_qs
 def getConfig(ctx, self_):
+  ip_ = getIp(self_)
   cookieSesion = getCookieSession(self_)
   headers = self_.headers
   isLogged = False;
@@ -17,6 +18,7 @@ def getConfig(ctx, self_):
     "HL":HL,
     "CLIENT_NAME":CLIENT_NAME,
     "IS_LOGGAD":isLogged,
+    "REMOTE_IP":ip_,
     "CONTEXT":{
       "client":{
         "hl":HL,
@@ -57,3 +59,5 @@ def parse_accept_language_header(header):
     
     # Sort by priority descending
     return language_preferences
+def getIp(self_):
+  return self_.client_address[0]

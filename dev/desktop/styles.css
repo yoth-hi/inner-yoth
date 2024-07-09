@@ -424,6 +424,9 @@ app-paper-tooltip[hover]{
   border-radius: 20px 20px;
   min-height:50px;
 }
+app-search:not([focusing]) #sugestion-container{
+  display: none!important;
+}
 
 
 

@@ -64,15 +64,15 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Pragma', 'no-cache')
         self.send_header('compressed', f"{compression_quality}")
         self.send_header('Permissions-Policy', 'ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*')
+        context = renderContextPage(parsed_path, self, is_mobile)
         self.end_headers()
         template_name = 'template.html'
         if True:#template_name not in cached_templates:
             with open(join(current_directory, 'backend', template_name), 'r', encoding='utf-8') as f:
                 template_content = f.read()
-                template_content = re.sub(r'\n| {1,}', ' ', template_content)
+                template_content = template_content.replace("\n","")
                 cached_templates[template_name] = template_env.from_string(template_content)
 
-        context = renderContextPage(parsed_path, self, is_mobile)
         render = cached_templates[template_name].render(context)
         compressed_content = brotli.compress(render.encode('utf-8'), quality=compression_quality)
         self.wfile.write(compressed_content)
