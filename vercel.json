@@ -25,5 +25,5 @@
       "src": "/(.*)",
       "dest": "backend/main.py"
     }
-  ],
+  ]
 }
