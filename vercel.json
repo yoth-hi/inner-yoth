@@ -13,13 +13,7 @@
   "routes": [
     {
       "src": "/s/(.*)",
-      "dest": "frontend/$1",
-      "headers": [
-        {
-          "key": "Content-Encoding",
-          "value": "gzip"
-        }
-      ]
+      "dest": "frontend/$1"
     },
     {
       "src": "/(.*)",
