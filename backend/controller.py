@@ -134,6 +134,7 @@ def isPageApi(path,type_="GET"):
     return False
   path = path[3:]
   GETS = (
+    path == "/sugestions" or
     path == "/watchtime"
   )
   POST = (
@@ -141,7 +142,6 @@ def isPageApi(path,type_="GET"):
     path == "/browse" or
     path == "/like/like" or
     path == "/guide" or
-    path == "/sugestions" or
     path == "/header" or
     path == "/like/deslike"
   )
@@ -545,11 +545,13 @@ def getViewFormate(number, lang):
 
 URL_GOOGLE = "https://suggestqueries-clients6.youtube.com/complete/search?ds=yt&client=firefox&hl={hl}&q={q}&gl=ko"
 #https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=pt&gl=br&gs_rn=64&gs_ri=youtube&ds=yt&cp=1&gs_id=2&q=r&xhr=t&xssi=t
-@lru_cache(maxsize=128)
+#@lru_cache(maxsize=128)
 def getSugestion(q, lang):
     url = URL_GOOGLE.format(hl=lang, q=q)
     suggestions = []
+    print("response:suggestions")
     response = requests.get(url)
+    print(response)
     if response.status_code == 200:
         data = response.json()
         # The second element in the response JSON is the list of suggestions

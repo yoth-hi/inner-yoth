@@ -115,3 +115,14 @@ export function getQueryParameter(url, paramName) {
   let newUrl = new URL(url);
   return newUrl.searchParams.get(paramName);
 }
+export const debounce = function(func,delay){
+  let time;
+  return function(){
+    if(time!==null){
+      clearTimeout(time)
+      time = null
+    }
+    const args = arguments
+    time = setTimeout(()=>func.apply(this,args),delay)
+  }
+}

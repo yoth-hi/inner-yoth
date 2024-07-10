@@ -1,6 +1,6 @@
 import fetch from "../components/fetch.js"
 import { getValue } from "../components/data.config.js"
-
+import { debounce } from "../components/utils.js"
 class sugestionBox {
   _items = [];
   constructor(parent, host, data){
@@ -14,12 +14,15 @@ class sugestionBox {
     this.hei = 56;
     this._onResize()
     this._preRender([])
+    this.call = debounce(value => {
+      this._preRender(value.split(" ").map((a)=>[a,a]))
+    },64)
     this.parent.appendChild(this.subparent)
   }
   onChengeInput(value, input){
     this.value_ = value
     const is = !!this.value_.trim()
-    this._preRender(value.split(" ").map((a)=>[a,a]))
+    this.call(value)
     input.setAttribute("aria-expanded",String(is))
     input.setAttribute("aria-autocomplete",String(is?"list":"off"))
     if(is){
