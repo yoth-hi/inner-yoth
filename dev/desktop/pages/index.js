@@ -34,7 +34,9 @@ const getPage = function(arr, is){
 class App {
   currentPage = void 0;
   pages = new Map
-  constructor() {}
+  constructor() {
+    
+  }
   attached() {
     //setTimeout(()=>{
       
@@ -53,11 +55,16 @@ class App {
     }
   }
   renderPage(pageId) {
+    if(!pageId)return;
     const hasPageCurrent = !!this.currentPage
     if (
       pageId == "WATCH"
     ) {
       this.setPage(pageId)
+      this.currentPage.isStart = hasPageCurrent
+      if(!hasPageCurrent && !this.currentPage.data){
+        this.currentPage.data = this.data
+      }
       this.currentPage.isStart = !hasPageCurrent
       dispatch(document,EVENT_NAME_ON_NAVEGATE_FINISH,void 0)
     } else {

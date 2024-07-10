@@ -1,43 +1,44 @@
-import { Register, html } from "../components/DOM.js"
+import {
+  Register,
+  html
+} from "../components/DOM.js"
 const _template = html``
 
 
 class App {
   _items = [];
-  constructor(){
-    
-  }
-  attached(){
-    
-  }
+  constructor() {}
+  attached() {}
   static get properties() {
     return {
       data: {
         type: Object,
-        value: [
-          {},{},{},{},{},
-          {},{},{},{},{},
-        ],
-        observer:"onChengeData"
+        value: void 0,
+        observer: "onChengeData"
       },
     }
   }
-  onChengeData(data){
-    for(;data.length < this._items;){
+  onChengeData(data=[]) {
+    
+    for (; data.length < this._items;) {
       this._items.pop().remove();
     }
     const list = [];
-    data.forEach((data,index)=>{
-      const element = this._items[index] || document.createElement("app-card-video-column");
+    data.forEach((data, index)=> {
+      let h;
+      const element = this._items[index] || (
+        (h = document.createElement("app-card-video-column")),
+        this._items.push(h), h
+      );
       this.hostElement.appendChild(element)
-      list.push(()=>{
+      element.data = data
+      list.push(()=> {
         element.isShow = true
       })
-    })
-    ;(function r(){
+    }); (function r() {
       list.shift()()
-      if(list.length){
-        setTimeout(r,40)
+      if (list.length) {
+        setTimeout(r, 40)
       }
     })()
   }

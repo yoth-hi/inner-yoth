@@ -60,6 +60,9 @@ class App {
   }
   _onChengePage(){
     const id = getPagesIdByPath(location.pathname)
+    if(this.pageId){
+      this.pageId = void 0
+    }
     this.pageId = id
   }
 }

@@ -55,7 +55,7 @@ Introducing the ultimate web test tool that will revolutionize the way you condu
 </div>
 <div id="secondary">
 <div id="secondary-content">
-<list-card-video-column></list-card-video-column>
+<list-card-video-column data="{{data.content.results}}"></list-card-video-column>
 </div>
 </div>
 </div>
@@ -74,7 +74,9 @@ class Watch {
   }
   onFinishNavegate() {
     const id = getQueryParameter(location.href, "v")
-    this.videoId = id
+    if(this.videoId !== id){
+      this.videoId = id
+    }
   }
   ready() {
     this.resize()
@@ -117,17 +119,26 @@ class Watch {
     }
   }
   async onChengeVideoId(a) {
-    //   if(!this.isStart){return};
+     if(this.videoId == this.storeVideoId){
+       return
+     };
+     this.storeVideoId = this.videoId
     if (
       (/^\/live\//.test(location.pathname) ||
         location.pathname === "/watch") && a
     ) {
       const y = await loadNextPage(a)
+      this.can__ = true
       this.data = y
     }
   }
   onChengeData(data) {
+    if(this.can__){
+      this.can__ = false;
+      return
+    }
     if (!this.videoId) {
+      this.can = false
       this.videoId = data.playerOverlays?.videoId
     }
     if (data.playerOverlays?.videoId == this.videoId) {
@@ -181,7 +192,9 @@ class Watch {
       }
       return element && _player
     }
+    try{
     return _get()
+    }catch(x){}
   }
 }
 let lsd = void 0

@@ -2,7 +2,8 @@ html {
   --app-grid-item-margin: 16px;
   --app-background-color: #fff;
   --app-badge-chip-background: rgba(0,0,0,.05);
-  --app-watch-playlist-background: #3739
+  --app-watch-playlist-background: #3739;
+  --app-text-main-color: #000;
 }
 body {
   margin: 0;
@@ -280,8 +281,9 @@ app-watch #full-player #player--c{
 app-watch #column #player--c {
   background: #3999;
   aspect-ratio: 16/9;
-  border-radius: 16px;
-}
+  border-radius: 12px;
+  overflow: hidden;
+}/*1 2 4 6 8 10 12 14 16 18 24 32 42 64*/
 app-watch #column #primaty-information {
   background: var(--app-watch-playlist-background);
   border-radius: 48px;
@@ -312,7 +314,6 @@ app-watch #column  #secondary-content {
   width: 100%;
   min-height: 80vh;
   margin-top: 0px;
-  padding-top: var(--app-watch-margin);
 }
 app-watch #primaty .video-information-title{
   margin: 0;
@@ -349,26 +350,73 @@ app-card-video-column:hover{
   background: #8881;
   border-radius: 16px;
 }
-app-card-video-column .details{
-  opacity:0;
-  height: 70px;
-  background: #122;
+app-card-video-column > #container{
+  display: flex;
 }
-app-card-video-column .thumbnail{
-  border-radius: 16px;
-  background: #0004;
-  width: 213.33px;
-  height: 120px;
-  overflow: hidden;
+app-card-video-column #container > #thumbnail {
+    margin-right: 8px;
+    height: 94px;
+    width: 168px;
+    min-width: 168px;
+}
+app-card-video-column #container > #thumbnail a#thumbnail {
+    height: 100%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    display: block;
+    border-radius: 8px;
+}
+app-card-video-column .details {
+  width: 100%;
+}
+app-card-video-column .metadata {
+    min-width: 0;
+    width: 100%;
+    padding-right: 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+app-card-video-column .metadata-title {
+  color: var(--app-text-main-color);
+}
+app-card-video-column .channel-name {
+  color: var(--app-text-main-color);
+  opacity: .8;
+  height: 16px;
+  line-height: 16px;
   position: relative;
 }
-app-card-video-column:hover .details{
-  opacity:1;
+app-card-video-column .secondary-metadata {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+app-card-video-column .metadata-title {
+  margin: 2px 0px;
+  font-size: 16px;
+  padding-bottom: 4px;
+}
+#metadata-line {
+  
+}
+#separator {
+  margin: 0 2px;
 }
 
-
-
-
+app-thumbnail-overlay-time {
+  display: block;
+  color: #fff;
+  position: absolute;
+  bottom: 5px;
+  border-radius:3px;
+  right: 5px;
+  padding: 2px 4px;
+  font-size: 12px;
+  background: #000b;
+}
 
 app-text-number {
   display: flex;

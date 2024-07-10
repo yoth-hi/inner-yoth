@@ -2,7 +2,7 @@ import{history}from"./pushState.js"
 import {
   ElementMixin
 } from 
- "./_dev.js"
+ "./_prod.js"
  
  
 export const ManagerHistory = new history();

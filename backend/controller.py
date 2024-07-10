@@ -442,8 +442,19 @@ def BROWSE(context, self_, createConn):
 def GET_DATAILS_PLAYER(context, self_, createConn):
   body = getBodyRequest(self_) or {};
   lang = body.get("client",{}).get("hl")
+  id_ = "test"
   data = {}
-  
+  data["content"] = MainConstructor_contentPage()
+  data["content"]["results"] = getDataWatchPage_ListItems(id_)
+  playerData = getDataVideo()
+  title = "Yoth"
+  if(playerData):
+    data["playerOverlays"] = MainConstructor_playerOverlays(playerData)
+    title += " - "
+    title += playerData.get("title")
+  data["headerupdate"] = {
+    "title":title
+  }
   data = toTextData(data) or "{}"
   return{
     "data":f"{data}".encode('utf-8')
@@ -545,7 +556,7 @@ def getViewFormate(number, lang):
 
 URL_GOOGLE = "https://suggestqueries-clients6.youtube.com/complete/search?ds=yt&client=firefox&hl={hl}&q={q}&gl=ko"
 #https://suggestqueries-clients6.youtube.com/complete/search?client=youtube&hl=pt&gl=br&gs_rn=64&gs_ri=youtube&ds=yt&cp=1&gs_id=2&q=r&xhr=t&xssi=t
-#@lru_cache(maxsize=128)
+@lru_cache(maxsize=128)
 def getSugestion(q, lang):
     url = URL_GOOGLE.format(hl=lang, q=q)
     suggestions = []
