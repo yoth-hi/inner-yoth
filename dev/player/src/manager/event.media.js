@@ -372,12 +372,12 @@ export default class {
                 if(!this._proms){
                   this._proms = new Promise;
                   this._proms.then((a)=>{
+                    this._proms = void 0
                     this._mediaTimeToLoad = a;
                     let st = Math.min(f,j)
                     let ed = Math.max(j,f);
                     (this._store$018["ed"] ??= []).push(ed);
                     (this._store$018["st"] ??= []).push(st)
-                    this._proms = void 0
                   })
                 }
                 break;

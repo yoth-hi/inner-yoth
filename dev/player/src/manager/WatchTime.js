@@ -20,8 +20,8 @@ export default function(scope) {
     const media = scope._mediaElement;
     const b = media
     setTimeout(()=>{
-      t = !b._isPaused()
-    },500)
+      t = false
+    },100)
     if (media &&
       b._getDuration() > 0 &&
       (!b._isPaused() || t) &&
@@ -29,6 +29,7 @@ export default function(scope) {
       !is(scope._timeded, b._getCurrentTime())
     ) {
       MM(scope._getDataWatchtime())
+      t = true
       return true
     }
   }
