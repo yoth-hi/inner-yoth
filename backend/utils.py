@@ -43,7 +43,7 @@ def getCookieSession(self_):
 
 def getCookie(self_, key):
     if 'Cookie' in self_.headers:
-        cookies = SimpleCookie(self.headers['Cookie'])
+        cookies = SimpleCookie(self_.headers['Cookie'])
         if key in cookies:
             return cookies[key].value
 def parse_accept_language_header(header):
