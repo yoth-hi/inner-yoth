@@ -21,6 +21,23 @@
   <script src="{{static_app}}app.js" {% if isMobule %}type="module"{% endif %} charset=utf-8 async></script>
   <link href="/s/player/jsbin/player.css" rel=stylesheet>
   <script src="/s/player/jsbin/en/main.js"></script>
+  <style>
+    .skeleton-info{
+      
+    }
+    .skeleton-info .title {
+      height: 20px;
+      width: 100%;
+      margin-top: 20px;
+      border-radius: 100px;
+    }
+    .color-skeleton{
+      background: #2222;
+    }
+    [dark] .color-skeleton{
+      background: #fff2;
+    }
+  </style>
 </head>
 <body>
   {% if istv %}<div id=container>Tv Elements</div>{% endif %}

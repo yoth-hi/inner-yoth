@@ -73,13 +73,23 @@ export const ConstructorObjectData = function (scopeData, data = {}) {
   } = data;
   const {
     videoDetails,
-    streamingData
+    streamingData,
+    playbackTracking
   } = response;
 
   const formats = streamingData?.adaptiveFormats || []
   if (formats.length > 0) {
     var Si = tXa(videoDetails, formats);
     console.log(Si)
+  }
+  if (playbackTracking) {
+    const timewatched = [];
+    const timewatched_ = playbackTracking.timewatched||[]
+    const max = Math.max(...timewatched_)
+    for(const item of timewatched_){
+      timewatched.push(Math.max(item/max,.01))
+    }
+    scopeData.timewatched = timewatched;
   }
   if (videoDetails) {
     if (videoDetails.title) {

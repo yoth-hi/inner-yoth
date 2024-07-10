@@ -20,7 +20,7 @@ const createJustMout = function(a, b) {
 };
 const createJustOne = function(a) {
   if (a._inst.length === 0) {
-    var b = new ProgressItem;
+    var b = new ProgressItem(a._app);
     a._inst.push(b);
     CreateDisposeCallback(a, b);
     b._appendTo(a._aa, 0)
@@ -81,6 +81,7 @@ class ProgressItem extends Dom {
     this._listen("touchstart", this._over)
     this._listen("touchend", this._out)
     this._listen("click", this._out)
+    this._api = api._api
     this._onHover()
   }
   _over(){
@@ -103,15 +104,14 @@ class ProgressItem extends Dom {
   _onHover(){
     if(this.hover)this.element.classList.add("hover")
     else this.element.classList.remove("hover")
-    var list = [] 
-    for(let t = 0;t<50;t++){
-      list.push(20)
+    var { timewatched = [] } = this._api._getVideoData()
+    let list = []
+    for(const item of timewatched){
+      list.push(item*30)
     }
-    
-    list = [...list]
     let dataSvg = `M0,${(50-list.pop())}`;
 
-    let width = 1440; // Largura total do SVG
+    let width = this.element.offsetWidth; // Largura total do SVG
     let height = 100; // Altura total do SVG
     let step = width / (list.length - 1); // Espaço entre cada ponto
     
@@ -180,6 +180,7 @@ export default class extends Dom {
           }, _content: "{{clipendicon}}"
         }]})
     this._aa = this._getElementByClass("app-chapters-container")
+    this._app = app
     createJustOne(this)
   }
   _setData(a) {

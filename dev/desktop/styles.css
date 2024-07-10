@@ -292,7 +292,7 @@ app-watch #column #primaty-information {
 app-watch #column #primaty-information-v2 {
   padding: 16px 0;
   border-radius: 16px;
-  margin: calc(var(--app-watch-margin)) 0;
+  margin: calc(var(--app-watch-margin)/4) 0;
 }
 app-watch #column > #secondary {
   margin-right: var(--app-watch-margin);
@@ -424,7 +424,7 @@ app-text-number {
   overflow: hidden;
 }
 app-text-number span {
-  transition: transform .16s;
+ transition: transform .16s;
   display: flex;
   flex-direction: column;
   line-height: 25px;

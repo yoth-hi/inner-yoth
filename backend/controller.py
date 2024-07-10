@@ -61,7 +61,7 @@ def renderContextPage(parsed_path, self_, is_mobile):
     if iswatch:
       playerData = getDataVideo()
       if(playerData):
-        data["playerOverlays"] = MainConstructor_playerOverlays(playerData)
+        data["playerOverlays"] = MainConstructor_playerOverlays(playerData,lang)
         title += " - "
         title = playerData.get("title")
         description = playerData.get("description")
@@ -269,15 +269,28 @@ def ConstructorCardVideo(data,lang):
       "title":channelName
     }
   }
-def MainConstructor_playerOverlays(playerData):
+def MainConstructor_playerOverlays(playerData,lang):
   title = playerData.get("title")
   description = playerData.get("description","")
   id_ = playerData.get("id")
+  channelName = playerData.get("channelName")
+  channelId = playerData.get("channelId")
   return{
     "videoId":id_,
     "videoDetalis":{
       "title": title,
       "description": description
+    },
+    "owner":{
+      "endpoint":EndPoint(None,{
+        "channel_id": channelId
+      }),
+      "title":channelName,
+      "actions":[
+        {
+          "title":getI18n("subscribe", lang)
+        }
+      ]
     }
   }
 ## get - data player -
@@ -449,7 +462,7 @@ def GET_DATAILS_PLAYER(context, self_, createConn):
   playerData = getDataVideo()
   title = "Yoth"
   if(playerData):
-    data["playerOverlays"] = MainConstructor_playerOverlays(playerData)
+    data["playerOverlays"] = MainConstructor_playerOverlays(playerData,lang)
     title += " - "
     title += playerData.get("title")
   data["headerupdate"] = {
@@ -518,8 +531,14 @@ def getVideoPlayerData(playerData=None):
   channelName = playerData.get("channelName")
   viewCount = playerData.get("viewCount")
   keywords = playerData.get("keywords",[])
-  print(61,playerData)
+  P = SQLC(f"""SELECT used FROM watchtime WHERE video_id = %s ORDER BY time_id""",(id_,))
+  timewatched = []
+  for g in P:
+    timewatched.append(g[0])
   return{
+    "playbackTracking":{
+      "timewatched":timewatched
+    },
     "videoDetails": {
       "videoId": id_,
       "title": title,

@@ -5,7 +5,7 @@ const _template = html`
   <app-image data="{{getImageAvatar(data)}}"></app-image>
   <div class="details">
     <div>
-      <span class="name" role="text">**NAME</span>
+      <span class="name" role="text">{{data.title}}</span>
     </div>
     <div class="metadata">
       <app-text-number number="0"></app-text-number>
@@ -21,9 +21,16 @@ class App {
   constructor(){
     
   }
+  static get properties() {
+    return {
+      data: {
+        type: Object
+      },
+    }
+  }
   attached(){
   }
-  getImageAvatar(){
+  getImageAvatar(A){
     return {
       src:""
     }

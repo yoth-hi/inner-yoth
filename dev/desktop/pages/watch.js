@@ -27,6 +27,9 @@ const _template = html`
 <app-player get-player="{{getPlayer}}"></app-player>
 </div>
 <div id="primaty-detalis">
+<div class="skeleton-info">
+  <div class="color-skeleton title" hidden="[[data.playerOverlays.videoDetalis.title]]"></div>
+</div>
 <div id="primaty-information-v2">
 <div class="">
 <h2 role="text" class="video-information-title">
@@ -43,7 +46,7 @@ const _template = html`
 </div>
 <div id="primaty-information">
 <div class="">
-<app-card-owner></app-card-owner>
+  <app-card-owner data="{{data.playerOverlays.owner}}"></app-card-owner>
 </div>
 </div>
 <div id="dscription-information">
@@ -115,11 +118,12 @@ class Watch {
         reflectToAttribute: true,
         computed: "computedIsFullMode(fullscreen)",
         observer: "toFullPlayer"
-      }
+      },
+      isStart: Boolean
     }
   }
   async onChengeVideoId(a) {
-     if(this.videoId == this.storeVideoId){
+     if(this.isStart){
        return
      };
      this.storeVideoId = this.videoId
