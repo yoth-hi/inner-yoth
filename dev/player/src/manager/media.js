@@ -81,6 +81,9 @@ export class Media extends ManagerMedia {
     _isSeeking(){
       return this._element.seeking
     }
+    _isEnded(){
+      return this._element.ended
+    }
     _readyState(){
       return this._element.readyState
     }

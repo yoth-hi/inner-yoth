@@ -1,4 +1,5 @@
 import XHR from "../controllers/xml.ping.js"
+import { getReferrer, getValue } from "../../../desktop/components/data.config.js"
 import _URL from "../controllers/URL.js"
 const K_ = function(a, b, c, d) {
   var e = a._querys[c]; e || (e = [], a._querys[c] = e); e.push(b.toFixed(3)+":"+d.join(":"))};
@@ -14,12 +15,16 @@ export default function(scope) {
   const is = function(a, b) {
     return b > a.mediaTime + a._start && b < a.mediaTime + 5
   }
+  let t;
   function Ma(scope) {
     const media = scope._mediaElement;
     const b = media
+    setTimeout(()=>{
+      t = !b._isPaused()
+    },500)
     if (media &&
       b._getDuration() > 0 &&
-      !b._isPaused() &&
+      (!b._isPaused() || t) &&
       !b._isSeeking() &&
       !is(scope._timeded, b._getCurrentTime())
     ) {
@@ -67,10 +72,12 @@ export default function(scope) {
     scope._timeded.mediaTime = g
     const q = {};
     Object.assign(q, UF3(scope))
-    j(store, "volume", q, [media._getVolume()])
+    j(store, "volume", q, [media._getVolume()*100])
     j(store, "st", q, find(storePlayer, "st", []))
     j(store, "ed", q, find(storePlayer, "ed", []))
     j(store, "muted", q, [media._getMuted()?"1": "0"])
+    q.referrer = getReferrer()
+    q.status = getStatus(media)
     scope._store$018 = {}
     scope._store$297 = {}
     return q
@@ -97,7 +104,17 @@ export default function(scope) {
     var g = {}
     g["vid"] = videoId
     g["hl"] = _hl
+    ggg(g)
     g["cr"] = _region
     list && (g["list"] = list)
     return g
+  }
+  function ggg(a){
+    a["cp"] = getValue("CLEINT_NAME",null)
+    a["c"] = "web"
+  }
+  function getStatus(mediaElement){
+    const isPaused = mediaElement._isPaused();
+    const isEnded = mediaElement._isEnded();
+    return isEnded ? "ended" : (isPaused ? "paused":"playing")
   }

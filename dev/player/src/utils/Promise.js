@@ -6,6 +6,11 @@ export default class Promise_ {
       this._error = error
     })
   }
+  async get(){
+    return await new Promise((a,b)=>{ 
+      return this.then(a,b)
+    })
+  }
   then(then_, catch_){
     this._promise.then(then_, catch_)
   }
