@@ -96,6 +96,8 @@ class App {
         d.hidden=!0;
         d.active=!1;
         d.removeAttribute("role")
+        
+        
       }
       this.currentPage = a;
       a.hidden=!1;

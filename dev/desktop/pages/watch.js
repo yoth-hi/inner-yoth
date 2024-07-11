@@ -127,14 +127,12 @@ class Watch {
       isStart: Boolean
     }
   }
-  async onChengeVideoId(a) {
+  async onChengeVideoId(a,k) {
      if(this.isStart){
        return
      };
-      if(this.videoId){
+      if(this.videoId&&this.data?.playerOverlays?.videoId!==this.videoId){
         fetchPlayerData(this.videoId).then(data=>this.updateDataPlayer(data))
-      }
-     this.storeVideoId = this.videoId
     if (
       (/^\/live\//.test(location.pathname) ||
         location.pathname === "/watch") && a
@@ -143,6 +141,7 @@ class Watch {
       this.can__ = true
       this.data = y
     }
+      }
   }
   onChengeData(data) {
     if(this.can__){

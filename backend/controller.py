@@ -421,7 +421,7 @@ def GUIDE(context, self_, createConn=None):
   lang = client.get("hl","en")
   if(not client):
     return {
-      status: 403
+      "status": 403
     }
   
   data = {
