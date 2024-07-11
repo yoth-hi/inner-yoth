@@ -1,4 +1,5 @@
 import { Dom } from "../utils/Dom.js";
+import { setCallBack } from "../utils/utils.js"
 export default class Root extends Dom {
   constructor(app){
     super({
@@ -10,6 +11,7 @@ export default class Root extends Dom {
       }]
     })
     this._api = app
+    GF(this._api,this.element)
     this._videoContenter = this._getElementByClass("html5-video-contenter")
     this._api.addEventListener("playeresize", (a)=>this._resize(a))
   }
@@ -50,3 +52,6 @@ function centralizeVideo(videoWidth, videoHeight, clientWidth, clientHeight) {
     return { left, top };
 }
 
+function GF(obj, target){
+  setCallBack(target,"updateData",obj._updateData,obj)
+}

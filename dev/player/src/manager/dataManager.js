@@ -18,16 +18,18 @@ class DataManager {
     constructor(n, data, api) {
       this._api = api;
       ConstructorObjectData(this, data)
-        this._createSessionId()
+      this._createSessionId(data)
     }
-    _updateData(newData){
-      if(newData){
-        const data = ConstructorObjectData(this, newData);
-        this._createSessionId()
-        this._api._dispatch("videodatachange", data)
+    _updateData(response){
+      if(response){
+        const max = { response }
+        const data = ConstructorObjectData(this, max);
+        this._createSessionId(max)
+        this._api._dispatch("videodatachange", this)
+        this._api._dispatch("bas", data)
       }
     }
-    _createSessionId(){
+    _createSessionId({ response }){
         this._api._ID = makeid(26)
     }
 }

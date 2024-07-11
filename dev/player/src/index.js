@@ -130,6 +130,9 @@ export default class Player extends Disposable {
     _isFullscreen() {
         return this._visibility._isFullscreen();
     }
+    _updateData(data){
+      this._dataManagerPlayer._updateData(data)
+    }
     _onVisibilityChange() {
         const store = (this._store$186 ??= {});
         if (store._isFullscreen !== this._isFullscreen()) {

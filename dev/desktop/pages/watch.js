@@ -11,12 +11,15 @@ import {
   getFullScreenElement
 } from "../components/utils.js"
 import {
+  Load
+,
   loadNextPage
 }from"../components/loadDataPage.js"
 import {
   EVENT_NAME_ON_NAVEGATE_START,
   EVENT_NAME_ON_NAVEGATE_FINISH
 } from "../components/vars.js"
+
 const _template = html`
 <div id="container">
 <div id="full-player">
@@ -66,7 +69,9 @@ Introducing the ultimate web test tool that will revolutionize the way you condu
 `
 
 
-
+const fetchPlayerData = async (videoId) => {
+  return await Load({ videoId },"/v1/player")
+}
 class Watch {
   constructor() {
     this.resizeObserver = new ResizeObserver((entries) => this.resize(entries))
@@ -126,6 +131,9 @@ class Watch {
      if(this.isStart){
        return
      };
+      if(this.videoId){
+        fetchPlayerData(this.videoId).then(data=>this.updateDataPlayer(data))
+      }
      this.storeVideoId = this.videoId
     if (
       (/^\/live\//.test(location.pathname) ||
@@ -185,20 +193,24 @@ class Watch {
       this.isRow = is
     }
   }
-  getPlayer(M) {
+  getPlayer(M=this) {
     const _get = ()=> {
       let element = lsd ?? (lsd = document.querySelector(".html5-video-player"))
-      if (!element) {
-        element = lsd = window.player.create(M.hostElement, {}, {})
+      if (!element ) {
+        const player = window.player.create(M.hostElement, {}, {});
+        lsd = M.hostElement.querySelector(".html5-video-player")
+        element = lsd;
       }
       const _player = {
         element
       }
       return element && _player
     }
-    try{
     return _get()
-    }catch(x){}
+  }
+  updateDataPlayer(data){
+    const { element } = this.getPlayer()
+    element.updateData(data)
   }
 }
 let lsd = void 0

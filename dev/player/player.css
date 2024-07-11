@@ -240,12 +240,13 @@
   width: 100%;
   position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: 4.1px;
   right: 0;
   transform-origin: bottom;
   transform: scaleY(0);
   transition: transform .16s;
   z-index: -1;
+  
   pointer-events: none;
 }
 .html5-video-player .hover .app-avg{

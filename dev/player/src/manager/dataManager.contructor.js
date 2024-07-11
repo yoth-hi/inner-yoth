@@ -87,7 +87,7 @@ export const ConstructorObjectData = function (scopeData, data = {}) {
     const timewatched_ = playbackTracking.timewatched||[]
     const max = Math.max(...timewatched_)
     for(const item of timewatched_){
-      timewatched.push(Math.max(item/max,.01))
+      timewatched.push(item/max)
     }
     scopeData.timewatched = timewatched;
   }

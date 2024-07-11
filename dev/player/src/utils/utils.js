@@ -106,3 +106,9 @@ export const requestFullscreen = function(a) {
 	export const isFullscreenEnabled = function() {
 		return !!IC(["fullscreenEnabled", "webkitFullscreenEnabled", "mozFullScreenEnabled", "msFullscreenEnabled"], document)
 	};
+	export const setCallBack = function(obj, key, call, scope){
+	 // Object.defineProperties(obj,{[key]:{configurable:!0,enumerable:!0,get:function(){return value }}});
+	 obj[key] = function() {
+	   call.apply(scope || this, arguments)
+	 }
+	}

@@ -142,7 +142,7 @@ def isPageApi(path,type_="GET"):
     path == "/browse" or
     path == "/like/like" or
     path == "/guide" or
-    path == "/header" or
+    path == "/player" or
     path == "/like/deslike"
   )
   if(type_=="GET"):
@@ -472,6 +472,15 @@ def GET_DATAILS_PLAYER(context, self_, createConn):
   return{
     "data":f"{data}".encode('utf-8')
   }
+def PLAYER(context, self_, createConn):
+  body = getBodyRequest(self_) or {};
+  lang = body.get("client",{}).get("hl")
+  id_ = "test"
+  data = getVideoPlayerData(None,id_)
+  data = toTextData(data) or "{}"
+  return{
+    "data":f"{data}".encode('utf-8')
+  }
 
 ## API MANAGER
 APIS = {
@@ -480,6 +489,7 @@ APIS = {
   "sugestions": SUGESTIONS,
   "browse": BROWSE,
   "detalis_player": GET_DATAILS_PLAYER,
+  "player": PLAYER,
 }
 
 def RenderApi(path, self_, parsed_path):
@@ -522,7 +532,7 @@ def getI18n(key,lang="en",**kwargs):
 def format_string(template, **kwargs):
     return template.format(**kwargs)
 
-def getVideoPlayerData(playerData=None):
+def getVideoPlayerData(playerData=None,id_=None):
   if not playerData:
     playerData = getDataVideo()
   id_ = playerData.get("id")

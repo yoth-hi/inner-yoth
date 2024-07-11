@@ -2,7 +2,7 @@ import Fetch from"./fetch.js";
 import { dispatch } from "./Event.js"
 import { EVENT_NAME_ON_NAVEGATE_START,EVENT_NAME_ON_NAVEGATE_FINISH } from "./vars.js"
 import { getDataBodyRequest } from "./load.page.main.layout.js"
-async function Load(data,url="/v1/browse"){
+export const Load = async function Load(data,url="/v1/browse"){
   const body = {...data,...getDataBodyRequest()};
   const req = new Fetch(url,{
     method:"POST",

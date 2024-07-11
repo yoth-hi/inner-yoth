@@ -14,7 +14,7 @@ height: 45rem!important;
 <script>
 const response = {
 "playbackTracking": {
-"timewatched": [0,
+"timewatched": [4,
 7,
 0,
 0,
@@ -67,7 +67,7 @@ const response = {
 0,
 0,
 0,
-0]},
+4]},
 streamingData: {
 adaptiveFormats: [{
 "itag": 137,
@@ -149,11 +149,12 @@ window.addEventListener("load", function t() {
 console.log(
 window.player.create(document.body, {
 args: {
-response
+response:{}
 }
 })
 );
 t = null;
+document.body.querySelector(".html5-video-player")["updateData"](response)
 });
 </script>
 </body>

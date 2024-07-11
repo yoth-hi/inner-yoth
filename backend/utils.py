@@ -11,7 +11,7 @@ def getConfig(ctx, self_):
   if(ctx["isMobile"]):
     CLIENT_NAME = "MWEB";
     
-  TT = (ctx["hl"][0][0] or "en-US")
+  TT = (ctx["hl"][0][0] or "en")
   MX = TT.split("-")
   HL = MX[0]
   return{

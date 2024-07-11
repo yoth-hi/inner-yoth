@@ -41,7 +41,7 @@ export const Title = class extends Dom {
             ]
         });
         this._api = api;
-        this._on(api, "videodatachange", this._onChengeData);
+        this._on(api, "videodatachange", this._onChengeData.bind(this));
         //	this.T(a, "videoplayerreset", this.Sa);
         this._onChengeData();
     }

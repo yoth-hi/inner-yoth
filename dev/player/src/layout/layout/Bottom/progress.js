@@ -32,6 +32,7 @@ const createJustOne = function(a) {
   a._inst[0].title = ""
 };
 class ProgressItem extends Dom {
+  _store = {}
   constructor(api) {
     super({
       _tag: "div",
@@ -52,8 +53,10 @@ class ProgressItem extends Dom {
         {
           _tag: "svg", _className: "app-avg",
             _attrs:{
-              width:"{{width}}",
-              viewBox:"{{viewBox}}"
+              preserveAspectRatio:"none",
+              width:"100%",
+              height:"320px",
+              viewBox:"0 0 1000 100"
             },
           _childs:[{
             _tag:"path",
@@ -104,33 +107,76 @@ class ProgressItem extends Dom {
   _onHover(){
     if(this.hover)this.element.classList.add("hover")
     else this.element.classList.remove("hover")
-    var { timewatched = [] } = this._api._getVideoData()
-    let list = []
-    for(const item of timewatched){
-      list.push(item*30)
+    this._update({ dataSvg:this._updateY() });
+  }
+  _updateY(){
+    var { timewatched = [], videoId } = this._api._getVideoData()
+    if(this._store[videoId]){
+      return this._store[videoId]
     }
-    let dataSvg = `M0,${(50-list.pop())}`;
-
-    let width = this.element.offsetWidth; // Largura total do SVG
-    let height = 100; // Altura total do SVG
-    let step = width / (list.length - 1); // Espaço entre cada ponto
-    
-    for (let i = 0; i < list.length - 1; i++) {
-      let x1 = i * step;
-      let y1 = 50 - list[i];
-      let x2 = (i + 1) * step;
-      let y2 = 50 - list[i + 1];
-      let cx1 = x1 + step / 2;
-      let cy1 = y1;
-      let cx2 = x2 - step / 2;
-      let cy2 = y2;
-      dataSvg += `C${cx1},${cy1} ${cx2},${cy2} ${x2},${y2} `;
+    const data = []
+    const slep = 1E3 / timewatched.length
+    let dataSvg = "";
+    const minHeightDp = 4
+    const maxHeightDp = 40
+    data.push({
+      x:0,
+      y:100
+    })
+    for(let index = 0; index < timewatched.length;index++){
+      const dataValue = timewatched[index]
+      const keep = (index + .5) * slep
+      const val = 100 - Math.min(Math.max(dataValue * 100, minHeightDp / 321 * 100), maxHeightDp * 321 * 100)
+      if(index == 0){
+        data.push({
+          x:0,
+          y:val
+        })
+      }
+      data.push({
+        x:keep,
+        y:val
+      })
+      if(index === timewatched.length - 1 ){
+        data.push({
+          x:1E3,
+          y:val
+        })
+      }
     }
-    
-    dataSvg += `L${width},50 L0,50 Z`; // Fecha o caminho
-    
-    let viewBox = "0 0 1440 50";
-    this._update({ viewBox, dataSvg });
+    data.push({
+      x:1E3,
+      y:100
+    })
+    for(let index2 = 0; index2 < data.length;index2++){
+      const info = data[index2]
+      if(index2 === 0){
+        dataSvg = `M ${info.x.toFixed(1)},${info.y.toFixed(1)}`
+      } else {
+        const info2 = rect(data[index2 - 1], data[index2 - 2], info);
+        const info3 = rect(info,data[index2 - 1], data[index2 + 1], true);
+        dataSvg += ` C`
+        dataSvg += ` ${info2.x.toFixed(1)},${info2.y.toFixed(1)}`
+        dataSvg += ` ${info3.x.toFixed(1)},${info3.y.toFixed(1)}`
+        dataSvg += ` ${info.x.toFixed(1)},${info.y.toFixed(1)}`
+      }
+    }
+    return this._store[videoId] = dataSvg
+  }
+}
+function rect(a,b,c,d=false){
+  const eqlz = (function(a,b){
+    const data = {
+      _val2:0,
+      _val1:0
+    }
+    data._val2 = b.x - a.x
+    data._val1 = b.y - a.y
+    return data;
+  })(b || a,c||a)
+  return{
+    x:a.x + (d? eqlz._val2 * -1 : eqlz._val2)*.2,
+    y:a.y + (d? eqlz._val1 * -1 : eqlz._val1) *.2
   }
 }
 export default class extends Dom {

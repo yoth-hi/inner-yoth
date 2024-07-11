@@ -480,7 +480,8 @@ class CreateTack{
       this._bitrate = (data.bitrate ?? 0);
       this.mimeType = data.mimeType
     }
-    scope._api.addEventListener("videodatachange", this._onChengeData);
+    scope._api.addEventListener("videodatachange", this._onChengeData.bind(this));
+    this._api =  scope._api;
   }
   _getBitrate(){
     return this._bitrate
@@ -488,6 +489,6 @@ class CreateTack{
   _onChengeData(){
     const data = this._api._getVideoData();
     const config = this._api._getPlayerConfig();
-    debugger
+    
   }
 }
