@@ -18,6 +18,7 @@ export default function (pageId, onLoad,err=log,context={}) {
   }).then(onLoad, err).finally(()=>{
     dispatch(document,EVENT_NAME_ON_NAVEGATE_FINISH)
   })
+  return a
 }
 export const loadNextPage = function(videoId){
   return Load({

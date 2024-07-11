@@ -64,7 +64,7 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Pragma', 'no-cache')
         self.send_header('compressed', f"{compression_quality}")
         self.send_header('Permissions-Policy', 'ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*')
-        context = renderContextPage(parsed_path, self, is_mobile)
+        context = renderContextPage(parsed_path, self, False)
         self.end_headers()
         template_name = 'template.html'
         if True:#template_name not in cached_templates:
@@ -90,11 +90,17 @@ class handler(BaseHTTPRequestHandler):
             in_ = "frontend";
             f = path[:7]
             if(self.headers.get('Host') == "localhost:8080"):
+              prf = path[:6]
               if(path == "desktop/jsbin/dev.js"):
                 in_ = "dev";
                 path = "desktop/app.js"
-              elif(f == "desktop"):
+              elif(
+                f == "desktop"
+                ):
                 path = "desktop/"+ path[14:]
+                in_ = "dev";
+              elif(prf == "mobile" ):
+                path = "mobile/"+ path[13:]
                 in_ = "dev";
             file_path = join(current_directory, in_, path)
             if exists(file_path) and isfile(file_path):
