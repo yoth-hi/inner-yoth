@@ -2,7 +2,7 @@ import Fetch from"./fetch.js";
 import { dispatch } from "./Event.js"
 import { getQueryParameter } from "./utils.js"
 
-import { EVENT_NAME_ON_NAVEGATE_START,EVENT_NAME_ON_NAVEGATE_FINISH } from "./vars.js"
+import { EVENT_NAME_ON_NAVEGATE_START,EVENT_NAME_ON_NAVEGATE_FINISH,NAME_SEARCH_QUERY } from "./vars.js"
 import { getDataBodyRequest } from "./load.page.main.layout.js"
 export const Load = async function Load(data,url="/v1/browse"){
   const body = {...data,...getDataBodyRequest()};
@@ -20,7 +20,7 @@ export default function (pageId, onLoad,err=log,context={}) {
   }
   if(pageId==="SEARCH"){
     const loc = window.location.href
-    data_.query = getQueryParameter(loc,"search_"+"query")||getQueryParameter(loc,"v")
+    data_.query = getQueryParameter(loc,NAME_SEARCH_QUERY)||getQueryParameter(loc,"q")
   }
   const a = Load(data_).then(onLoad, err).finally(()=>{
     dispatch(document,EVENT_NAME_ON_NAVEGATE_FINISH)
