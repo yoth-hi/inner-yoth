@@ -2,7 +2,7 @@ import { Register, html } from "../components/DOM.js"
 const _template = html`
 <div id="container" aria-label="{{data.accessibility.label}}">
   <div id="thumbnail">
-    <a id="thumbnail" on-click="handleLink" aria-hidden="true" tabindex="-1" rel="nofollow" href="/watch?v=test">
+    <a id="thumbnail" on-click="handleLink" aria-hidden="true" tabindex="-1" rel="nofollow" href$="/watch?v={{data.videoId}}">
       <img alt="" style="width:100%;position: absolute;inset:0;background: #000" src=""/>
       <div id="overlays">
         <app-thumbnail-overlay-time overlay-style="{{data.thumbnailOverlays.style}}">
@@ -15,7 +15,7 @@ const _template = html`
   </div>
   <div class="details">
     <div class="metadata">
-      <a rel="nofollow" on-click="handleLink"  href="/watch?v=test">
+      <a rel="nofollow" on-click="handleLink"  href$="/watch?v={{data.videoId}}">
         <h3 class="metadata-title">
           <span id="video-title" title="{{data.title}}">
             {{data.title}}

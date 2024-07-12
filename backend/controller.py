@@ -50,7 +50,7 @@ def renderContextPage(parsed_path, self_, is_mobile):
   iswatch = context["pageId"] == "WATCH"
   isdev = context["isdev"] = host == "localhost:8080"
   istv = context["pageId"] == "LAYOUT_TV"
-  id_ = "text"
+  id_ = query.get("v","test");
   context["iswatch"] = iswatch
   context["istv"] = istv
   context["getI18nQSP"] = getI18nQSP
@@ -65,7 +65,7 @@ def renderContextPage(parsed_path, self_, is_mobile):
       "content":{}
     };
     if iswatch:
-      playerData = getDataVideo()
+      playerData = getDataVideo(id_)
       if(playerData):
         data["playerOverlays"] = MainConstructor_playerOverlays(playerData,lang)
         title += " - "
@@ -310,8 +310,7 @@ def MainConstructor_playerOverlays(playerData,lang):
     }
   }
 ## get - data player -
-def getDataVideo():
-    id_ = "test"
+def getDataVideo(id_):
     try:
       resp = SQLC(f"""SELECT
     v.title,
@@ -471,11 +470,11 @@ def BROWSE(context, self_, createConn):
 def GET_DATAILS_PLAYER(context, self_, createConn):
   body = getBodyRequest(self_) or {};
   lang = body.get("client",{}).get("hl")
-  id_ = "test"
+  id_ = body.get("videoId")
   data = {}
   data["content"] = MainConstructor_contentPage()
   data["content"]["results"] = getDataWatchPage_ListItems(id_)
-  playerData = getDataVideo()
+  playerData = getDataVideo(id_)
   title = "Yoth"
   if(playerData):
     data["playerOverlays"] = MainConstructor_playerOverlays(playerData,lang)
@@ -491,7 +490,7 @@ def GET_DATAILS_PLAYER(context, self_, createConn):
 def PLAYER(context, self_, createConn):
   body = getBodyRequest(self_) or {};
   lang = body.get("client",{}).get("hl")
-  id_ = "test"
+  id_ = body.get("videoId")
   data = getVideoPlayerData(None,id_)
   data = toTextData(data) or "{}"
   return{
@@ -554,7 +553,7 @@ def format_string(template, **kwargs):
 
 def getVideoPlayerData(playerData=None,id_=None):
   if not playerData:
-    playerData = getDataVideo()
+    playerData = getDataVideo(id_)
   id_ = playerData.get("id")
   title = playerData.get("title")
   description = playerData.get("description")
