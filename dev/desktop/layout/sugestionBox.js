@@ -32,6 +32,9 @@ class sugestionBox {
   }
   async _preRender(arr){
     const v = this.value_.trim()
+    if(this.y === v){
+      return
+    }
     if (v.length < 1) {
       this.parent.style.display = "none"
       this._renderItems([])
@@ -45,6 +48,7 @@ class sugestionBox {
       }
       
     }
+    this.y = v
   }
   _onResize(){
     const host = this.host.hostElement

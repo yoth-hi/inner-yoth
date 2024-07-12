@@ -100,8 +100,8 @@ class App {
     if (!this.hasEvents && this.searchInput) {
       this.searchInput.removeAttribute("hidden")
       this.listen(this.searchInput, "keyup", "onChengeInput")
-      this.listen(this.searchInput, "focus", ()=>(this.focusing=true))
-      this.listen(this.searchInput, "blur", ()=>(this.focusing=false))
+      this.listen(this.searchInput, "focus", ()=>(this.onChengeInput(),setTimeout(()=>this.focusing=true,16)))
+      this.listen(this.searchInput, "blur", ()=>(setTimeout(()=>this.focusing=false,16)))
       this.hasEvents = true
     }
   }

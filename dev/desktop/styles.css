@@ -236,7 +236,7 @@ app-masthead[is-mobile] app-search[focusing] {
 
 
 
-app-results {
+app-results:not([hidden]) {
   display: block;
   width: 100%;
 }
