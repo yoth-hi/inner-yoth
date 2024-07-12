@@ -26,8 +26,7 @@ def renderSuperDataApi(lang, self_, context,data={}):
     data["content"]["results"] = getDataHomePage_ListItems(lang)
   elif(context.get("pageId") == "SEARCH"):
     query = context.get("query")
-    if(query):
-      data["content"]["results"] = SEARCH(query, lang)
+    data["content"]["results"] = SEARCH(query, lang)
     
   
   return data;
@@ -55,6 +54,7 @@ def renderContextPage(parsed_path, self_, is_mobile):
   context["iswatch"] = iswatch
   context["istv"] = istv
   context["getI18nQSP"] = getI18nQSP
+  context["query"] = query.get("q") or query.get("search_query")
   context["path"] = path
   context["host"] = host
   context["hl"] = lang__
