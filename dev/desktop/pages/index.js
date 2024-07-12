@@ -4,8 +4,9 @@ import {
 } from "../components/DOM.js"
 import toLoad from "../components/loadDataPage.js"
 const _template = html`<div id="content"></div>`
-import"./watch.js"
 import"./home.js"
+import"./watch.js"
+import"./search.js"
 import { dispatch } from "../components/Event.js"
 import { EVENT_NAME_ON_NAVEGATE_START,EVENT_NAME_ON_NAVEGATE_FINISH } from "../components/vars.js"
 import { get as storeGet } from "../components/config.store.js"
@@ -21,6 +22,9 @@ const getPage = function(arr, is){
       case "FEED_HOME":
         name = "app-home"
         break;
+     case "SEARCH":
+        name = "app-results"
+      break;
     }
     element = document.createElement(name);
     if(!element.inst){

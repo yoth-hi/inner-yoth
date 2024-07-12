@@ -9,7 +9,7 @@ import {NAME_SEARCH_QUERY} from "../components/vars.js"
 
 
 const _template = html`
-<form id="search-form" on-submit="onSubmit" action="/results">
+<form id="search-form" on-submit="onSubmit" action="/search">
   <div id="container" on-click="onClick">
     <app-icon is-ecm="true" id="search-icon" icon="[[icon]]" on-mousedown="focusInput" ></app-icon>
     <slot name="search-input"></slot>
@@ -22,7 +22,7 @@ const _template = html`
 <app-paper-tooltip prefix="" >[[placeholder]]</app-paper-tooltip></button>
 `
 
-const to = "/results"
+const to = "/search"
 class App {
   constructor() {
     this.onFindSlot()

@@ -12,7 +12,7 @@ body {
 }
 yo-app {
   --app-mini-guide-width: 72px;
-  --app-masthead-height: 56px
+  --app-masthead-height: 56px;
 }
 yo-app[mini-guide-visible] {
   --app-guide-width: var(--app-mini-guide-width)
@@ -41,7 +41,7 @@ app-masthead > #container {
 }
 app-masthead #center {
   display: flex;
-  flex:0 1 600px;
+  flex:0 1 500px;
   align-items: center;
 }
 app-masthead #end,
@@ -140,7 +140,6 @@ app-search {
   position: relative;
   transition-property: padding-left, transform, box-shadow;
   transition-duration: .10s,.16s,.16s;
-  /* Durações para cada propriedade */
   transition-delay: .06s, 0s, 0s;
   display: flex;flex: 1;
   border-radius: 20px 20px;
@@ -167,30 +166,6 @@ app-search #container {
   align-items: center;
   border-radius: 20px 0px 0px 20px;
   background: var(--app-background-color);
-}
-app-masthead:not([is-mobile]) app-search[focusing] {
-  box-shadow: 0px 0px 10px #8887;
-}
-app-masthead .search.button-header-commun,
-app-masthead .back.button-header-commun {
-  display: none;
-}
-app-masthead[is-mobile]:not([is-focused-search-bar]) .search.button-header-commun {
-  display: flex;
-}
-app-masthead[is-mobile][is-focused-search-bar] .back.button-header-commun {
-  display: flex!important;
-}
-app-masthead[is-mobile] app-search {
-  display: none;
-}
-app-masthead[is-mobile][is-focused-search-bar] #end,
-app-masthead[is-mobile][is-focused-search-bar] #start{
-  display: none;
-}
-app-masthead[is-mobile][is-focused-search-bar] app-search ,
-app-masthead[is-mobile] app-search[focusing] {
-  display: flex;
 }
 app-search[focusing] {
   padding-left: 20px;
@@ -232,10 +207,46 @@ app-search input {
   flex-basis: 0.000000001px;
 }
 
+app-masthead:not([is-mobile]) app-search[focusing] {
+  box-shadow: 0px 0px 10px #8887;
+}
+app-masthead .search.button-header-commun,
+app-masthead .back.button-header-commun {
+  display: none;
+}
+app-masthead[is-mobile]:not([is-focused-search-bar]) .search.button-header-commun {
+  display: flex;
+}
+app-masthead[is-mobile][is-focused-search-bar] .back.button-header-commun {
+  display: flex!important;
+}
+app-masthead[is-mobile] app-search {
+  display: none;
+}
+app-masthead[is-mobile][is-focused-search-bar] #end,
+app-masthead[is-mobile][is-focused-search-bar] #start{
+  display: none;
+}
+app-masthead[is-mobile][is-focused-search-bar] app-search ,
+app-masthead[is-mobile] app-search[focusing] {
+  display: flex;
+}
 
 
 
 
+
+app-results {
+  display: block;
+  width: 100%;
+}
+app-results #contenter{
+  margin: 0 auto;
+  max-width: 1080px;
+  min-height: 100vh;
+  width: 100%;
+  padding: 30px 0 40px;
+}
 
 
 
@@ -561,10 +572,10 @@ app-button-icon app-icon{
   justify-content: center;
   padding: 0px!important;
 }
-
 app-card-owner {
   height: 48px;
   display: block;
+  width: 1;
 }
 app-card-owner app-image {
   display: block;
@@ -600,8 +611,22 @@ app-card-owner .subtext {
   margin-left:5px;
   display:block;
 }
-app-card-video:hover:before {
+app-card-owner app-button-customer {
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  display:flex;
+  border-radius: 16px;
+  padding: 0px 16px;
+}
+app-card-owner app-button-customer:hover {
   
+}
+app-card-owner #actions {
+  margin-left: auto;
+  margin-right: 8px;
+}
+app-card-video:hover:before {
   background: #2222;
 }
 app-card-video:before {
@@ -671,3 +696,74 @@ app-progress {
 app-progress[show] {
  opacity: 1;
 }
+
+
+
+app-description .contenter {
+    font-size: 15px;
+    line-height: 20px;
+    letter-spacing: -.3px;
+    overflow: hidden;
+   /* max-height: 100px;*/
+    margin-top: 10px;
+    color: var(--color-greywhite-50);
+    white-space: pre-line;
+}
+app-description .button-seek,
+app-description .button-link
+{
+  text-align: left;
+}
+app-description .button-seek,
+app-description .button-link,
+app-description .button-hashtag-link
+{
+  color: #88f;
+}
+button {
+  background-color: inherit;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+  cursor: pointer;
+}
+app-description .button-hashtag {
+    display: inline-block;
+    margin: 0 4px;
+    vertical-align: top;
+}
+app-description .hashtag-contenter {
+    margin: 20px -4px 0px;
+    padding: 0;
+}
+app-description .button-close {
+    display: none;
+    position: absolute;
+    top: 22px;
+    right: var(--common-side-margin);
+    border-radius: 50%;
+    background-color: var(--color-greywhite-10);
+    color: var(--color-greywhite-90);
+}
+.blind {
+    overflow: hidden;
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+}
+
+
+
+
+
+
+
+
+
+
+
+

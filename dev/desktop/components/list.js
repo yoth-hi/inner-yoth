@@ -1,5 +1,4 @@
-export const renderList = function(is, parent, array, onCreate = ()=> void 0) {
-  let element = [];
+export const renderList = function(is, parent, array, onCreate = ()=> void 0, element=[]) {
   for (var i = 0; i < parent.children.length; i++) {
     const H = typeof is == "string" ? is : is(array[i])
     const el = parent.children[i]

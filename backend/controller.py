@@ -7,6 +7,7 @@ from functools import lru_cache
 
 from .api.watchtime import WATCHTIME
 from .utils import getConfig, parse_accept_language_header
+from .api_search import SEARCH
 
 translations = {}
 with open('backend/translations.json', 'r') as f:
@@ -23,6 +24,11 @@ def renderSuperDataApi(lang, self_, context,data={}):
     data["content"] = MainConstructor_contentPage()
   if(context.get("pageId") == "FEED_HOME"):
     data["content"]["results"] = getDataHomePage_ListItems(lang)
+  elif(context.get("pageId") == "SEARCH"):
+    query = context.get("query")
+    if(query):
+      data["content"]["results"] = SEARCH(query, lang)
+    
   
   return data;
 ## host
@@ -116,6 +122,8 @@ def getPageIdByPath(path):
     _id = "LAYOUT_TV"
   elif(path == "watch"):
     _id = "WATCH"
+  elif(path == "search"):
+    _id = "SEARCH"
   return _id
 def toTextData(dataJson):
   text = None;
@@ -126,6 +134,7 @@ def isPageHtml(path):
   return (
     path == "/" or
     path == "/watch" or
+    path == "/search" or
     path == "/tv" or
     path == "/feed/trending"
   );
@@ -200,7 +209,7 @@ def HeaderDasktopWeb(ctx):
       "items":[
         {
           "type":"BUTTON_CUSTOMER",
-          "text":getI18n("sign_up",lang),
+          "title":getI18n("sign_up",lang),
           "accessibility":{
             "label":getI18n("sign_up",lang)
           },
@@ -288,7 +297,8 @@ def MainConstructor_playerOverlays(playerData,lang):
       "title":channelName,
       "actions":[
         {
-          "title":getI18n("subscribe", lang)
+          "title":getI18n("subscribe", lang),
+          "style":"BUTTON_SUBSCRIBE"
         }
       ]
     }

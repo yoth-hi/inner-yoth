@@ -52,9 +52,8 @@ const _template = html`
   <app-card-owner data="{{data.playerOverlays.owner}}"></app-card-owner>
 </div>
 </div>
-<div id="dscription-information">
-Introducing the ultimate web test tool that will revolutionize the way you conduct website evaluations. Our advanced platform utilizes cutting-edge technology to provide comprehensive analysis and reporting features, making it easier than ever to assess the performance and functionality of your website. With customizable testing parameters and real-time results, you can quickly identify areas for improvement and optimize your site for maximum success. Say goodbye to manual testing methods and welcome a new era of web evaluation with our innovative tool
-</div>
+<app-description>
+</app-description>
 <div id="column-mode-content"></div>
 <div>...</div>
 </div>

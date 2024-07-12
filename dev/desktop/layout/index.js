@@ -1,9 +1,6 @@
-import"./search.js"
-import"./header.js"
-import"./logo.js"
 
-import"./mini-drower-item.js"
-import"./mini-drower.js"
+import"./search/index.js"
+
 import"./ButtonCustomer.js"
 
 import"./card-video-column.js"
@@ -17,3 +14,4 @@ import"./Button.js"
 import"./icon.js"
 import"./owner-card.js"
 import"./progress.js"
+import"./description-text.js"

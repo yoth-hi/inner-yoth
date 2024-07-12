@@ -41,7 +41,14 @@ class App {
   onChengeData(a){
     if(a){
       this.icon = a.icon
-      this.text = a.text
+      this.text = a.title
+      if(a.style){
+        switch(a.style){
+          case "BUTTON_SUBSCRIBE":
+            a.isFull = true
+          break;
+        }
+      }
       this.isRow = !!a.isRow
       this.isFull = !!a.isFull
       this.isBorder = !!a.isBorder
