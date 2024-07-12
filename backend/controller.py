@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 from functools import lru_cache
 
 from .api.watchtime import WATCHTIME
-from .utils import getConfig, parse_accept_language_header
+from .utils import getConfig, parse_accept_language_header, getI18n, getTypeNumberI18n, getViewFormate
 from .api_search import SEARCH
 
 translations = {}
@@ -139,9 +139,15 @@ def isPageHtml(path):
     path == "/feed/trending"
   );
 def isPageApi(path,type_="GET"):
+  _NOAPI = (
+    path == "/opensearch"
+  )
+  if(_NOAPI and type_ == "GET"):
+    return _NOAPI
   if not path.startswith("/v1/"):
     return False
   path = path[3:]
+  
   GETS = (
     path == "/sugestions" or
     path == "/watchtime"
@@ -491,6 +497,12 @@ def PLAYER(context, self_, createConn):
   return{
     "data":f"{data}".encode('utf-8')
   }
+def opensearch(context, self_, createConn):
+  text = """<?xml version="1.0" encoding="UTF-8"?><OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"><ShortName>Yoth</ShortName><Description>Search for videos</Description><Tags>Yoth video</Tags><Image height="16" width="16" type="image/vnd.microsoft.icon">/favicon.ico</Image><Url type="text/html" template="/search?search_query={searchTerms}&amp;page={startPage?}&amp;utm_source=opensearch"></Url><Query role="example" searchTerms="cat"></Query></OpenSearchDescription>"""
+  return{
+    "data":f"{text}".encode('utf-8'),
+    "contentType":"text/xml"
+  }
 
 ## API MANAGER
 APIS = {
@@ -500,24 +512,24 @@ APIS = {
   "browse": BROWSE,
   "detalis_player": GET_DATAILS_PLAYER,
   "player": PLAYER,
+  "opensearch": opensearch,
 }
 
 def RenderApi(path, self_, parsed_path):
-  if not path.startswith("/v1/"):
-    self_.send_response(404)
-    self_.send_header('Content-type', 'text/plain')
-    self_.end_headers()
-    return False
   context = {}
   status = 200
   contentType = "text/plain"
+  apath = path
   path = path[3:]
   context["path"] = path
   context["parsed_path"] = parsed_path
-  call = APIS[path[1:]]
+  call = APIS.get(path[1:]) or APIS.get(apath[1:])
+  print(call)
   data = call(context, self_, createConn)
   if(data.get("status")):
     status = data.get("status")
+  if(data.get("contentType")):
+    contentType = data.get("contentType")
   self_.send_response(status)
   self_.send_header('Content-type', contentType)
   self_.end_headers()
@@ -536,9 +548,7 @@ def convert_seconds(total_seconds):
         return f"{minutes}:{seconds:02}"
 def i18n_view(viewer=0):
     return f"{viewer:,}"
-def getI18n(key,lang="en",**kwargs):
-  t = translations.get(lang) or translations.get(lang.split("-")[0])  or translations["en"]
-  return t.get(key,"").format(**kwargs)
+
 def format_string(template, **kwargs):
     return template.format(**kwargs)
 
@@ -582,15 +592,7 @@ def getPivotBar(lang, context, self_):
   return{
     "items":items
   }
-def getTypeNumberI18n(number):
-  with_ = ""
-  if number > 1:
-    with_ = "s"  
-  return with_
-def getViewFormate(number, lang):
-  t = getTypeNumberI18n(number);
-  h = getI18n(f"$COUNT_view{t}",lang,COUNT=number)
-  return h
+
 
 
 URL_GOOGLE = "https://suggestqueries-clients6.youtube.com/complete/search?ds=yt&client=firefox&hl={hl}&q={q}&gl=ko"

@@ -1,24 +1,58 @@
 import { Register, html } from "../../components/DOM.js"
+      // <li class="tag-item">
+      //   <a class="ClipHorizontalCardV2_link_tag__M_p6z" data-nlog-area="resultvideo.hashtag" data-nlog-rank="1" data-nlog-code="navertv.search" href="/search?query=%EC%95%84%EC%9D%BC%EB%A6%BF">#아일릿</a>
+      // </li>
 const _template = html`
-<a class="ClipHorizontalCardV2_link_thumbnail__QlHkv" data-nlog-area="resultvideo.video" data-nlog-rank="1" data-nlog-code="navertv.search" href="/v/49085823"><div class="ClipHorizontalCardV2_preview_area__ardqp"><span style="box-sizing: border-box; display: block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: absolute; inset: 0px;"><img alt="Magnetic - 아일릿(ILLIT) | KBS 240329 방송" src="https://phinf.pstatic.net/tvcast/20240329_128/uGKet_1711703497760nWlDH_JPEG/66068089da742e7fae677d9d_upload_1711702512540.jpeg?type=now720b" decoding="async" data-nimg="fill" style="background-image: url(&quot;https://phinf.pstatic.net/tvcast/20240201_160/IvphT_1706779482293Jj6jn_PNG/1706779482286.png?type=now480&quot;); background-size: cover; background-repeat: no-repeat; position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;"><noscript></noscript></span><div class="ClipHorizontalCardV2_badge_area__QCzC5"></div><span class="ClipHorizontalCardV2_playtime__smy9H">02:51</span></div></a><div aria-labelledby="label_49085823" class="ClipHorizontalCardV2_information_area__CyHH9"><div class="ClipHorizontalCardV2_text_information__sLHb5"><a class="ClipHorizontalCardV2_link_title__v1EH7" data-nlog-area="resultvideo.video" data-nlog-rank="1" data-nlog-code="navertv.search" href="/v/49085823"><strong class="ClipHorizontalCardV2_title__4gz8z">Magnetic - 아일릿(ILLIT) | KBS 240329 방송</strong><p class="ClipHorizontalCardV2_description__RBDmS">Magnetic - 아일릿(ILLIT)
-KBS2 TV 뮤직뱅크｜매주 금요일 오후 5시 15분에 방송됩니다.</p></a><ul class="ClipHorizontalCardV2_tag_list__50DgF"><li class="ClipHorizontalCardV2_tag_item__Fk4qZ"><a class="ClipHorizontalCardV2_link_tag__M_p6z" data-nlog-area="resultvideo.hashtag" data-nlog-rank="1" data-nlog-code="navertv.search" href="/search?query=%EC%95%84%EC%9D%BC%EB%A6%BF">#아일릿</a></li><li class="ClipHorizontalCardV2_tag_item__Fk4qZ"><a class="ClipHorizontalCardV2_link_tag__M_p6z" data-nlog-area="resultvideo.hashtag" data-nlog-rank="1" data-nlog-code="navertv.search" href="/search?query=ILLIT">#ILLIT</a></li><li class="ClipHorizontalCardV2_tag_item__Fk4qZ"><a class="ClipHorizontalCardV2_link_tag__M_p6z" data-nlog-area="resultvideo.hashtag" data-nlog-rank="1" data-nlog-code="navertv.search" href="/search?query=Magnetic">#Magnetic</a></li></ul><div class="ClipHorizontalCardV2_sub_information__1yhU8"><span class="ClipHorizontalCardV2_channel_item__x_A4k"><a class="ClipHorizontalCardV2_link_name__1K3rA" data-nlog-area="resultvideo.chhome" data-nlog-rank="1" data-nlog-code="navertv.search" href="/musicbank">뮤직뱅크</a></span><span class="ClipHorizontalCardV2_item__G6gDj"><span class="blind">등록일</span>3개월 전</span><span class="ClipHorizontalCardV2_item__G6gDj"><span class="ClipHorizontalCardV2_icon_play___v1D2"><svg viewBox="0 0 9 12" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" width="9" height="12"><path d="M1 10.4V1.6A.8.8 0 0 1 2.28.96l5.867 4.4a.8.8 0 0 1 0 1.28l-5.867 4.4A.8.8 0 0 1 1 10.4Z" stroke="currentColor"></path></svg><span class="blind">재생수</span></span><span class="ClipHorizontalCardV2_text__4iw73">2.9만</span></span></div><a class="ClipHorizontalCardV2_link_channel__SJmUy" data-nlog-area="resultvideo.chhome" data-nlog-rank="1" data-nlog-code="navertv.search" href="/musicbank"><span class="ClipHorizontalCardV2_channel_emblem__Xj_jg"><span style="box-sizing: border-box; display: block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: absolute; inset: 0px;"><img alt="" src="https://phinf.pstatic.net/tvcast/20240229_47/LvhkV_1709194125991a8wb5_PNG/N1pXN6QhGE4q.png?type=round_64_64" decoding="async" data-nimg="fill" style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"><noscript></noscript></span></span><span class="ClipHorizontalCardV2_channel_name__XaLUw">뮤직뱅크</span></a></div><div class="ClipHorizontalCardV2_option_area__VaI1P"><button type="button" aria-expanded="false" class="ClipHorizontalCardV2_button_option__LIrL5 _nlog" data-nlog-area="resultvideo.morebtn" data-nlog-code="navertv.search"><svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" width="15" height="15"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM7.5 15a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" fill="currentColor"></path></svg><span class="blind">옵션 더보기</span></button></div></div>
+<a id="thumbnail-link" on-click="handleLink" href$="/watch?v={{data.videoId}}">
+  <div id="thumbnail-preview-area">
+    <span style="box-sizing: border-box; display: block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: absolute; inset: 0px;">
+      <img alt="{{data.title}}" decoding="async" style="background-color:#000;background-size: cover; background-repeat: no-repeat; position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;">
+    </span>
+    <app-thumbnail-overlay-time>02:51</app-thumbnail-overlay-time>
+  </div>
+</a>
+<div class="information-area">
+  <div class="">
+    <a class="link-title" on-click="handleLink" href$="/watch?v={{data.videoId}}">
+      <strong class="title">{{data.title}}</strong>
+      <p class="text-description">{{data.description}}</p>
+    </a>
+    <ul class="tag-list"> </ul>
+    <div class="">
+      <span class="">
+        <a class="" href="#">---</a>
+      </span>
+      <span class="">--</span>
+      <span class="">
+        <span class=""><svg viewBox="0 0 9 12" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" width="9" height="12"><path d="M1 10.4V1.6A.8.8 0 0 1 2.28.96l5.867 4.4a.8.8 0 0 1 0 1.28l-5.867 4.4A.8.8 0 0 1 1 10.4Z" stroke="currentColor"></path></svg><span class="blind">재생수</span>
+      </span>
+      <span class="">{{data.viewCount.text}}</span>
+    </div>
+    <a class="link-channel" on-click="handleLink" href="#">
+      <span class="channel-emblem"><span style="box-sizing: border-box; display: block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: absolute; inset: 0px;"><img alt="" decoding="async"  style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;background:#000"><noscript></noscript></span></span>
+      <span class="">---</span>
+    </a>
+  </div>
+  <div class="">
+    <button type="button" aria-expanded="false" class=""><svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" width="15" height="15"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM7.5 15a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" fill="currentColor"></path></svg><span class="blind">옵션 더보기</span></button>
+  </div>
+</div>
 `
 
 
 class App {
-  constructor(){
-    
-  }
-  attached(){
-  }
-  static get properties() {
-    return {
-      icon: {
-        type: String,
-        reflectToAttribute: true
-      }
-    }
-  }
+constructor(){
+
+}
+attached(){
+}
+static get properties() {
+return {
+data: {
+type: Object
+}
+}
+}
 }
 
 Register(App, "app-search-card-video", _template)

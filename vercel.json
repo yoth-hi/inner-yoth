@@ -16,6 +16,10 @@
       "dest": "frontend/$1"
     },
     {
+      "src": "/robots.txt",
+      "dest": "frontend/robots.txt"
+    },
+    {
       "src": "/(.*)",
       "dest": "backend/main.py"
     }

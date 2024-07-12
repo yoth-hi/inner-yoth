@@ -1,5 +1,6 @@
 from http.cookies import SimpleCookie
 import secrets
+import json
 import base64
 from urllib.parse import parse_qs
 def getConfig(ctx, self_):
@@ -61,3 +62,21 @@ def parse_accept_language_header(header):
     return language_preferences
 def getIp(self_):
   return self_.client_address[0]
+def getViewFormate(number, lang):
+  t = getTypeNumberI18n(number);
+  h = getI18n(f"$COUNT_view{t}",lang,COUNT=number)
+  return h
+def getTypeNumberI18n(number):
+  with_ = ""
+  if number > 1:
+    with_ = "s"  
+  return with_
+  
+translations = {}
+
+with open('backend/translations.json', 'r') as f:
+  translations = json.load(f)
+  
+def getI18n(key,lang="en",**kwargs):
+  t = translations.get(lang) or translations.get(lang.split("-")[0])  or translations["en"]
+  return t.get(key,"").format(**kwargs)

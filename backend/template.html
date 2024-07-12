@@ -17,6 +17,7 @@
     <link rel="alternate" media="handheld" href="?app=mobile">
     <link rel="alternate" media="only screen and (max-width: 640px)" href="?app=mobile">
   {% endif %}
+  <link rel="search" type="application/opensearchdescription+xml" href="/opensearch?locale={{lang}}" title="YouTube">
   <link as="script" rel="preload" href="{{static_app}}app.js">
   <script src="{{static_app}}app.js" {% if isMobule %}type="module"{% endif %} charset=utf-8 async></script>
   <link href="/s/player/jsbin/player.css" rel=stylesheet>
@@ -81,5 +82,6 @@
         </yo-app>
         <script>(function(a,b,c){a.response={data:b,pageId:c}})(document.querySelector("yo-app"),data,"{{pageId}}")</script>
       {% endif %}
+      <noscript>Your browser requires JavaScript to function properly. Please enable JavaScript for a better experience.</noscript>
     </body>
 </html>

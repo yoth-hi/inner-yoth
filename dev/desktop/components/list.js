@@ -13,7 +13,7 @@ export const renderList = function(is, parent, array, onCreate = ()=> void 0, el
   }
   let y = []
   array.forEach((a, j)=> {
-    const H = typeof is == "string" ? is : is(array[i])
+    const H = typeof is == "string" ? is : is(array[j])
     const el = element[j] || document.createElement(H)
     parent.appendChild(el)
     y.push(el)
