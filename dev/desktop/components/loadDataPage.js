@@ -20,7 +20,7 @@ export default function (pageId, onLoad,err=log,context={}) {
   }
   if(pageId==="SEARCH"){
     const loc = window.location.href
-    data_.query = getQueryParameter(loc,"search_query")||getQueryParameter(loc,"v")
+    data_.query = getQueryParameter(loc,"search_"+"query")||getQueryParameter(loc,"v")
   }
   const a = Load(data_).then(onLoad, err).finally(()=>{
     dispatch(document,EVENT_NAME_ON_NAVEGATE_FINISH)
