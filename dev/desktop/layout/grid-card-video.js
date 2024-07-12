@@ -12,7 +12,9 @@ const _template = html`
 `
 
 class App {
-  constructor() {}
+  constructor() {
+    this._scope ??= document.body
+  }
 
   ready() {
     
