@@ -7,7 +7,7 @@ export const getPagesIdByPath = function(path){
     return"TRENDING"
   } else if(path === "/watch"){
     return"WATCH"
-  } else if(path === "/search"){
+  } else if(path === "/results"){
     return"SEARCH"
   }
 }

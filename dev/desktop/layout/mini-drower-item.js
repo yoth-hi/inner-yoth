@@ -1,7 +1,7 @@
 import { Register, html } from "../components/DOM.js"
 import { renderList } from "../components/list.js"
 const _template = html`
-<a href$="{{getHref(data)}}" on-tab="handleLink_" on-click="handleLink" aria-label="{{data.accessibility.label}}">
+<a href$="{{getHref(data)}}" on-tab="handleLink_" on-click="handleLink_" aria-label="{{data.accessibility.label}}">
   <app-icon class="icon" icon="{{getIcon(data.icon,isSelected)}}"></app-icon>
   <span class="title" role="text">{{data.title}}</span>
 </a>
@@ -32,6 +32,7 @@ class App {
     
   }
   handleLink_(a){
+    a.preventDefault();
     const render = this.data?.endpoint?.render
     const href = this.data?.endpoint?.url
     if(render){
@@ -43,7 +44,7 @@ class App {
   getIcon(icon, is){
     return(is?"SELECTED_":"")+icon 
   }
-  getHref(){
+  getHref(data){
     return data?.endpoint?.url
   }
 }

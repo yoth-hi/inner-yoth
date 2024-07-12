@@ -87,6 +87,8 @@ function KG(a, b, c) {
   c.forEach(k => {
     //debugger
     b[k]&&(a[k] = b[k])
+    a[k]&&(b[k] = a[k])
+    
     HH[k] = {
       configurable: false, enumerable: false,
       get: function() {

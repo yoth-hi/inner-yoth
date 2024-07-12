@@ -22,7 +22,7 @@ const _template = html`
 <app-paper-tooltip prefix="" >[[placeholder]]</app-paper-tooltip></button>
 `
 
-const to = "/search"
+const to = "/results"
 class App {
   constructor() {
     this.onFindSlot()

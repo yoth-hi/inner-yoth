@@ -122,7 +122,7 @@ def getPageIdByPath(path):
     _id = "LAYOUT_TV"
   elif(path == "watch"):
     _id = "WATCH"
-  elif(path == "search"):
+  elif(path == "results"):
     _id = "SEARCH"
   return _id
 def toTextData(dataJson):
@@ -134,7 +134,7 @@ def isPageHtml(path):
   return (
     path == "/" or
     path == "/watch" or
-    path == "/search" or
+    path == "/results" or
     path == "/tv" or
     path == "/feed/trending"
   );
@@ -498,7 +498,7 @@ def PLAYER(context, self_, createConn):
     "data":f"{data}".encode('utf-8')
   }
 def opensearch(context, self_, createConn):
-  text = """<?xml version="1.0" encoding="UTF-8"?><OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"><ShortName>Yoth</ShortName><Description>Search for videos</Description><Tags>Yoth video</Tags><Image height="16" width="16" type="image/vnd.microsoft.icon">/favicon.ico</Image><Url type="text/html" template="/search?search_query={searchTerms}&amp;page={startPage?}&amp;utm_source=opensearch"></Url><Query role="example" searchTerms="cat"></Query></OpenSearchDescription>"""
+  text = """<?xml version="1.0" encoding="UTF-8"?><OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"><ShortName>Yoth</ShortName><Description>Search for videos</Description><Tags>Yoth video</Tags><Image height="16" width="16" type="image/vnd.microsoft.icon">/favicon.ico</Image><Url type="text/html" template="/results?search_query={searchTerms}&amp;page={startPage?}&amp;utm_source=opensearch"></Url><Query role="example" searchTerms="cat"></Query></OpenSearchDescription>"""
   return{
     "data":f"{text}".encode('utf-8'),
     "contentType":"text/xml"
