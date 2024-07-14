@@ -222,6 +222,10 @@ export default class {
     _controller = new KF(this)
     _timeded = new timing(this)
     _rc = {}
+    
+    _seeks = []
+    _lestSeeksed = null;
+    
     _mediaTimeToLoad = 0;
     constructor(api) {
       this._controller._callback = this._on276.bind(this)
@@ -241,6 +245,40 @@ export default class {
     }
     _loadedBuffer(arr,t){
       this._appendBuffer(arr,t)
+    }
+    _recordSeek(currentTime){
+     // const currentTime = this._mediaElement._getCurrentTime();
+      if(this._seeks.length === 0 || this._seeks[this._seeks.length - 1].end !== null){
+        this._seeks.push({ start: currentTime, end: null })
+      } else {
+        this._seeks[this._seeks.length - 1].end = currentTime
+      }
+    }
+    _getSeeks(){
+      const currentTime = this._mediaElement._getCurrentTime()
+      if(this._seeks.length === 0){
+        if(this._lestSeeksed!==null){
+          this._seeks = [];
+          const t = [[this._lestSeeksed],[currentTime]]
+          this._lestSeeksed = currentTime
+          return t
+        } else {
+          this._seeks = [];
+          this._lestSeeksed = currentTime
+          return[[this._last11||0],[this._last11=currentTime]]
+        }
+      }
+      
+      const starts = []
+      const ends = []
+      for(const { start, end } of this._seeks){
+        starts.push(start)
+        ends.push(end??currentTime)
+      }
+      console.log(starts,ends)
+      this._lestSeeksed = ends[ends.length - 1];
+      
+      return [starts, ends]
     }
     _setMediaElement(mediaElement) {
         if (mediaElement) {
@@ -372,12 +410,7 @@ export default class {
                 if(!this._proms){
                   this._proms = new Promise;
                   this._proms.then((a)=>{
-                    this._proms = void 0
-                    this._mediaTimeToLoad = a;
-                    let st = Math.min(f,j)
-                    let ed = Math.max(j,f);
-                    (this._store$018["ed"] ??= []).push(ed);
-                    (this._store$018["st"] ??= []).push(st)
+                    this._recordSeek(a)
                   })
                 }
                 break;

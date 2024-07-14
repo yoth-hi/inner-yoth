@@ -1,5 +1,8 @@
 import XHR from "../controllers/xml.ping.js"
-import { getReferrer, getValue } from "../../../desktop/components/data.config.js"
+import {
+  getReferrer,
+  getValue
+} from "../../../desktop/components/data.config.js"
 import _URL from "../controllers/URL.js"
 const K_ = function(a, b, c, d) {
   var e = a._querys[c]; e || (e = [], a._querys[c] = e); e.push(b.toFixed(3)+":"+d.join(":"))};
@@ -19,9 +22,12 @@ export default function(scope) {
   function Ma(scope) {
     const media = scope._mediaElement;
     const b = media
-    setTimeout(()=>{
-      t = false
-    },100)
+    clearInterval(scope._gsg)
+    scope._gsg = setTimeout(()=> {
+      scope._gsg = null
+      t = true
+      Ma(scope)
+    }, 500);
     if (media &&
       b._getDuration() > 0 &&
       (!b._isPaused() || t) &&
@@ -29,7 +35,7 @@ export default function(scope) {
       !is(scope._timeded, b._getCurrentTime())
     ) {
       MM(scope._getDataWatchtime())
-      t = true
+      t = false
       return true
     }
   }
@@ -53,29 +59,22 @@ export default function(scope) {
     a.set("sid", scope._getSessionId())
     // K_(a,b,"cmt",[d.toFixed(3)]);
   }
+
   const UFG = function(scope) {
     const media = scope._mediaElement;
     const store = scope._store$297 ??= {};
     const storePlayer = scope._store$018 ??= {};
     const g = media._getCurrentTime()
-    if (
-      find(storePlayer, "st", []).length === 0
-    ) {
-      (storePlayer["st"] ??= []).push(scope._timeded.mediaTime);
-      (storePlayer["ed"] ??= []).push(g)
-    }
-    if (
-      find(storePlayer, "st", []).length >
-      find(storePlayer, "ed", []).length
-    ) {
-      (storePlayer["ed"] ??= []).push(g)
-    }
+
+    const q = scope._storeM13 ??= {};
+    const [starts,
+      ends] = scope._getSeeks();
     scope._timeded.mediaTime = g
-    const q = {};
+
     Object.assign(q, UF3(scope))
     j(store, "volume", q, [media._getVolume()*100])
-    j(store, "st", q, find(storePlayer, "st", []))
-    j(store, "ed", q, find(storePlayer, "ed", []))
+    q.st = starts.join(",")
+    q.ed = ends.join(",")
     j(store, "muted", q, [media._getMuted()?"1": "0"])
     q.referrer = getReferrer()
     q.status = getStatus(media)
@@ -110,12 +109,12 @@ export default function(scope) {
     list && (g["list"] = list)
     return g
   }
-  function ggg(a){
-    a["cp"] = getValue("CLEINT_NAME",null)
+  function ggg(a) {
+    a["cp"] = getValue("CLEINT_NAME", null)
     a["c"] = "web"
   }
-  function getStatus(mediaElement){
+  function getStatus(mediaElement) {
     const isPaused = mediaElement._isPaused();
     const isEnded = mediaElement._isEnded();
-    return isEnded ? "ended" : (isPaused ? "paused":"playing")
+    return isEnded ? "ended": (isPaused ? "paused": "playing")
   }
