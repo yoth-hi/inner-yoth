@@ -93,12 +93,13 @@ class handler(BaseHTTPRequestHandler):
               prf = path[:6]
               if(path == "desktop/jsbin/dev.js"):
                 in_ = "dev";
-                path = "desktop/app.js"
+                path = "desk/app.js"
               elif(
                 f == "desktop"
                 ):
                 path = "desktop/"+ path[14:]
-                in_ = "dev";
+                #path = "desk/"+ path[14:]
+                in_ = "dev"
               elif(prf == "mobile" ):
                 path = "mobile/"+ path[13:]
                 in_ = "dev";

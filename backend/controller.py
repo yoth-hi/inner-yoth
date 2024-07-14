@@ -158,6 +158,7 @@ def isPageApi(path,type_="GET"):
     path == "/like/like" or
     path == "/guide" or
     path == "/player" or
+    path == "/updatedata" or
     path == "/like/deslike"
   )
   if(type_=="GET"):
@@ -287,15 +288,20 @@ def ConstructorCardVideo(data,lang):
 def MainConstructor_playerOverlays(playerData,lang):
   title = playerData.get("title")
   description = playerData.get("description","")
-  id_ = playerData.get("id")
+  id_ = playerData.get("id","")
   channelName = playerData.get("channelName")
   channelId = playerData.get("channelId")
+  view_count = playerData.get("viewCount")
   return{
     "videoId":id_,
     "videoDetalis":{
       "title": title,
       "description": description
     },
+          "viewCount":{
+        "text": getViewFormate(view_count,lang),
+        "count":view_count
+      },
     "owner":{
       "endpoint":EndPoint(None,{
         "channel_id": channelId
@@ -496,6 +502,38 @@ def PLAYER(context, self_, createConn):
   return{
     "data":f"{data}".encode('utf-8')
   }
+def updatedata(context, self_, createConn):
+  body = getBodyRequest(self_) or {};
+  lang = body.get("client",{}).get("hl")
+  id_ = body.get("videoId")
+  if(not id_):
+    return{
+      "status":403
+    }
+  req = SQL("""SELECT
+   v.title,
+   v.description,
+   (SELECT COUNT(*) FROM viewers vw WHERE vw.video_id = v.id) AS viewer_count
+  FROM video v WHERE v.id = %s""",(id_,))
+  req = req[0];
+  if(not req):
+    return{
+      "status":404
+    }
+  view_count = req[2]
+  data = {
+    "updated":{
+      "title":req[0],
+      "viewCount":{
+        "text": getViewFormate(view_count,lang),
+        "count":view_count
+      },
+    }
+  }
+  data = toTextData(data) or "{}"
+  return{
+    "data":f"{data}".encode('utf-8')
+  }
 def opensearch(context, self_, createConn):
   text = """<?xml version="1.0" encoding="UTF-8"?><OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"><ShortName>Yoth</ShortName><Description>Search for videos</Description><Tags>Yoth video</Tags><Image height="16" width="16" type="image/vnd.microsoft.icon">/favicon.ico</Image><Url type="text/html" template="/results?search_query={searchTerms}&amp;page={startPage?}&amp;utm_source=opensearch"></Url><Query role="example" searchTerms="cat"></Query></OpenSearchDescription>"""
   return{
@@ -512,6 +550,7 @@ APIS = {
   "detalis_player": GET_DATAILS_PLAYER,
   "player": PLAYER,
   "opensearch": opensearch,
+  "updatedata": updatedata,
 }
 
 def RenderApi(path, self_, parsed_path):
@@ -554,8 +593,10 @@ def format_string(template, **kwargs):
 def getVideoPlayerData(playerData=None,id_=None):
   if not playerData:
     playerData = getDataVideo(id_)
-  id_ = playerData.get("id")
+  if not playerData:
+    return{}
   title = playerData.get("title")
+  id__ = playerData.get("id")
   description = playerData.get("description")
   channelName = playerData.get("channelName")
   viewCount = playerData.get("viewCount")

@@ -30,16 +30,20 @@ class App {
     this.hostElement.setAttribute("role", "text")
   }
 
-  onChengeData(number) {
+  onChengeData(number = 0) {
     const str = String(number)
     this.hostElement.setAttribute("aria-label", str)
     const w = str.length;
+    if(this.currentIndexNumberLength > w){
+      for(;this._items.length > 0;){
+        this._items.pop().parent.remove()
+      }
+    }
+    this.currentIndexNumberLength = w
     for (let i = 0; i < w; i++) {
       this.createText(i, +str[i]);
     }
-    setTimeout(() => {
-      this.onChengeData(number += parseInt(727*Math.random()))
-    }, 2000)
+    
   }
 
   createText(i, index) {

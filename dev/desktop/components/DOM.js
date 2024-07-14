@@ -1,188 +1,198 @@
-import{history}from"./pushState.js"
-import {
-  ElementMixin
-} from 
- "./_prod.js"
- 
- 
+import { history } from "./pushState.js";
+import { ElementMixin } from "./_prod.js"; // of polymerjs
+
 export const ManagerHistory = new history();
-var Upb = ["disabled", "disable-upgrade"]
-export function Register (call, is, html) {
-  call.prototype.is = is;
-  var t;
-  call = call
-  const m =
-  call.properties ||
-  call.prototype.properties || {}
-  class GG extends ElementMixin(call) {
-    get _template() {
-      return t ??= html?.()
-    }
-    set _template(a) {
-      return t = a
-    }
-    _attachDom(a) {
-      return ((a = a && this.hostElement.appendChild(a)),QSP(this.hostElement),a)
-    }
-    connectedCallback() {
-      super.connectedCallback()
-      call.prototype.attached?.apply(this)
-    }
-    disconnectedCallback() {
-      super.disconnectedCallback()
-      call.prototype.detached?.apply(this)
-    }
-    ready() {
-      super.ready()
-      call.prototype.ready?.apply(this)
-    }
-    static get properties() {
-      return m
-    }
-    onFindSlot(x){
-      call.prototype.onFindSlot?.apply(this,arguments)
-    }
-    $$(a){return this.hostElement.querySelector(a)}
-    handleLink(a,b=""){
-      const url = a?.currentTarget?.href||b
-      a?.preventDefault();
-      this.hundlePagePush(url)
-    }
-    hundlePagePush(url){
-      ManagerHistory.pushState(url)
-    }
-    listen(a,b,c){
-      a.addEventListener(b,(e)=>{
-        let a = isCustomEvent(e)
-        if(a){
-          a = e.detail
+const Upb = ["disabled", "disable-upgrade"];
+
+export function Register(call, is, html) {
+    call.prototype.is = is;
+    let template;
+
+    const properties = call.properties || call.prototype.properties || {};
+
+    class GG extends ElementMixin(call) {
+        get _template() {
+            return template ??= html?.();
         }
-        if(typeof c === "string"){
-          this[c](e,a)
-        } else {
-          c(e,a,this)
+
+        set _template(value) {
+            template = value;
         }
-      })
+
+        _attachDom(element) {
+            element = element && this.hostElement.appendChild(element);
+            QSP(this.hostElement);
+            return element;
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+            call.prototype.attached?.apply(this);
+        }
+
+        disconnectedCallback() {
+            super.disconnectedCallback();
+            call.prototype.detached?.apply(this);
+        }
+
+        ready() {
+            super.ready();
+            call.prototype.ready?.apply(this);
+        }
+
+        static get properties() {
+            return properties;
+        }
+
+        onFindSlot(slot) {
+            call.prototype.onFindSlot?.apply(this, arguments);
+        }
+
+        $$(selector) {
+            return this.hostElement.querySelector(selector);
+        }
+
+        handleLink(event, fallback = "") {
+            const url = event?.currentTarget?.href || fallback;
+            event?.preventDefault();
+            this.hundlePagePush(url);
+        }
+
+        hundlePagePush(url) {
+            ManagerHistory.pushState(url);
+        }
+
+        listen(element, eventType, callback) {
+            element.addEventListener(eventType, (event) => {
+                let detail = isCustomEvent(event) ? event.detail : null;
+                if (typeof callback === "string") {
+                    this[callback](event, detail);
+                } else {
+                    callback(event, detail, this);
+                }
+            });
+        }
     }
-  }
-  var observedAttributes = [...Upb,
-    ...Object.keys(m)]
-    GG = jGR(GG)
-  SUPER( {
-    create(hostElement) {
-      var t = new GG;
-      KG(t, hostElement, observedAttributes)
-      t.hostElement = hostElement;
-      return t
-    },
-    observedAttributes
-  }, is)
+
+    const observedAttributes = [...Upb, ...Object.keys(properties)];
+    GG = jGR(GG);
+
+    SUPER({
+        create(hostElement) {
+            const instance = new GG();
+            KG(instance, hostElement, observedAttributes);
+            instance.hostElement = hostElement;
+            return instance;
+        },
+        observedAttributes
+    }, is);
 }
+
 function isCustomEvent(obj) {
     return obj instanceof CustomEvent;
 }
-function KG(a, b, c) {
-  
-  const HH = {}
-  c.forEach(k => {
-    //debugger
-    b[k]&&(a[k] = b[k])
-    a[k]&&(b[k] = a[k])
-    
-    HH[k] = {
-      configurable: false, enumerable: false,
-      get: function() {
-        return a[k]
-      },
-      set: function(m) {
-        a[k] = m
-      }
-    }
-  })
-  Object.defineProperties(b, HH);
 
-
-
-
-}
-function SUPER( {
-  create, observedAttributes
-}, is) {
-  class Element_ extends HTMLElement {
-    constructor() {
-      super();
-      this.inst = create(this)
-    }
-    connectedCallback() {
-      this.inst.connectedCallback()
-      this.inst.isConnected = true
-    }
-    disconnectedCallback() {
-      this.inst.disconnectedCallback()
-      this.inst.isConnected = false
-    }
-    static get observedAttributes() {
-      return observedAttributes
-    }
-    attributeChangedCallback(z,A,D){this.inst.attributeChangedCallback(z,A,D)};
-    forwardDynamicProps() {
-      arguments
-      debugger
-    }
-    get is() {
-      return is
-    }
-  }
-  customElements.define(is, Element_);
+function KG(instance, hostElement, attributes) {
+    const propertyMap = {};
+    attributes.forEach(attr => {
+        if (hostElement[attr]) {
+            instance[attr] = hostElement[attr];
+        }
+        if (instance[attr]) {
+            hostElement[attr] = instance[attr];
+        }
+        propertyMap[attr] = {
+            configurable: false,
+            enumerable: false,
+            get: () => instance[attr],
+            set: (value) => { instance[attr] = value; }
+        };
+    });
+    Object.defineProperties(hostElement, propertyMap);
 }
 
-export const html = function(html_) {
-  var _template;
-  return function() {
-    if (_template)return;
-    _template = document.createElement("template")
-    _template.innerHTML = html_
-    return _template
-  }
-}
-function QSP(doc = document) {
-  doc.querySelectorAll("slot").forEach(slot => {
-    const target = doc.querySelector(`[slot="${slot.name}"]`);
-    if (target) {
-      slot.parentElement.insertBefore(target, slot);
-      const dataHost = slot.parentElement.__dataHost;
-      if (dataHost) {
-        dataHost.onFindSlot(target);
-      }
-      slot.remove();
+function SUPER({ create, observedAttributes }, is) {
+    class Element_ extends HTMLElement {
+        constructor() {
+            super();
+            this.inst = create(this);
+        }
+
+        connectedCallback() {
+            this.inst.connectedCallback();
+            this.inst.isConnected = true;
+        }
+
+        disconnectedCallback() {
+            this.inst.disconnectedCallback();
+            this.inst.isConnected = false;
+        }
+
+        static get observedAttributes() {
+            return observedAttributes;
+        }
+
+        attributeChangedCallback(name, oldValue, newValue) {
+            this.inst.attributeChangedCallback(name, oldValue, newValue);
+        }
+
+        forwardDynamicProps() {
+            // Implement as needed
+        }
+
+        get is() {
+            return is;
+        }
     }
-  });
+    customElements.define(is, Element_);
 }
 
-// Função para observar mudanças no DOM e chamar QSP
+export const html = function(htmlString) {
+    let template;
+    return function() {
+        if (!template) {
+            template = document.createElement("template");
+            template.innerHTML = htmlString;
+        }
+        return template;
+    };
+};
+
+function QSP(document = window.document) {
+    document.querySelectorAll("slot").forEach(slot => {
+        const target = document.querySelector(`[slot="${slot.name}"]`);
+        if (target) {
+            slot.parentElement.insertBefore(target, slot);
+            const dataHost = slot.parentElement.__dataHost;
+            if (dataHost) {
+                dataHost.onFindSlot(target);
+            }
+            slot.remove();
+        }
+    });
+}
+
 function observeDOMChanges() {
-  const observer = new MutationObserver(() => {
-    QSP();
-  });
-  observer.observe(document.documentElement, {
-    childList: true,
-    subtree: true,
-    attributes: true
-    // Configurações adicionais conforme necessário
-  });
+    const observer = new MutationObserver(() => {
+        QSP();
+    });
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+        attributes: true
+    });
 }
 
-// Chamar observeDOMChanges para iniciar a observação
 observeDOMChanges();
 
-
-function jGR(a){
-  return class extends a{
-  _propertyToAttribute(property, attribute, value) {
-      this.__serializing = true;
-      value = arguments.length < 3 ? this[property] : value;
-      this._valueToNodeAttribute(this.hostElement??this, value,
-      attribute || this.constructor.attributeNameForProperty(property));
-      this.__serializing = false;
-    }}
+function jGR(BaseClass) {
+    return class extends BaseClass {
+        _propertyToAttribute(property, attribute, value) {
+            this.__serializing = true;
+            value = arguments.length < 3 ? this[property] : value;
+            this._valueToNodeAttribute(this.hostElement ?? this, value,
+                attribute || this.constructor.attributeNameForProperty(property));
+            this.__serializing = false;
+        }
+    };
 }

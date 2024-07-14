@@ -1,5 +1,8 @@
-import"./layout/index.js"
 
+/* Logger */
+import Logger from "./components/logger/signals.js"
+
+import"./layout/index.js"
 import{ManagerHistory}from"./components/DOM.js"
 import { set as storeSet } from "./components/config.store.js"
 import("./pages/index.js")
@@ -29,6 +32,7 @@ class App {
     ManagerHistory.onpush(this._onChengePage.bind(this))
   }
   attached(){
+    Logger().processSignal("ci")
     const hasDarkTyped = window.matchMedia("(prefers-color-scheme: dark)")
     if(hasDarkTyped){
       hasDarkTyped.addEventListener?.("change",this.onDeviceThemeChanged.bind(this))

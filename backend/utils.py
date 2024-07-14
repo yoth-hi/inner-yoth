@@ -80,3 +80,21 @@ with open('backend/translations.json', 'r') as f:
 def getI18n(key,lang="en",**kwargs):
   t = translations.get(lang) or translations.get(lang.split("-")[0])  or translations["en"]
   return t.get(key,"").format(**kwargs)
+
+
+def getMainLanguage(self):
+  return self.headers.get('Accept-Language', 'en-US').split(",")[0]
+
+def getFullUrl(self):
+  schame = "https"
+  if self.headers['Host'] == "localhost:8080":
+    schame = "http"
+  return  f"{schame}://{self.headers['Host']}{self.path}"
+
+def isHTMLPage(path):
+  return (
+    path == "/" or
+    path == "/watch" or
+    path == "/results" or
+    path == "/feed/trending" 
+  )
