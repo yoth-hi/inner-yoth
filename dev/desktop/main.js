@@ -1,4 +1,7 @@
 
+/* network control */
+import NetControl from "./service/network.controller.js"
+
 /* Logger */
 import Logger from "./components/logger/signals.js"
 
@@ -27,6 +30,9 @@ const _template = html`
 
 class App {
   constructor(){
+    
+    this.network = NetControl()
+    
     storeSet("root",this)
     this.listen(window,"popstate","_onChengePage")
     ManagerHistory.onpush(this._onChengePage.bind(this))
@@ -68,6 +74,13 @@ class App {
       this.pageId = void 0
     }
     this.pageId = id
+  }
+  _setIsTransparentHeader(isHeaderTransparent){
+    this.hostElement.querySelector("app-masthead").isTransparent = !!isHeaderTransparent
+  }
+  _setIsVisibleHeader(is){
+    is?this.hostElement.removeAttribute('hidden-mastheader'):
+    this.hostElement.setAttribute('hidden-mastheader',"")
   }
 }
 

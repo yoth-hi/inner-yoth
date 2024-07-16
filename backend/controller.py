@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 from functools import lru_cache
 
 from .api.watchtime import WATCHTIME
-from .utils import getConfig, parse_accept_language_header, getI18n, getTypeNumberI18n, getViewFormate
+from .utils import getConfig, parse_accept_language_header, getI18n, getTypeNumberI18n, getViewFormate, getThambnail
 from .api_search import SEARCH
 
 translations = {}
@@ -45,7 +45,7 @@ def renderContextPage(parsed_path, self_, is_mobile):
   path = parsed_path.path
   query = parseQuery(parsed_path.query)
   context["pageId"] = getPageIdByPath(path)
-  isMobile = not not is_mobile #not query.get("app") == "desktop"
+  isMobile = False# not not is_mobile #not query.get("app") == "desktop"
   isembed = context["pageId"] == "EMBED"
   iswatch = context["pageId"] == "WATCH"
   isdev = context["isdev"] = host == "localhost:8080"
@@ -97,7 +97,7 @@ def renderContextPage(parsed_path, self_, is_mobile):
   playerData = getVideoPlayerData(playerData)
   context["data"] = toTextData(data)
   context["playerData"] = toTextData(playerData)
-  context["isMobule"] = (not istv and not isMobile) and isdev
+  context["isMobule"] = (not istv) and isdev
   context["static_app"] += "jsbin/"
   g = context.get("static_app")
   linksPre += f"<{g}/app.js>; rel=preload; as=script"
@@ -265,6 +265,7 @@ def ConstructorCardVideo(data,lang):
     "accessibility":{
       "label":title
     },
+    "thumbnail":getThambnail(id_),
     "title":title,
     "videoId": id_,
     "viewCount":{
@@ -298,7 +299,8 @@ def MainConstructor_playerOverlays(playerData,lang):
       "title": title,
       "description": description
     },
-          "viewCount":{
+    "thumbnail":getThambnail(id_),
+    "viewCount":{
         "text": getViewFormate(view_count,lang),
         "count":view_count
       },
@@ -487,7 +489,8 @@ def GET_DATAILS_PLAYER(context, self_, createConn):
     title += " - "
     title += playerData.get("title")
   data["headerupdate"] = {
-    "title":title
+    "title":title,
+    
   }
   data = toTextData(data) or "{}"
   return{
@@ -569,6 +572,7 @@ def RenderApi(path, self_, parsed_path):
   if(data.get("contentType")):
     contentType = data.get("contentType")
   self_.send_response(status)
+  self_.send_header('Cross-Origin-Resource-Policy', 'cross-origin')
   self_.send_header('Content-type', contentType)
   self_.end_headers()
   if(data.get("data")):
@@ -618,7 +622,7 @@ def getVideoPlayerData(playerData=None,id_=None):
       "isOwnerViewing": None,
       "shortDescription":description,
       "isCrawlable": None,
-      "thumbnail": None,
+      "thumbnail":getThambnail(id_),
       "allowRatings": None,
       "viewCount": f"{viewCount}",
       "author": channelName,

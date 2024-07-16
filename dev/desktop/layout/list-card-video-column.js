@@ -35,8 +35,10 @@ class App {
       list.push(()=> {
         element.isShow = true
       })
-    }); (function r() {
-      list.shift()()
+    }); 
+    (function r() {
+      const g = list.shift()
+      g()
       if (list.length) {
         setTimeout(r, 40)
       }

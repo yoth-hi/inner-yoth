@@ -66,9 +66,17 @@ class Watch {
     constructor() {
         this.resizeObserver = new ResizeObserver((entries) => this.resize(entries));
         this.listen(document, getEventNameFullScreenChange(document), () => {
-            this.fullscreen = !!getFullScreenElement(false);
+            storeGet("root")._setIsVisibleHeader(!(this.fullscreen = !!getFullScreenElement(false)))
         });
         this.listen(document, EVENT_NAME_ON_NAVEGATE_FINISH, this.onFinishNavegate.bind(this));
+        this.listen(window,"scroll", ()=> {
+          if(this.active&&this.fullscreen){
+            const scroll = window.scrollTop;
+            storeGet("root")._setIsVisibleHeader(scroll!==0)
+          } else {
+            storeGet("root")._setIsVisibleHeader(true)
+          }
+        })
     }
 
     async onFinishNavegate() {
@@ -84,12 +92,13 @@ class Watch {
 
     attached() {
         this.resizeObserver.observe(this.hostElement);
+        
     }
 
     detached() {
         this.resizeObserver.unobserve(this.hostElement);
     }
-
+    
     static get properties() {
         return {
             isRow: { type: Boolean, reflectToAttribute: true },
@@ -98,13 +107,21 @@ class Watch {
             data: { type: Object, observer: "onChangeData" },
             prodata: { type: Object, observer: "onChangeProData" },
             fullPlayerActive: { type: Boolean, reflectToAttribute: true, computed: "computedIsFullMode(fullscreen)", observer: "toFullPlayer" },
-            isStart: Boolean,
+            active: {
+              type:Boolean,
+              observer: "onChangeActive"
+            },
             onLoadData: Function,
             title: String,
             viewCount: String,
         };
     }
-
+    onChangeActive(isActive){
+      if(!isActive){
+         storeGet("root")._setIsVisibleHeader(true)
+         storeGet("root")._setIsTransparentHeader(false)
+      }
+    }
     async onChangeVideoId(newId, oldId) {
         if (!this.data?.playerOverlays?.videoId|| ((newId || this.videoId) && this.data?.playerOverlays?.videoId !== (newId || this.videoId))) {
             const data = await fetchPlayerData(this.videoId);
@@ -154,13 +171,15 @@ class Watch {
         const playerContent = this.hostElement.querySelector("#player--c");
         const primaryColumn = this.hostElement.querySelector("#column>#primaty");
         
+        storeGet("root")._setIsTransparentHeader(this.fullscreen?0:1)
         if (isFull) {
             playerFull.appendChild(playerContent);
         } else {
+
             primaryColumn.insertBefore(playerContent, primaryColumn.firstChild);
         }
     }
-
+    
     computedIsFullMode(full, tha) {
         return full || tha;
     }

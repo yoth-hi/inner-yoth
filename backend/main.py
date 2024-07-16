@@ -48,6 +48,10 @@ class handler(BaseHTTPRequestHandler):
         path = unquote(parsed_path.path)
         if isPageApi(path,"POST"):
             RenderApi(path, self, parsed_path)
+    def do_HEAD(self):
+        self.send_response(204)
+        self.send_header('Cross-Origin-Resource-Policy', 'cross-origin')
+        self.end_headers()
 
     def serve_html(self, parsed_path, path):
         host = self.headers.get('Host')
@@ -64,7 +68,7 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Pragma', 'no-cache')
         self.send_header('compressed', f"{compression_quality}")
         self.send_header('Permissions-Policy', 'ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*')
-        context = renderContextPage(parsed_path, self, False)
+        context = renderContextPage(parsed_path, self, is_mobile )
         self.end_headers()
         template_name = 'template.html'
         if True:#template_name not in cached_templates:

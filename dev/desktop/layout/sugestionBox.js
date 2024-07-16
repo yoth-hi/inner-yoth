@@ -13,9 +13,9 @@ class sugestionBox {
     this.host = host;
     this.hei = 56;
     this._onResize()
-    this._preRender([])
+    this._preRender([]).catch(()=>0)
     this.call = debounce(value => {
-      this._preRender(value.split(" ").map((a)=>[a,a]))
+      this._preRender(value.split(" ").map((a)=>[a,a])).catch(()=>0)
     },64)
     this.parent.appendChild(this.subparent)
   }
@@ -39,9 +39,14 @@ class sugestionBox {
       this.parent.style.display = "none"
       this._renderItems([])
     }else {
-      const h = await new fetch("/v1/sugestions?q="+encodeURIComponent(v)+"&hl="+getValue("HL","en"))
+      this._controller?.abort();
+      this._controller = new AbortController();
+      const { signal } = this._controller
+      const h = await new fetch("/v1/sugestions?q="+encodeURIComponent(v)+"&hl="+getValue("HL","en"),{
+        signal
+      })
       this.parent.style.display = "block"
-      console.log(h)
+      this._controller = null;
       this._renderItems(h);
       if(h.length < 1){
         this.parent.style.display = "none"

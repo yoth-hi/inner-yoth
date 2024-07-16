@@ -98,3 +98,13 @@ def isHTMLPage(path):
     path == "/results" or
     path == "/feed/trending" 
   )
+
+
+def getThambnail(vid,type_="VERTICAL"):
+  return[
+    {
+      "width":600,
+      "url":f"https://katiebeachphotography.com/wp-content/themes/photoform/images/no.image.600x300.png",
+      "height":300,
+    }
+  ]

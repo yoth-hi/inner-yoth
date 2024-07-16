@@ -12,7 +12,7 @@ const _template = html`
   </div>
 </a>
 <div class="information-area">
-  <div class="">
+  <div style="width:100%">
     <a class="link-title" on-click="handleLink" href$="/watch?v={{data.videoId}}">
       <strong class="title">{{data.title}}</strong>
       <p class="text-description">{{data.description}}</p>
