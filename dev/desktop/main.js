@@ -14,7 +14,7 @@ import{isDark}from"./utils/thame.js"
 import{getPagesIdByPath}from"./components/pages.config.js"
 import{getController}from"./utils/cookie_simple.js"
 const _template = html`
-<div>
+<div id="contenter">
   <div id="header-contenter">
     <app-progress>
     </app-progress>
@@ -36,14 +36,30 @@ class App {
     storeSet("root",this)
     this.listen(window,"popstate","_onChengePage")
     ManagerHistory.onpush(this._onChengePage.bind(this))
+    
+    this.boundOnTouchStart = this.onTouchStart.bind(this)
+    
   }
   attached(){
+    
+    /* create miniplayer component */
+    const miniplayer = document.createElement("app-miniplayer");
+    const miniplayerParent = this.hostElement;
+    miniplayerParent.insertBefore(miniplayer, miniplayerParent.firstChild)
+    
+    
     Logger().processSignal("ci")
+    
+    this.hostElement.addEventListener("touchstart",this.boundOnTouchStart)
+    
     const hasDarkTyped = window.matchMedia("(prefers-color-scheme: dark)")
     if(hasDarkTyped){
       hasDarkTyped.addEventListener?.("change",this.onDeviceThemeChanged.bind(this))
     }
     this.onDeviceThemeChanged()
+  }
+  onTouchStart(){
+    
   }
   static get properties() {
     return {

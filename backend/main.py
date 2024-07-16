@@ -113,9 +113,14 @@ class handler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', self.get_content_type(path))
                 self.send_header('Content-Encoding', 'br')
                 self.end_headers()
+                chunk_size = 1024*1024  # Tamanho do bloco em bytes
                 with open(file_path, 'rb') as f:
-                    compressed_content = brotli.compress(f.read(), quality=compression_quality)
-                    self.wfile.write(compressed_content)
+                    while True:
+                        chunk = f.read(chunk_size)
+                        if not chunk:
+                            break
+                        compressed_chunk = brotli.compress(chunk, quality=compression_quality)
+                        self.wfile.write(compressed_chunk)
             else:
                 self.send_error(404, "File not found")
 

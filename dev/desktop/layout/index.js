@@ -15,3 +15,4 @@ import("./icon.js")
 import"./owner-card.js"
 import"./progress.js"
 import"./description-text.js"
+import"./miniplayer.js"

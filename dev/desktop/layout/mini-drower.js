@@ -1,6 +1,6 @@
 import { Register, html } from "../components/DOM.js"
 import { renderList } from "../components/list.js"
-import { target } from "../components/load.page.main.layout.js";
+import { target, getDataIfExists } from "../components/load.page.main.layout.js";
 import { EVENT_NAME_ON_CHENGE_DATA_HEADER_AND_GUIDE } from "../components/vars.js";
 const _template = html`
 <div id="items"></div>
@@ -10,7 +10,7 @@ const _template = html`
 class App {
   constructor(){
     this._items = []
-    this.listen(target,EVENT_NAME_ON_CHENGE_DATA_HEADER_AND_GUIDE,"onChengeLayoutData")
+    getDataIfExists(EVENT_NAME_ON_CHENGE_DATA_HEADER_AND_GUIDE, (a,b)=>this.onChengeLayoutData(a,b)) || this.listen(target,EVENT_NAME_ON_CHENGE_DATA_HEADER_AND_GUIDE,"onChengeLayoutData")
   }
   ready(){
     
