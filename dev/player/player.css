@@ -252,3 +252,45 @@
 .html5-video-player .hover .app-avg{
   transform: scaleY(1);
 }
+
+.html5-video-player .player-button[aria-disabled="true"], 
+.html5-video-player .player-button[disabled] {
+    opacity: 0.5;
+}
+.app-time-current, .app-time-separator, .app-time-duration {
+    color: #ddd;
+}
+.app-time-display {
+    font-size: 109%;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0px 5px;
+    white-space: nowrap;
+    line-height: 47px;
+}
+.app-clip-watch-full-video-button {
+    cursor: pointer;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.app-live-badge:before {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    vertical-align: 4%;
+    margin-right: 5px;
+    background: #757575;
+    content: "";
+    border-radius: 6px;
+}
+.app-clip-watch-full-video-button-separator {
+    margin-left: 8px;
+    margin-right: 8px;
+    font-weight: bold;
+}
+.app-time-clip-icon,
+.app-clip-watch-full-video-button-separator,
+.app-clip-watch-full-video-button {
+    display: none;
+}

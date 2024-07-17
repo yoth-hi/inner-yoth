@@ -172,6 +172,9 @@ export class Element extends Disposable {
             setPreValue(this, isD[0], isD[1], value);
         }
     }
+    _content(a){
+      this._updateValue("content",a)
+    }
 }
 export class Dom extends Element {
     constructor(options) {

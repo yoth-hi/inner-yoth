@@ -1,8 +1,10 @@
 import { Dom, Element, appendChildInTemplate } from "../../utils/Dom.js";
 import { Title } from "./top/title.js";
 import PlayButton from "./Bottom/buttons/play.js"
+import NextBackButton from "./Bottom/buttons/nextBack.js"
 import ProgButton from "./Bottom/progress.js"
 import FullScreenButton from "./Bottom/buttons/fullscreen.js"
+import TimeDisplayButton from "./Bottom/time-display.js"
 import Disposable, { CreateDisposeCallback } from "../../utils/Disposable.js";
 /*class Chrome extends Dom {
   constructor(app){
@@ -110,7 +112,7 @@ class IY extends Disposable {
         CreateDisposeCallback(this, left);
         left._appendTo(this._chromeControls)
         
-        this._backButtom = new PlayButton(this._api, false)
+        this._backButtom = new NextBackButton(this._api, false)
         CreateDisposeCallback(this, this._backButtom);
         this._backButtom._appendTo(left.element)
         
@@ -118,9 +120,13 @@ class IY extends Disposable {
         CreateDisposeCallback(this, this._playButtom);
         this._playButtom._appendTo(left.element)
         
-        this._nextButtom = new PlayButton(this._api, true)
+        this._nextButtom = new NextBackButton(this._api, true)
         CreateDisposeCallback(this, this._nextButtom);
         this._nextButtom._appendTo(left.element)
+        
+        this._timeDisplay = new TimeDisplayButton(this._api)
+        CreateDisposeCallback(this, this._timeDisplay);
+        this._timeDisplay._appendTo(left.element)
         
         this._muteButtom = new PlayButton(this._api)
         CreateDisposeCallback(this, this._muteButtom);
@@ -155,10 +161,12 @@ class IY extends Disposable {
     }
     _updateTimeLime(data){
         this._progressBar._setData(data)
+        this._timeDisplay._updateTime()
         this._resize()
     }
     _onUpdateCurrentTime(a){
       this._progressBar._onUpdateCurrentTime(a)
+      this._timeDisplay._updateTime()
     }
     _resize([w]=[{}]){
       console.log(w)

@@ -112,3 +112,4 @@ export const requestFullscreen = function(a) {
 	   call.apply(scope || this, arguments)
 	 }
 	}
+export const formateTime = function(a,b){var c=Math.abs(Math.floor(a)),d=Math.floor(c/86400),e=Math.floor(c%86400/3600),f=Math.floor(c%3600/60);c=Math.floor(c%60);if(b){b="";d>0&&(b+=" "+d+" Dias");if(d>0||e>0)b+=" "+e+" @(hours)";b+=" "+f+" Minutos";b+=" "+c+" Segundos";d=b.trim()}else{b="";d>0&&(b+=d+":",e<10&&(b+="0"));if(d>0||e>0)b+=e+":",f<10&&(b+="0");b+=f+":";c<10&&(b+="0");d=b+c}return a>=0?d:"-"+d};

@@ -1,5 +1,7 @@
 import anime from "./svg_animate.js";
 import { Element } from "../utils/Dom.js";
+
+// icons
 export const play = function () {
     return {
         _tag: "svg",
@@ -42,6 +44,52 @@ export const pause = function () {
         ]
     };
 };
+
+export const next = function () {
+    return {
+        _tag: "svg",
+        _attrs: {
+            height: "100%",
+            version: "1.1",
+            viewBox: "0 0 36 36",
+            width: "100%"
+        },
+        _childs: [
+            {
+                _tag: "path",
+                zc: !0,
+                _className: "app-svg-fill",
+                _attrs: {
+                    d: "M 12,24 20.5,18 12,12 V 24 z M 22,12 v 12 h 2 V 12 h -2 z"
+                }
+            }
+        ]
+    };
+};
+export const back = function () {
+    return {
+        _tag: "svg",
+        _attrs: {
+            height: "100%",
+            version: "1.1",
+            viewBox: "0 0 36 36",
+            width: "100%"
+        },
+        _childs: [
+            {
+                _tag: "path",
+                zc: !0,
+                _className: "app-svg-fill",
+                _attrs: {
+                    d: "m 12,12 h 2 v 12 h -2 z m 3.5,6 8.5,6 V 12 z"
+                }
+            }
+        ]
+    };
+};
+
+
+// icons-utils
 export const getSwitchIconPlay = function SIP(status) {
     let icon;
     switch (status) {

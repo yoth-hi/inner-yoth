@@ -616,7 +616,7 @@ def getVideoPlayerData(playerData=None,id_=None):
     "videoDetails": {
       "videoId": id_,
       "title": title,
-      "lengthSeconds": -1,
+      "lengthSeconds": 9e9,
       "keywords":keywords,
       "channelId": None,
       "isOwnerViewing": None,

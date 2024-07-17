@@ -19,7 +19,7 @@ import {
 const PLAYERS = {};
 
 export default class Player extends Disposable {
-    _mediaElement = null;
+    _mediaElement
     constructor(parent, config, c, d) {
         super();
         this.config = CreateDataConfigManager(config || {});
@@ -106,6 +106,13 @@ export default class Player extends Disposable {
     }
     _resize(){
       this._template._resize()
+    }
+    _getCurrentTime(){
+      return this._mediaElement._getCurrentTime()
+    }
+    _getDuration(){
+      const dur = this._mediaElement._getDuration()
+      return isNaN(dur) ? 9e9 : dur
     }
     _toggleFullscreen() {
       const element = this._getElementFullscreen()
