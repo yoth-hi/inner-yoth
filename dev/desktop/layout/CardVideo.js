@@ -21,9 +21,9 @@ const _template = html`
     </a>
   </div>
   <div>
-    <h3>
-      <a on-click="handleLink" href$="/watch?v={{data.videoId}}">
-        <span>{{data.title}}</span>
+    <h3 class="title">
+      <a title="{{data.title}}" aria-label="{{data.title}}" on-click="handleLink" href$="/watch?v={{data.videoId}}">
+        <span id="title-video">{{data.title}}</span>
       </a>
     </h3>
     <div class="meta">

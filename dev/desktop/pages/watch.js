@@ -24,9 +24,9 @@ const _template = html`
                     <div class="color-skeleton title" hidden="[[data.playerOverlays.videoDetalis.title]]"></div>
                 </div>
                 <div id="primaty-information-v2">
-                    <h2 role="text" class="video-information-title">
+                    <h1 role="text" class="video-information-title">
                         {{title}}
-                    </h2>
+                    </h1>
                     <span class="text-information">
                         <app-text-number number="{{viewCount}}"></app-text-number>
                         <span> • </span>

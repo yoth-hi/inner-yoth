@@ -83,16 +83,25 @@ class sugestionBox {
   createElement(){
     let href = ""
     const element = document.createElement("li")
-    element.className = "sugestion-text-box"
-    element.setAttribute("role","option")
+    const sb = document.createElement("div");
     const text = document.createElement("span");
+    
+    element.className = "sugestion-text-box"
+    
+    
+    element.setAttribute("role","presentation")
+    sb.setAttribute("role","option")
     text.setAttribute("role","text")
-    this.subparent.appendChild(element)
+    
+    element.appendChild(sb)
+    sb.appendChild(text)
+    
+    
   
-     this.host.listen(element,"click",()=>{
-        this.host.onSubmit(href)
-  })
-    element.appendChild(text)
+    this.host.listen(element,"click",()=>{ this.host.onSubmit(href) })
+    
+    this.subparent.appendChild(element)
+    
     const t = {
       updateText(v){
         text.innerText= v
