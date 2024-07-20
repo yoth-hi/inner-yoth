@@ -7,7 +7,7 @@ import re
 import brotli
 import random
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 from .controller import renderContextPage, isPageHtml, isPageApi, RenderApi
 
 # Configuração global
@@ -51,11 +51,11 @@ class handler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         self.send_response(204)
         self.send_header('Cross-Origin-Resource-Policy', 'cross-origin')
+        logger.info(f"HEAD: {self.headers.get('Host')} {self.path}")
         self.end_headers()
 
     def serve_html(self, parsed_path, path):
         host = self.headers.get('Host')
-        
         # Verifica o user-agent para determinar se é mobile
         user_agent = self.headers.get('User-Agent')
         is_mobile = re.search(r'Mobi|Android', user_agent, re.IGNORECASE)
@@ -133,7 +133,7 @@ class handler(BaseHTTPRequestHandler):
             return 'text/html; charset=utf-8'
         else:
             return 'text/plain'
-
+logger.info('CREATE')
 if __name__ == '__main__':
     server_address = ('', 8000)
     httpd = HTTPServer(server_address, handler)
