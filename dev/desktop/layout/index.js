@@ -1,4 +1,6 @@
 
+import"./formatted-string.js"
+
 import"./search/index.js"
 
 import"./ButtonCustomer.js"

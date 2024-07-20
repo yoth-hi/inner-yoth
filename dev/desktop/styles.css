@@ -7,7 +7,7 @@ html {
   --app-badge-chip-background: rgba(0,0,0,.05);
   --app-watch-playlist-background: #3739;
   --app-text-main-color: #000;
-  --app-text-details-color: #223;
+  --app-text-details-color: #434343;
   --app-text-primary-color: #000;
   --app-spec-brand-background-primary: #eee
 }
@@ -27,7 +27,7 @@ yo-app {
   --app-masthead-height: 56px;
 }
 yo-app[mini-guide-visible] {
-  --app-guide-width: var(--app-mini-guide-width)
+  --app-guide-width: var(--app-mini-guide-width);
 }
 a {
   text-decoration: none;
@@ -51,7 +51,6 @@ app-masthead > #container {
   --app-button-customer-border:0.1px;
   height: 56px;
   padding: 0 16px;
-  display: flexbox;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -744,7 +743,6 @@ app-grid-card-video .meta {
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
     white-space: normal;
-    display: flexbox;
     display: flex;
 }
 app-grid-card-video h3 {
@@ -972,8 +970,93 @@ app-miniplayer .channel{
     line-height: 1.5rem;
     flex: 1;
     flex-basis: 0.000000001px;
-    display: flexbox;
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+app-channel-card #description {
+    color: var(--app-text-details-color);
+    word-break: break-word;
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    font-weight: 400;
+    overflow: hidden;
+    display: block;
+    max-height: 3.6rem;
+    -webkit-line-clamp: 2;
+}
+
+app-channel-card {
+  display: block;
+  margin-top: 8px;
+}
+app-channel-card #info-section,
+app-channel-card .channel-link,
+app-channel-card #content-section{
+  display: flex;
+}
+app-search-card-video #thumbnail-link,
+app-channel-card #avatar-section 
+{
+    max-width: 400px;
+    min-width: 240px;
+    flex:1;
+}
+app-channel-card #info-section{
+    flex:1;
+}
+app-channel-card #avatar-section .channel-link{
+  justify-content: center;
+}
+app-channel-card .channel-link{
+  flex:1;
+}
+app-channel-card #avatar {
+    width: 246px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+}
+app-channel-card #info {
+    padding: 0 16px 16px 16px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    flex-basis: 0.000000001px;
+}
+app-channel-card #avatar-img {
+    border-radius: 50%;
+    background-color: transparent;
+    overflow: hidden;
+    height: 136px;
+    width: 136px;
+    margin-right: 16px;
+    background: #000;
+}
+app-channel-card #channel-title {
+    color: var(--app-text-primary-color);
+    margin-bottom: 8px;
+    font-family: "Roboto","Arial",sans-serif;
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+    font-weight: 400;
+    overflow: hidden;
+    display: block;
+    max-height: 5.2rem;
+    -webkit-line-clamp: 2;
+    display: box;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: normal;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+app-formatted-string .bold {
+    font-weight: 500;
 }
