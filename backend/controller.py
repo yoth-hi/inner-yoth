@@ -100,7 +100,7 @@ def renderContextPage(parsed_path, self_, is_mobile):
   context["isMobule"] = (not istv) and isdev
   context["static_app"] += "jsbin/"
   g = context.get("static_app")
-  linksPre += f"<{g}/app.js>; rel=preload; as=script"
+  linksPre += f"<{g}app.js>; rel=preload; as=script"
   self_.send_header('Link', f"{linksPre}")
   context["config"] = toTextData(getConfig(context,self_))
   print(path, context)
@@ -114,8 +114,8 @@ def getPageIdByPath(path):
   if(path == ""):
     _id = "FEED_HOME"
   elif(
-    path.startswith('/channel') or
-    path.startswith('/@')
+    path.startswith('channel') or
+    path.startswith('@')
   ):
     _id = "CHANNEL"
   elif(path == ""):
@@ -133,6 +133,7 @@ def toTextData(dataJson):
 def isPageHtml(path):
   return (
     path == "/" or
+    path.startswith("/@") or
     path == "/watch" or
     path == "/results" or
     path == "/tv" or
