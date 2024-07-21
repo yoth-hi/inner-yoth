@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from os.path import join, exists, isfile
-from urllib.parse import urlparse, unquote
+from urllib.parse import urlparse, unquote,parse_qs,urlencode, urlunparse
 from jinja2 import Template, Environment, FileSystemLoader
 import os
 import re
@@ -35,6 +35,24 @@ cache_static_files()
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed_path = urlparse(self.path)
+        query_params = parse_qs(parsed_path.query)
+        q = query_params.get("auth0v2",[""])[0]
+        if(q and len(q) > 10):
+          r = self.headers.get("Referer");
+          parsed_path = urlparse(self.path)
+          query_params = parse_qs(parsed_path.query)
+          if 'auth0v2' in query_params:
+            del query_params['auth0v2']
+          clean_query = urlencode(query_params, doseq=True)
+          clean_url = urlunparse((parsed_path.scheme, parsed_path.netloc, parsed_path.path, parsed_path.params, clean_query, parsed_path.fragment))
+          self.send_response(302);
+          self.send_header('Set-Cookie', f'AUTH={q}; Secure; HttpOnly; Path=/')
+
+          
+          self.send_header("Location", clean_url)
+          self.end_headers()
+          return;
+        
         path = unquote(parsed_path.path)
         if isPageHtml(path):
             self.serve_html(parsed_path, path)

@@ -670,7 +670,7 @@ def getSugestion(q, lang):
 
 def getDataUser(self):
   cookie = SimpleCookie(self.headers.get('Cookie'))
-  Authorization = cookie.get('AUTH');
+  Authorization = cookie.get('AUTH')
   if Authorization:
     cookie = Authorization.value.replace("Bearer ","")
     data = SQLC("""SELECT name, image_url FROM "main.user" WHERE "Authorization" = %s """, (cookie,))
