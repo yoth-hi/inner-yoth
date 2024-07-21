@@ -26,14 +26,15 @@ def WATCHTIME(context, self_, createConn):
     # Initialize variables
     used_seek = 0
     sql_queries = []
-
+    userId = None;
+    
     # Prepare SQL queries for each watchtime entry
     for index in range(len(startList)):
         start = float(startList[index])
         end = float(endList[index])
-        duration = end - start
+        duration = end - start;
         time_id = int((start / len_) * 100)
-
+          
         # Construct SQL query for watchtime update or insert
         sql_query = """
         CALL update_watchtime(%s,%s,%s,%s,%s);
@@ -41,7 +42,7 @@ def WATCHTIME(context, self_, createConn):
         sql_queries.append((video_id, time_id, used_seek, start, end))
 
         # Set used_seek to 1 if there are multiple entries and it's not the first one
-        if len(startList) > 1 and index > 0:
+        if len(startList) > 1 and index > 0 or duration < -10 or duration > 10:
             used_seek = 1
 
     # Construct SQL query for updating/inserting viewers table
@@ -52,7 +53,7 @@ def WATCHTIME(context, self_, createConn):
     BEGIN
         -- Attempt to update the viewers table
         UPDATE viewers
-        SET lest_time = %s
+        SET last_time = %s
         WHERE session = %s
           AND video_id = %s
         RETURNING session INTO sid;
@@ -60,8 +61,8 @@ def WATCHTIME(context, self_, createConn):
         -- Check if the update affected any rows
         IF NOT FOUND THEN
             -- If no rows were updated, perform an insert
-            INSERT INTO viewers (video_id, session, lest_time)
-            VALUES (%s, %s, %s);
+            INSERT INTO viewers (video_id, session, last_time, user_id)
+            VALUES (%s, %s, %s, %s);
         END IF;
     END $$;
     """
@@ -71,7 +72,7 @@ def WATCHTIME(context, self_, createConn):
     try:
         with conn.cursor() as cursor:
             # Execute viewers update/insert
-            cursor.execute(sql_query_viewers, (lest_time, session, video_id, video_id, session, lest_time))
+            cursor.execute(sql_query_viewers, (lest_time, session, video_id, video_id, session, lest_time, userId))
             # Execute batch of watchtime updates/inserts
             execute_batch(cursor, """
                 CALL update_watchtime(%s, %s, %s, %s, %s);
