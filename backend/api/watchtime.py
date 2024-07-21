@@ -39,11 +39,11 @@ def WATCHTIME(context, self_, createConn):
         sql_query = """
         CALL update_watchtime(%s,%s,%s,%s,%s);
         """
-        sql_queries.append((video_id, time_id, used_seek, start, end))
 
         # Set used_seek to 1 if there are multiple entries and it's not the first one
         if len(startList) > 1 and index > 0 or duration < -10 or duration > 10:
             used_seek = 1
+        sql_queries.append((video_id, time_id, used_seek, start, end))
 
     # Construct SQL query for updating/inserting viewers table
     sql_query_viewers = """
