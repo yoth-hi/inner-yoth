@@ -6,6 +6,7 @@ const _template = html`<div id="content"></div>`;
 
 import "./home.js";
 import "./watch.js";
+import "./channel.js";
 import "./search.js";
 import { dispatch } from "../components/Event.js";
 import { EVENT_NAME_ON_NAVEGATE_START, EVENT_NAME_ON_NAVEGATE_FINISH } from "../components/vars.js";
@@ -17,7 +18,8 @@ const getPage = (arr, pageId) => {
         const pageNames = {
             "WATCH": "app-watch",
             "FEED_HOME": "app-home",
-            "SEARCH": "app-results"
+            "SEARCH": "app-results",
+            "CHANNEL": "app-channel"
         };
 
         const name = pageNames[pageId];

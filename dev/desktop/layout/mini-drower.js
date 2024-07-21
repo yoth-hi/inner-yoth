@@ -45,10 +45,17 @@ class App {
     })
   }
   onChengeData(arr){
+    let y= 0;
     renderList("app-mini-drower-item", this.$["items"], arr,(a,data,m)=>{
       a.setAttribute("role","tab");
       a["data"] = data
       this._items = m
+      const k_ =  y;
+      y++
+      a._onClick = () => {
+        this.index = k_
+        this._updateSelected()
+      }
       this._updateSelected()
     })
   }

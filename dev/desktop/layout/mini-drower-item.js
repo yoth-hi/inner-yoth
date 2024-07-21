@@ -14,6 +14,7 @@ class App {
   static get properties(){
     return{
       isSelected: Boolean,
+      _onClick: Function,
       data: {
         type: Object,
         observer: "onChengeData"
@@ -33,6 +34,7 @@ class App {
   }
   handleLink_(a){
     a.preventDefault();
+    this._onClick?.()
     const render = this.data?.endpoint?.render
     const href = this.data?.endpoint?.url
     if(render){

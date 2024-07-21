@@ -8,7 +8,8 @@ export const Load = async function Load(data,url="/v1/browse"){
   const body = {...data,...getDataBodyRequest()};
   const req = new Fetch(url,{
     method:"POST",
-    body:JSON.stringify(body)
+    body:JSON.stringify(body),
+    credentials: 'include'
   })
   return req 
 }

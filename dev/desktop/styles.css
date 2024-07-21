@@ -1060,3 +1060,71 @@ app-channel-card #channel-title {
 app-formatted-string .bold {
     font-weight: 500;
 }
+app-channel:not([hidden]) {
+  display: block;
+  width: 100%;
+}
+app-channel > .content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+app-channel #page-header {
+    padding-right: calc(50% - 642px);
+    padding-left: calc(50% - 642px);
+}
+app-channel .page-header-contenter {
+    display: flex;
+    align-items: center;
+}
+app-channel .avatar-content {
+  margin-right: 16px;
+
+}
+app-channel .avatar {
+    margin: 2px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 160px;
+    height: 160px;
+    background: #000;
+    border-radius: 50%;
+}
+app-channel .avatar img {
+    position: absolute;
+    inset:0;
+    display: block;
+}
+app-channel .title-large {
+    font-family: "Roboto","Arial",sans-serif;
+    font-size: 26px;
+    line-height: 70px;
+    font-weight: 700;
+    overflow: hidden;
+    max-height: 100px;
+    -webkit-line-clamp: 2;
+    display: box;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+app-button-customer[data-style="BUTTON_PROFILE"] button {
+  width: 40px;
+  height: 40px;
+}
+app-button-customer[data-style="BUTTON_PROFILE"]{
+  padding: 0px;
+  width: 40px;
+  overflow: hidden;
+  border-radius: 20px;
+  height: 40px;
+}
+app-button-customer[data-style="BUTTON_PROFILE"]:hover {
+  box-shadow: 0px 0px 2px #8887;
+}
+app-button-customer[data-style="BUTTON_PROFILE"] img{
+  width: 40px;
+  height: 40px;
+}

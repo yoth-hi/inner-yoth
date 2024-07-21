@@ -4,7 +4,7 @@ from .database import SQL, createConn, SQLC
 import requests
 import xml.etree.ElementTree as ET
 from functools import lru_cache
-
+from http.cookies import SimpleCookie
 from .api.watchtime import WATCHTIME
 from .utils import getConfig, parse_accept_language_header, getI18n, getTypeNumberI18n, getViewFormate, getThambnail
 from .api_search import SEARCH
@@ -44,6 +44,7 @@ def renderContextPage(parsed_path, self_, is_mobile):
   context = {};
   path = parsed_path.path
   query = parseQuery(parsed_path.query)
+  context["user"] = getDataUser(self_)
   context["pageId"] = getPageIdByPath(path)
   isMobile = False# not not is_mobile #not query.get("app") == "desktop"
   isembed = context["pageId"] == "EMBED"
@@ -202,20 +203,9 @@ def HeaderMobileWeb():
     "logo": LogoType()
   }
 def HeaderDasktopWeb(ctx):
-  isLoggad = False
+  isLoggad = not not ctx["user"]
   lang = ctx["lang"]
-  #getI18n("$APPNAME_HOME",[])
-  return{
-    "logo": LogoType(),
-    "searchBox":{
-      "inputData":{
-        "placeholder":getI18n("search", lang)
-      }
-    },
-    "headerEndItems":{
-      "isLoggad":False,
-      "items":[
-        {
+  bl = {
           "type":"BUTTON_CUSTOMER",
           "title":getI18n("sign_up",lang),
           "accessibility":{
@@ -225,8 +215,31 @@ def HeaderDasktopWeb(ctx):
           "isFull":False,
           "isRow":True,
           "isBorder":False,
-          "endpoint":EndPoint_2("https://yonix.vercel.app/login")
-        }
+          "endpoint":EndPoint_2("https://yonix.vercel.app/login?continuation={location}&hl="+lang)
+  };
+  if isLoggad:
+    user = ctx["user"]
+    bl = {
+      "type":"BUTTON_CUSTOMER",
+      "image": user.get("image_url"),
+      "width": 40,
+      "style":"BUTTON_PROFILE",
+      "action":{
+        "open":"MENU_USER"
+      }
+    }
+  #getI18n("$APPNAME_HOME",[])
+  return{
+    "logo": LogoType(),
+    "searchBox":{
+      "inputData":{
+        "placeholder":getI18n("search", lang)
+      }
+    },
+    "headerEndItems":{
+      "isLoggad":isLoggad,
+      "items":[
+        bl
       ]
     }
   }
@@ -654,3 +667,20 @@ def getSugestion(q, lang):
         # The second element in the response JSON is the list of suggestions
         suggestions = [[item, item] for item in data[1]]
     return suggestions
+
+def getDataUser(self):
+  cookie = SimpleCookie(self.headers.get('Cookie'))
+  Authorization = cookie.get('Authorization');
+  if Authorization:
+    cookie = Authorization.value.replace("Bearer ","")
+    data = SQLC("""SELECT name, image_url FROM "main.user" WHERE "Authorization" = %s """, (cookie,))
+    data = data and data[0] or []
+    if data and len(data) > 0:
+      return{
+        "name": data[0],
+        "image_url": data[1]
+      }
+    else:
+      self.send_header('Set-Cookie', 'Authorization=; expires=Thu, 01 Jan 1970 00:00:00 GMT')
+      return None
+  return None

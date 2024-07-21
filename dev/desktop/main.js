@@ -23,6 +23,7 @@ const _template = html`
   <div>
     <app-mini-drower></app-mini-drower>
     <page-manager page-id="{{pageId}}" data="{{data}}" id="page-manager"></page-manager>
+    <app-popup-contenter></app-popup-contenter>
   </div>
 </div>
 `

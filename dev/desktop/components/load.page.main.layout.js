@@ -18,7 +18,8 @@ export const getMainDataFTLayout = async function() {
   const body = JSON.stringify(getDataBodyRequest());
   const yy = await new FETCH("/v1/guide",{
     method:"POST",
-    body
+    body,
+    credentials: 'include'
   })
   dispatch(target,EVENT_NAME_ON_CHENGE_DATA_HEADER_AND_GUIDE,yy)
   store[EVENT_NAME_ON_CHENGE_DATA_HEADER_AND_GUIDE] = yy
