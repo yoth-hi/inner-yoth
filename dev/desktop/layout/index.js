@@ -14,7 +14,7 @@ import"./player.js"
 import"./CardVideo.js"
 import"./grid-card-video.js"
 import"./Button.js"
-import("./icon.js")
+import"./icon.js"
 import"./owner-card.js"
 import"./progress.js"
 import"./description-text.js"

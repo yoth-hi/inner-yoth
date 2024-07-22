@@ -8,7 +8,7 @@ import Logger from "./components/logger/signals.js"
 import"./layout/index.js"
 import{ManagerHistory}from"./components/DOM.js"
 import { set as storeSet } from "./components/config.store.js"
-import("./pages/index.js")
+import"./pages/index.js"
 import { Register, html } from "./components/DOM.js"
 import{isDark}from"./utils/thame.js"
 import{getPagesIdByPath}from"./components/pages.config.js"
