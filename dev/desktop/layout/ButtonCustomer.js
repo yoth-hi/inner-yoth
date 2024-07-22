@@ -72,7 +72,7 @@ class App {
   }
   getImg(){
     const img = this.img ??= document.createElement("img");
-    this.hostElement.appendChild(img);
+    this.$$("#content").appendChild(img);
     return img
   }
   _click(){
@@ -80,7 +80,6 @@ class App {
       this.current?.setAttribute("href", this._get());
     } else {
       const host = this.hostElement;
-
      if(this.data.action?.open){
         createModal(this.data.action,{
           get x(){
@@ -88,6 +87,12 @@ class App {
           },
           get y(){
             return host.offsetTop
+          },
+          get width(){
+            return host.offsetWidth
+          },
+          get height(){
+            return host.offsetHeight
           },
         })
      }

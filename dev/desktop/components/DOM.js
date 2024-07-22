@@ -1,5 +1,5 @@
 import { history } from "./pushState.js";
-import { ElementMixin } from "./_dev.js"; // of polymerjs
+import { ElementMixin } from "./_prod.js"; // of polymerjs
 
 export const ManagerHistory = new history();
 const Upb = ["disabled", "disable-upgrade"];

@@ -1128,3 +1128,32 @@ app-button-customer[data-style="BUTTON_PROFILE"] img{
   width: 40px;
   height: 40px;
 }
+
+
+
+
+
+
+
+app-popup-contenter {
+  display: block;
+  width: 260px;
+  height: 500px;
+  position: fixed;
+  box-shadow: 0px 0px 4px #888;
+  z-index: 1600;
+  top:0;
+  border-radius: 16px;
+  transition: .16s;
+  pointer-events: none;
+  visibility: hidden;
+}
+app-popup-contenter[is-loading] #content{
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+app-popup-contenter[is-active_]{
+  pointer-events: auto;
+  visibility: visible;
+}

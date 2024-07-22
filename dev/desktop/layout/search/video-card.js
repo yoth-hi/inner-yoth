@@ -15,7 +15,7 @@ const _template = html`
   <div style="width:100%">
     <a class="link-title" on-click="handleLink" href$="/watch?v={{data.videoId}}">
       <strong class="title">{{data.title}}</strong>
-      <p class="text-description">{{data.description}}</p>
+      <app-formatted-string id="description" text="{{data.description}}"></app-formatted-string>
     </a>
     <ul class="tag-list"> </ul>
     <div class="">

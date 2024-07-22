@@ -25,8 +25,16 @@ def SEARCH(query, lang):
     print(item)
     
     if(type_ == "VIDEO_RESULT_SEARCH"):
+      description = (item[2] or "")[:128]
+      
       data["title"] = item[1]
-      data["description"] = item[2]
+      data["description"] = {
+        "runs": [
+            {
+                "text": description + (len(item[2]) > 128 and "..." or "")
+            }
+        ]
+    }
       data["videoId"] = item[3]
       data["viewCount"] = {
         "text": getViewFormate(item[4],lang),
@@ -38,7 +46,7 @@ def SEARCH(query, lang):
       data["description"] = {
         "runs": [
             {
-                "text": item[2]
+                "text": (item[2] or "")[:128] + (len(item[2]) > 128 and "..." or "")
             }
         ]
     }
