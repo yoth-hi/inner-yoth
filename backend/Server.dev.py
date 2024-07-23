@@ -1,5 +1,5 @@
 from http.server import HTTPServer
-from backend.main import handler
+from main import handler
 
 def run(server_class=HTTPServer, handler_class=handler, port=8080):
     server_address = ('', port)

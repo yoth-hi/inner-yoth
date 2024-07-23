@@ -8,7 +8,7 @@ import brotli
 import random
 import logging
 logger = logging.getLogger(__name__)
-from .controller import renderContextPage, isPageHtml, isPageApi, RenderApi
+from controller import renderContextPage, isPageHtml, isPageApi, RenderApi
 
 # Configuração global
 compression_quality = random.randint(0, 4) # Usar um nível de compressão fixo para consistência

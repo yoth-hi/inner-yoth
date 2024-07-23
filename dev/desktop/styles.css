@@ -132,7 +132,7 @@ app-mini-drower-item > a .icon {
   margin-bottom: 4px;
 }
 
-app-icon {
+app-icon:not([hidden]) {
   display: block;
   height: 24px;
   width: 24px;
@@ -314,8 +314,8 @@ app-watch #column #player--c {
   overflow: hidden;
 }/*1 2 4 6 8 10 12 14 16 18 24 32 42 64*/
 app-watch #column #primaty-information {
-  background: var(--app-watch-playlist-background);
-  border-radius: 48px;
+  align-items: center;
+  display: flex;
   margin-bottom: calc(var(--app-watch-margin)*2);
 }
 app-watch #column #primaty-information-v2 {
@@ -660,6 +660,7 @@ app-card-owner app-button-customer:hover {
 app-card-owner #actions {
   margin-left: auto;
   margin-right: 8px;
+  margin-left: 16px;
 }
 app-card-video:hover:before {
   background: #2222;
@@ -790,6 +791,7 @@ app-description .button-hashtag-link
 }
 button {
   background-color: inherit;
+  color: inherit;
   border: none;
   box-shadow: none;
   border-radius: 0;
@@ -1156,4 +1158,38 @@ app-popup-contenter[is-loading] #content{
 app-popup-contenter[is-active_]{
   pointer-events: auto;
   visibility: visible;
+}
+
+app-watch app-actions {
+  display: flex;
+  margin-left: auto;
+}
+
+
+app-action-button .button-action {
+  border-radius: 8px;
+  height: 40px;
+  cursor:pointer;
+  display: flex;
+  padding: 6px 12px;
+  align-items: center;
+  margin-right: 8px;
+  background: #8882;
+}
+app-action-button .button-action .content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+app-action-button[data-type="BUTTON_SUBSCRIBE"] button {
+  background: #2128;
+  color:#fff;
+}
+app-action-button[is-active_][data-type="BUTTON_SUBSCRIBE"] button {
+  background: #8888;
+  color:inherit;
+  
 }

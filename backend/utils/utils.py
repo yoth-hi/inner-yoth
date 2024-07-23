@@ -1,8 +1,13 @@
 from http.cookies import SimpleCookie
 import secrets
 import json
-import base64
 from urllib.parse import parse_qs
+from Crypto.Cipher import AES
+from Crypto.Protocol.KDF import scrypt
+from Crypto.Random import get_random_bytes
+from config.env import PASSWORD_CHANNAL_CRIPT
+import base64
+
 def getConfig(ctx, self_):
   ip_ = getIp(self_)
   cookieSesion = getCookieSession(self_)
@@ -99,7 +104,6 @@ def isHTMLPage(path):
     path == "/feed/trending" 
   )
 
-
 def getThambnail(vid,type_="VERTICAL"):
   return[
     {
@@ -108,3 +112,45 @@ def getThambnail(vid,type_="VERTICAL"):
       "height":300,
     }
   ]
+
+
+def getButtonRequireLoginAcion(user, isMenuOpen):
+  
+  return ;
+def createTokenSubscriveChannel(channel_id:str ) -> str:
+  return encrypt_data(PASSWORD_CHANNAL_CRIPT.encode('utf-8'), channel_id.encode('utf-8'))
+def getChannelIdByToken(data: str) -> str:
+  return decrypt_data(PASSWORD_CHANNAL_CRIPT.encode('utf-8'), data)
+  
+def getBodyRequest(self_):
+  content_length = int(self_.headers['Content-Length'])
+  post_data = self_.rfile.read(content_length)
+  return json.loads(post_data)
+  
+  
+
+
+# Função para gerar uma chave a partir de uma senha
+def generate_key(password: bytes, salt: bytes) -> bytes:
+    # Deriva uma chave usando scrypt
+    key = scrypt(password, salt, 32, N=2**14, r=8, p=1)
+    return key
+
+def encrypt_data(password: bytes, data: bytes) -> str:
+    salt = get_random_bytes(16)
+    key = generate_key(password, salt)
+    iv = get_random_bytes(16)
+    cipher = AES.new(key, AES.MODE_CFB, iv)
+    encrypted_data = cipher.encrypt(data)
+    return base64.b64encode(salt + iv + encrypted_data).decode('utf-8')
+
+
+def decrypt_data(password: bytes, encrypted_data_b64: str) -> bytes:
+    encrypted_data = base64.b64decode(encrypted_data_b64)
+    salt = encrypted_data[:16]
+    iv = encrypted_data[16:32]
+    encrypted_data = encrypted_data[32:]
+    key = generate_key(password, salt)
+    cipher = AES.new(key, AES.MODE_CFB, iv)
+    decrypted_data = cipher.decrypt(encrypted_data)
+    return decrypted_data

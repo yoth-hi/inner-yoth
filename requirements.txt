@@ -2,3 +2,4 @@ brotli
 jinja2
 psycopg2-binary
 requests
+pycryptodome

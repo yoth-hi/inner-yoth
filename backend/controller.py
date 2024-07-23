@@ -1,13 +1,15 @@
 import json
 from urllib.parse import parse_qs, urlparse
-from .database import SQL, createConn, SQLC
+from database import SQL, createConn, SQLC
 import requests
 import xml.etree.ElementTree as ET
 from functools import lru_cache
 from http.cookies import SimpleCookie
-from .api.watchtime import WATCHTIME
-from .utils import getConfig, parse_accept_language_header, getI18n, getTypeNumberI18n, getViewFormate, getThambnail
-from .api_search import SEARCH
+from api.watchtime import WATCHTIME
+from api.subscriber import subscribe, unsubscribe
+from utils.utils import getConfig, parse_accept_language_header, getI18n, getTypeNumberI18n, getViewFormate, getThambnail, createTokenSubscriveChannel
+from utils.video_actions import get_video_actions, get_menu
+from api_search import SEARCH
 
 translations = {}
 with open('backend/translations.json', 'r') as f:
@@ -68,7 +70,8 @@ def renderContextPage(parsed_path, self_, is_mobile):
     if iswatch:
       playerData = getDataVideo(id_)
       if(playerData):
-        data["playerOverlays"] = MainConstructor_playerOverlays(playerData,lang)
+        data["playerOverlays"] = MainConstructor_playerOverlays(playerData,lang,context)
+        data["videoRender"] = MainConstructor_videoRender(self_, context)
         title += " - "
         title = playerData.get("title")
         description = playerData.get("description")
@@ -159,6 +162,8 @@ def isPageApi(path,type_="GET"):
     path == "/browse" or
     path == "/like/like" or
     path == "/guide" or
+    path == "/subscribe/subscribe" or
+    path == "/subscribe/unsubscribe" or
     path == "/player" or
     path == "/updatedata" or
     path == "/like/deslike"
@@ -300,13 +305,17 @@ def ConstructorCardVideo(data,lang):
       "title":channelName
     }
   }
-def MainConstructor_playerOverlays(playerData,lang):
+def MainConstructor_playerOverlays(playerData,lang, ctx):
   title = playerData.get("title")
   description = playerData.get("description","")
   id_ = playerData.get("id","")
   channelName = playerData.get("channelName")
   channelId = playerData.get("channelId")
   view_count = playerData.get("viewCount")
+  menu = None
+  hasRequireLoginFirst = not ctx.get("user",False)
+  if hasRequireLoginFirst:
+    menu = get_menu(lang)
   return{
     "videoId":id_,
     "videoDetalis":{
@@ -325,8 +334,21 @@ def MainConstructor_playerOverlays(playerData,lang):
       "title":channelName,
       "actions":[
         {
+          
           "title":getI18n("subscribe", lang),
-          "style":"BUTTON_SUBSCRIBE"
+          "active_title":getI18n("subscriber", lang),
+          "isActive": False,
+          "hasRequireLoginFirst":hasRequireLoginFirst,
+          "menu":menu,
+          "type":"BUTTON_SUBSCRIBE",
+          "action":{
+            "api":"subscribe/subscribe",
+            "active_api":"subscribe/unsubscribe",
+            "requestContext":{
+              "token": createTokenSubscriveChannel(channelId)
+            }
+          },
+          "renderType":"text"
         }
       ]
     }
@@ -341,7 +363,8 @@ def getDataVideo(id_):
     (SELECT COUNT(*) FROM viewers WHERE video_id = v.id) AS viewer_count,
     c.name AS channel_name,
     c.id AS channel_id,
-    v.keywords
+    v.keywords,
+    v.channel_id
 FROM video v
 JOIN "video.channel" c ON v.channel_id = c.id
 WHERE v.id = %s
@@ -357,6 +380,7 @@ LIMIT 1;
           "viewCount": data[3],
           "channelName": data[4],
           "keywords": data[6],
+          "channelId": data[7],
         }
       else:
         print(f"No videos found. id:{id_}")
@@ -498,8 +522,15 @@ def GET_DATAILS_PLAYER(context, self_, createConn):
   data["content"]["results"] = getDataWatchPage_ListItems(id_)
   playerData = getDataVideo(id_)
   title = "Yoth"
+  lang = parse_accept_language_header(self_.headers.get("Accept-Language","en-US,en;q=1"))[0][0]
+  print(lang,"\n")
+  ctx = {
+    "lang":lang,
+    "user":getDataUser(self_)
+  }
   if(playerData):
-    data["playerOverlays"] = MainConstructor_playerOverlays(playerData,lang)
+    data["playerOverlays"] = MainConstructor_playerOverlays(playerData,lang,ctx)
+    data["videoRender"] = MainConstructor_videoRender(self_, ctx)
     title += " - "
     title += playerData.get("title")
   data["headerupdate"] = {
@@ -567,6 +598,8 @@ APIS = {
   "detalis_player": GET_DATAILS_PLAYER,
   "player": PLAYER,
   "opensearch": opensearch,
+  "subscribe/subscribe": subscribe,
+  "subscribe/unsubscribe": unsubscribe,
   "updatedata": updatedata,
 }
 
@@ -678,9 +711,16 @@ def getDataUser(self):
     if data and len(data) > 0:
       return{
         "name": data[0],
-        "image_url": data[1]
+        "image_url": data[1],
+        "api_id": None
       }
     else:
       self.send_header('Set-Cookie', 'Authorization=; expires=Thu, 01 Jan 1970 00:00:00 GMT')
       return None
   return None
+def MainConstructor_videoRender(self,context):
+  data = {};
+  
+  ctx = context
+  data["videoActions"] = get_video_actions(ctx)
+  return data;

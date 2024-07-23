@@ -1,5 +1,5 @@
-from .database import SQLC
-from .utils import getViewFormate
+from database import SQLC
+from utils.utils import getViewFormate
 
 
 def SEARCH(query, lang):

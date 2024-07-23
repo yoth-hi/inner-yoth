@@ -4,8 +4,9 @@ import { Load } from "../components/loadDataPage.js"
 let hosted;
 export const createModal = function(data, positions){
   hosted ??= document.querySelector("app-popup-contenter");
-  hosted.data = data
-  hosted.position = positions
+  // hosted.data = data
+  // hosted.isActive_ = true
+  // hosted.position = positions
 }
 const template = html`<div id="content">
 
@@ -25,10 +26,13 @@ class App {
         type: Object,
         observer:"onChengeData"
       },
+      renderdata_: {
+        type: Object,
+        observer:"onChengeRenderData"
+      },
       isLoading: {
         type: Boolean,
         reflectToAttribute: true,
-        value: true
       },
       isActive_: {
         type: Boolean,
@@ -41,18 +45,29 @@ class App {
       },
     }
   }
-  onChengeData(a){
+  async onChengeData(a){
     this.isActive_ = true
     this.isLoading = true
-     //const aw = await F()
+    this._27 = false
+    if(a.randerDataInServer){
+     const aw = await F()
+     this.renderdata_ = (aw)
+    } else {
+     this.renderdata_ = (a)
+    }
+    this._27 = true
   }
   ready(){
     this.listen(window,"click","_click")
   }
+  onChengeRenderData(a){
+    this.isLoading = false
+    debugger
+  }
   _click({ target }){
     if(!this.isActive_)return;
     if(!this.hostElement.contains(target) && target!==this.hostElement) {
-      this._close()
+      setTimeout(()=>this._close(),16)
     }
   }
   _close(){
@@ -70,6 +85,7 @@ class App {
   onChengeActive(){
     this.abort?.abort();
     this.abort = void 0;
+    debugger
   }
 }
 

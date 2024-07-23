@@ -36,6 +36,7 @@ const _template = html`
             </div>
             <div id="primaty-information">
                 <app-card-owner data="{{data.playerOverlays.owner}}"></app-card-owner>
+                <app-actions id="actions" data="{{data.videoRender.videoActions}}"></app-actions>
             </div>
             <app-description></app-description>
             <div id="column-mode-content"></div>
